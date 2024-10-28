@@ -20,5 +20,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Timely"
-include(":app")
- 
+include(":Timely")
+include(":domain")
+include(":data")
+include(":common")
