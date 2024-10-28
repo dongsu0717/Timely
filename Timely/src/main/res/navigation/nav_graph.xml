@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.dongsu.timely.presentation.ui.splash.SplashFragment"
+        android:label="SplashFragment" >
+        <action
+            android:id="@+id/action_splashFragment_to_tutorialFragment"
+            app:destination="@id/tutorialFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addScheduleFragment"
+        android:name="com.dongsu.timely.presentation.ui.calendar.schedule.AddScheduleFragment"
+        android:label="AddScheduleFragment" >
+        <action
+            android:id="@+id/action_addScheduleFragment_to_searchLocationFragment"
+            app:destination="@id/searchLocationFragment" />
+        <action
+            android:id="@+id/action_addScheduleFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.dongsu.timely.presentation.ui.calendar.home.CalendarFragment"
+        android:label="CalendarFragment" >
+        <action
+            android:id="@+id/action_calendarFragment_to_addScheduleFragment"
+            app:destination="@id/addScheduleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/groupAddScheduleFragment"
+        android:name="com.dongsu.timely.presentation.ui.group.schedule.GroupAddScheduleFragment"
+        android:label="GroupAddScheduleFragment" >
+        <action
+            android:id="@+id/action_groupAddScheduleFragment_to_searchLocationFragment"
+            app:destination="@id/searchLocationFragment" />
+        <action
+            android:id="@+id/action_groupAddScheduleFragment_to_groupDateFragment"
+            app:destination="@id/groupDateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/groupDateFragment"
+        android:name="com.dongsu.timely.presentation.ui.group.date.GroupDateFragment"
+        android:label="GroupDateFragment" >
+        <action
+            android:id="@+id/action_groupDateFragment_to_groupAddScheduleFragment"
+            app:destination="@id/groupAddScheduleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/groupListFragment"
+        android:name="com.dongsu.timely.presentation.ui.group.list.GroupListFragment"
+        android:label="GroupListFragment" >
+        <action
+            android:id="@+id/action_groupListFragment_to_groupDateFragment"
+            app:destination="@id/groupDateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/groupLocationFragment"
+        android:name="com.dongsu.timely.presentation.ui.group.location.GroupLocationFragment"
+        android:label="GroupLocationFragment" />
+    <fragment
+        android:id="@+id/groupManagementFragment"
+        android:name="com.dongsu.timely.presentation.ui.group.management.GroupManagementFragment"
+        android:label="GroupManagementFragment" >
+        <action
+            android:id="@+id/action_groupManagementFragment_to_groupSettingFragment"
+            app:destination="@id/groupSettingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/groupSettingFragment"
+        android:name="com.dongsu.timely.presentation.ui.group.setting.GroupSettingFragment"
+        android:label="GroupSettingFragment" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.dongsu.timely.presentation.ui.login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.dongsu.timely.presentation.ui.profile.ProfileFragment"
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_profileSettingFragment"
+            app:destination="@id/profileSettingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchLocationFragment"
+        android:name="com.dongsu.timely.presentation.ui.calendar.location.SearchLocationFragment"
+        android:label="SearchLocationFragment" >
+        <action
+            android:id="@+id/action_searchLocationFragment_to_addScheduleFragment"
+            app:destination="@id/addScheduleFragment" />
+        <action
+            android:id="@+id/action_searchLocationFragment_to_groupAddScheduleFragment"
+            app:destination="@id/groupAddScheduleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tutorialFragment"
+        android:name="com.dongsu.timely.presentation.ui.tutorial.TutorialFragment"
+        android:label="TutorialFragment" >
+        <action
+            android:id="@+id/action_tutorialFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileSettingFragment"
+        android:name="com.dongsu.timely.presentation.ui.profile.ProfileSettingFragment"
+        android:label="ProfileSettingFragment" />
+</navigation>
