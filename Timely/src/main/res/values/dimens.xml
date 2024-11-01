@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="zero">0dp</dimen>
+    <dimen name="guideline_margin">25dp</dimen>
+    <dimen name="text_margin">20dp</dimen>
+    <dimen name="flow_margin">50dp</dimen>
+    <dimen name="small_margin">10dp</dimen>
+    <dimen name="login_margin">100dp</dimen>
+
+    <dimen name="text_size_login">50sp</dimen>
+    <dimen name="text_size_header_25sp">25sp</dimen>
+    <dimen name="text_size_body_17sp">17sp</dimen>
+    <dimen name="text_size_caption_12sp">12sp</dimen>
+
+
+</resources>
