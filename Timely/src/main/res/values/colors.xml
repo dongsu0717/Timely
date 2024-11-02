@@ -50,6 +50,7 @@
     <color name="dark_basil">#51b749</color>
     <color name="dark_tomato">#dc2127</color>
 
+    <!-- Light Mode Event Colors -->
     <color name="light_lavender">#6A9EF2</color>
     <color name="light_sage">#1BC4A1</color>
     <color name="light_grape">#A56CFF</color>
