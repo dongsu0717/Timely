@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/splashFragment">
+    app:startDestination="@id/calendarFragment">
 
     <fragment
-        android:id="@+id/splashFragment"
-        android:name="com.dongsu.timely.presentation.ui.splash.SplashFragment"
-        android:label="SplashFragment" >
-        <action
-            android:id="@+id/action_splashFragment_to_tutorialFragment"
-            app:destination="@id/tutorialFragment" />
-        <action
-            android:id="@+id/action_splashFragment_to_calendarFragment"
-            app:destination="@id/calendarFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/addScheduleFragment"
-        android:name="com.dongsu.timely.presentation.ui.calendar.schedule.AddScheduleFragment"
-        android:label="AddScheduleFragment" >
+        android:name="com.dongsu.timely.presentation.ui.main.calendar.schedule.AddScheduleFragment"
+        android:label="AddScheduleFragment"
+        tools:layout="@layout/fragment_add_schedule">
         <action
             android:id="@+id/action_addScheduleFragment_to_searchLocationFragment"
             app:destination="@id/searchLocationFragment" />
@@ -28,16 +20,17 @@
     </fragment>
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.dongsu.timely.presentation.ui.calendar.home.CalendarFragment"
-        android:label="CalendarFragment" >
+        android:name="com.dongsu.timely.presentation.ui.main.calendar.home.CalendarFragment"
+        android:label="fragment_calendar"
+        tools:layout="@layout/fragment_calendar">
         <action
             android:id="@+id/action_calendarFragment_to_addScheduleFragment"
             app:destination="@id/addScheduleFragment" />
     </fragment>
     <fragment
         android:id="@+id/groupAddScheduleFragment"
-        android:name="com.dongsu.timely.presentation.ui.group.schedule.GroupAddScheduleFragment"
-        android:label="GroupAddScheduleFragment" >
+        android:name="com.dongsu.timely.presentation.ui.main.group.schedule.GroupAddScheduleFragment"
+        android:label="GroupAddScheduleFragment">
         <action
             android:id="@+id/action_groupAddScheduleFragment_to_searchLocationFragment"
             app:destination="@id/searchLocationFragment" />
@@ -47,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/groupDateFragment"
-        android:name="com.dongsu.timely.presentation.ui.group.date.GroupDateFragment"
+        android:name="com.dongsu.timely.presentation.ui.main.group.date.GroupDateFragment"
         android:label="GroupDateFragment" >
         <action
             android:id="@+id/action_groupDateFragment_to_groupAddScheduleFragment"
@@ -55,7 +48,7 @@
     </fragment>
     <fragment
         android:id="@+id/groupListFragment"
-        android:name="com.dongsu.timely.presentation.ui.group.list.GroupListFragment"
+        android:name="com.dongsu.timely.presentation.ui.main.group.list.GroupListFragment"
         android:label="GroupListFragment" >
         <action
             android:id="@+id/action_groupListFragment_to_groupDateFragment"
@@ -63,11 +56,11 @@
     </fragment>
     <fragment
         android:id="@+id/groupLocationFragment"
-        android:name="com.dongsu.timely.presentation.ui.group.location.GroupLocationFragment"
+        android:name="com.dongsu.timely.presentation.ui.main.group.location.GroupLocationFragment"
         android:label="GroupLocationFragment" />
     <fragment
         android:id="@+id/groupManagementFragment"
-        android:name="com.dongsu.timely.presentation.ui.group.management.GroupManagementFragment"
+        android:name="com.dongsu.timely.presentation.ui.main.group.management.GroupManagementFragment"
         android:label="GroupManagementFragment" >
         <action
             android:id="@+id/action_groupManagementFragment_to_groupSettingFragment"
@@ -75,19 +68,11 @@
     </fragment>
     <fragment
         android:id="@+id/groupSettingFragment"
-        android:name="com.dongsu.timely.presentation.ui.group.setting.GroupSettingFragment"
+        android:name="com.dongsu.timely.presentation.ui.main.group.setting.GroupSettingFragment"
         android:label="GroupSettingFragment" />
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.dongsu.timely.presentation.ui.login.LoginFragment"
-        android:label="LoginFragment" >
-        <action
-            android:id="@+id/action_loginFragment_to_calendarFragment"
-            app:destination="@id/calendarFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/profileFragment"
-        android:name="com.dongsu.timely.presentation.ui.profile.ProfileFragment"
+        android:name="com.dongsu.timely.presentation.ui.main.profile.ProfileFragment"
         android:label="ProfileFragment" >
         <action
             android:id="@+id/action_profileFragment_to_profileSettingFragment"
@@ -95,7 +80,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchLocationFragment"
-        android:name="com.dongsu.timely.presentation.ui.calendar.location.SearchLocationFragment"
+        android:name="com.dongsu.timely.presentation.ui.main.calendar.location.SearchLocationFragment"
         android:label="SearchLocationFragment" >
         <action
             android:id="@+id/action_searchLocationFragment_to_addScheduleFragment"
@@ -105,15 +90,7 @@
             app:destination="@id/groupAddScheduleFragment" />
     </fragment>
     <fragment
-        android:id="@+id/tutorialFragment"
-        android:name="com.dongsu.timely.presentation.ui.tutorial.TutorialFragment"
-        android:label="TutorialFragment" >
-        <action
-            android:id="@+id/action_tutorialFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/profileSettingFragment"
-        android:name="com.dongsu.timely.presentation.ui.profile.ProfileSettingFragment"
+        android:name="com.dongsu.timely.presentation.ui.main.profile.ProfileSettingFragment"
         android:label="ProfileSettingFragment" />
 </navigation>

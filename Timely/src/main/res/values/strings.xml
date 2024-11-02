@@ -1,3 +1,57 @@
 <resources>
     <string name="app_name">Timely</string>
+
+    <!--로그인-->
+    <string name="login">로그인</string>
+    <string name="use_not_login">로그인 없이 이용하기</string>
+
+    <!--튜토리얼-->
+    <string name="can_use_not_login">로그인 없이 사용 가능 합니다.</string>
+    <string name="important_to_login">로그인을 하지 않으면 앱 삭제 시 데이터도 삭제됩니다.</string>
+    <string name="want_group_or_">그룹, 마이프로필을 사용하고 싶으면 로그인을 해야합니다.</string>
+
+    <!--바텀 네비게이션-->
+    <string name="calendar">캘린더</string>
+    <string name="group">그룹</string>
+    <string name="my_profile">마이프로필</string>
+
+    <!--일정 추가-->
+    <string name="title">제목</string>
+    <string name="date">날짜</string>
+    <string name="time">시간</string>
+    <string name="repeat">반복</string>
+    <string name="place">장소</string>
+    <string name="appointment_alarm">약속시간 알림</string>
+    <string name="color">색상</string>
+
+    <string name="none">없음</string>
+    <string name="everyday">매일</string>
+    <string name="everyweek">매주</string>
+    <string name="everymonths">매월</string>
+
+    <string name="start_date">시작날짜</string>
+    <string name="last_date">마지막 날짜</string>
+    <string name="start_time">시작 시간</string>
+    <string name="end_time">마지막 시간</string>
+
+    <string name="init_visibility">gone</string>
+    <string-array name="repeat_choice">
+        <item>없음</item>
+        <item>매일</item>
+        <item>매주</item>
+        <item>매월</item>
+    </string-array>
+    <string name="appointment_place">약속 장소</string>
+    <string name="alarm_time">알림 설정</string>
+    <string-array name="alarm_choice">
+        <item>1시간전</item>
+        <item>1시간 30분전</item>
+        <item>2시간전</item>
+        <item>2시간 30분전</item>
+        <item>3시간전</item>
+    </string-array>
+
+    <string name="cancel">취소</string>
+    <string name="save">저장</string>
+    <string name="delete">삭제</string>
 </resources>
