@@ -2,6 +2,7 @@ package com.dongsu.timely.presentation.ui.main
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -19,5 +20,12 @@ class TimelyActivity : AppCompatActivity() {
         val navController = (supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment).navController
         binding.bottomNavigation.setupWithNavController(navController)
 
+    }
+    fun hideBottomNavigation() {
+        binding.bottomNavigation.visibility = View.GONE
+    }
+
+    fun showBottomNavigation() {
+        binding.bottomNavigation.visibility = View.VISIBLE
     }
 }

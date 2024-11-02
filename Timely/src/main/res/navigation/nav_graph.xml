@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/addScheduleFragment"
-        android:name="com.dongsu.timely.presentation.ui.main.calendar.schedule.AddScheduleFragment"
+        android:name="com.dongsu.timely.presentation.ui.main.calendar.add.AddScheduleFragment"
         android:label="AddScheduleFragment"
         tools:layout="@layout/fragment_add_schedule">
         <action

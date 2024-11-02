@@ -1,18 +1,19 @@
 package com.dongsu.timely.presentation.ui.main.calendar.home
 
 import android.os.Build
-import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.view.children
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.dongsu.timely.R
 import com.dongsu.timely.databinding.FragmentCalendarBinding
 import com.dongsu.timely.presentation.common.BaseFragment
+import com.dongsu.timely.presentation.ui.main.TimelyActivity
+import com.dongsu.timely.presentation.ui.main.calendar.home.container.DayViewContainer
+import com.dongsu.timely.presentation.ui.main.calendar.home.container.MonthViewContainer
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.CalendarMonth
 import com.kizitonwose.calendar.core.DayPosition
@@ -26,7 +27,6 @@ import reactivecircus.flowbinding.android.view.clicks
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
-import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -38,15 +38,15 @@ class CalendarFragment: BaseFragment<FragmentCalendarBinding>(FragmentCalendarBi
     override fun initView() {
 
         // 일정 추가 버튼
-//        settingAddScheduleButton()
+        settingAddScheduleButton()
 
         // 커스텀 캘린더 셋팅
         settingKizitonwoseCalendar()
     }
-//    private fun settingAddScheduleButton(){
-//        // 일정 추가 버튼 FlowBinding으로 UI이벤트 등록
-//        binding.buttonAdd.clicks()
-//            .onEach {
+    private fun settingAddScheduleButton(){
+        // 일정 추가 버튼 FlowBinding으로 UI이벤트 등록
+        binding.fabAddSchedule.clicks()
+            .onEach {
 //                if(binding.editTextSchedule.text.toString()==""){
 //                    // 일정 텍스트를 직접 입력하지 않고 추가하려고 할때
 //                    findNavController().navigate(R.id.action_mainFragment_to_addSchedulerFragment)
@@ -55,8 +55,10 @@ class CalendarFragment: BaseFragment<FragmentCalendarBinding>(FragmentCalendarBi
 //                    // 달력에서 선택한 날짜 기준으로 저장됨
 //                    addSchedule()
 //                }
-//            }.launchIn(viewLifecycleOwner.lifecycleScope)
-//    }
+                (activity as TimelyActivity).hideBottomNavigation()
+                findNavController().navigate(R.id.action_calendarFragment_to_addScheduleFragment)
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
 //    private fun addSchedule(){
 //        val title = binding.editTextSchedule.text.toString()
 //        if(title.isNotEmpty()){
@@ -177,7 +179,7 @@ class CalendarFragment: BaseFragment<FragmentCalendarBinding>(FragmentCalendarBi
             // 클릭 이벤트를 여기서 작성
             if (data.date == selectedDate) {
                 // 날짜를 한번 더 클릭하면 일정 리스트로 이동
-                moveToScheduleList(data.date)
+//                moveToScheduleList(data.date)
             } else {
                 selectedDayView(data, container)
             }
@@ -237,10 +239,10 @@ class CalendarFragment: BaseFragment<FragmentCalendarBinding>(FragmentCalendarBi
 //            }
 //        }
 //    }
-    private fun moveToScheduleList(date: LocalDate) {
-        val bundle = Bundle().also {
-            it.putString("selectedDate", date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-        }
+//    private fun moveToScheduleList(date: LocalDate) {
+//        val bundle = Bundle().also {
+//            it.putString("selectedDate", date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+//        }
 //        findNavController().navigate(R.id.action_mainFragment_to_scheduleListFragment, bundle)
-    }
+//    }
 }
