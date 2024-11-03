@@ -1,6 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+//    id("kotlin-kapt")
+//    id ("com.google.dagger.hilt.android")
+    alias(libs.plugins.hilt)
+    kotlin("kapt")
 }
 
 android {
@@ -27,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         viewBinding = true
@@ -46,9 +50,16 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.legacy.support.v4)
+    implementation(project(":common"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //hilt
+    implementation(libs.google.hilt)
+    kapt(libs.hilt.compiler)
 
     //navigation
     implementation(libs.androidx.navigation.fragment.ktx)
@@ -60,5 +71,7 @@ dependencies {
     //calendar library
     implementation("com.kizitonwose.calendar:view:2.6.0")
 
+    //annotations
+    implementation("org.jetbrains:annotations:23.0.0")
 
 }

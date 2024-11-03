@@ -21,6 +21,7 @@ import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import reactivecircus.flowbinding.android.view.clicks
@@ -30,6 +31,7 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 
+@AndroidEntryPoint
 @RequiresApi(Build.VERSION_CODES.O)
 class CalendarFragment: BaseFragment<FragmentCalendarBinding>(FragmentCalendarBinding::inflate)  {
     private var selectedDate: LocalDate = LocalDate.now()
