@@ -18,40 +18,4 @@ class AddScheduleViewModel @Inject constructor(
             addScheduleUseCase(newSchedule)
         }
     }
-
 }
-
-/*
-class AddScheduleViewModel(private val scheduleRepository: ScheduleRepository) : ViewModel()  {
-
-    fun insertSchedule(newSchedule: ScheduleInfo) {
-        viewModelScope.launch {
-            withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
-                scheduleRepository.insertSchedule(newSchedule).collectLatest {
-                    when (it) {
-                        is TimelyResult.Success -> {
-                            viewModelScope.launch {
-                                Log.e("스케줄 저장(성공)", it.toString())
-                            }
-                        }
-
-                        is TimelyResult.Loading -> {
-                            viewModelScope.launch {
-                               Log.e("스케줄 저장(로딩)", it.toString())
-                            }
-                        }
-
-                        is TimelyResult.RoomDBError -> {
-                            Log.e("스케줄 저장(DB에러)", it.exception.toString())
-                        }
-
-                        else -> {
-                            Log.e("스케줄 저장(너가 왜뜨니?)", it.toString())
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
- */

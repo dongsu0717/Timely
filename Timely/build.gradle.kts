@@ -1,10 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-//    id("kotlin-kapt")
-//    id ("com.google.dagger.hilt.android")
     alias(libs.plugins.hilt)
     kotlin("kapt")
+    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -71,7 +70,9 @@ dependencies {
     //calendar library
     implementation("com.kizitonwose.calendar:view:2.6.0")
 
-    //annotations
+    //annotations. 해야 중복방지
     implementation("org.jetbrains:annotations:23.0.0")
 
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 }

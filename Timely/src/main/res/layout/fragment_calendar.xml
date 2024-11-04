@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="@fraction/guideline_end" />
+        app:layout_constraintGuide_percent="@fraction/guideline_bottom" />
 
     <!-- cv_daySize를 rectangle로 설정하면 셀의 크기를 부모의 크기에 맞출 수 있음 -->
     <com.kizitonwose.calendar.view.CalendarView

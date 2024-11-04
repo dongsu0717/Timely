@@ -54,6 +54,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/title"
+            android:imeOptions="actionDone"
+            android:inputType="text"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/toolbar"/>
 
@@ -303,7 +305,7 @@
             android:visibility="visible"
             android:layout_marginTop="@dimen/flow_margin"
             android:layout_marginBottom="@dimen/flow_margin"
-            app:constraint_referenced_ids="icon_color_lavender,icon_color_lightblue,icon_color_grape,icon_color_flamingo,icon_color_banana"
+            app:constraint_referenced_ids="icon_color_lavender,icon_color_sage,icon_color_grape,icon_color_flamingo,icon_color_banana"
             app:layout_constraintStart_toStartOf="@+id/guideline_start"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
             app:layout_constraintTop_toBottomOf="@+id/tv_color"
@@ -317,11 +319,11 @@
             style="@style/Lavender"/>
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/icon_color_lightblue"
+            android:id="@+id/icon_color_sage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_circle_24"
-            style="@style/LightBlue"/>
+            style="@style/Sage"/>
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/icon_color_grape"

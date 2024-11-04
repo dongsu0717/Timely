@@ -4,9 +4,6 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
-//    id("kotlin-kapt")
-//    id ("com.google.dagger.hilt.android")
-//    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -44,6 +41,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(project(":domain"))
+    implementation(project(":common"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -58,9 +56,13 @@ dependencies {
 
     //hilt
 //    implementation (libs.hilt.android)
-//    kapt(libs.hilt.compiler)
     implementation(libs.google.hilt)
     kapt(libs.hilt.compiler)
+
+    // Networking
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.8.0")
 }
 kapt {
     correctErrorTypes = true

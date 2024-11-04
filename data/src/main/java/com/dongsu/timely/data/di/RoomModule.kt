@@ -15,15 +15,10 @@ import javax.inject.Singleton
 @Module
 object RoomModule {
 
-//    @Singleton
-//    @Provides
-//    fun provideDatabase(@ApplicationContext context: Context): TimelyRoomDatabase {
-//        return TimelyRoomDatabase.getDatabase(context)
-//    }
-    @Provides
     @Singleton
+    @Provides
     fun provideDatabase(@ApplicationContext context: Context): TimelyRoomDatabase {
-        return Room.databaseBuilder(context, TimelyRoomDatabase::class.java, "schedule_database").build()
+        return TimelyRoomDatabase.getDatabase(context)
     }
 
     @Provides

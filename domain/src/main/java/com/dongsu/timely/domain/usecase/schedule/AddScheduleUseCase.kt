@@ -9,9 +9,5 @@ import javax.inject.Singleton
 class AddScheduleUseCase @Inject constructor (
     private val scheduleRepository: ScheduleRepository
 ) {
-    //operator invoke
-//    suspend operator fun invoke(newSchedule: Schedule) {
-//        scheduleRepository.insertSchedule(newSchedule)
-//    }
     suspend operator fun invoke(newSchedule: Schedule) = scheduleRepository.insertSchedule(newSchedule)
 }
