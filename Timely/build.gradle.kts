@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
     kotlin("kapt")
+    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -72,4 +73,6 @@ dependencies {
     //annotations. 해야 중복방지
     implementation("org.jetbrains:annotations:23.0.0")
 
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 }

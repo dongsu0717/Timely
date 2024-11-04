@@ -9,4 +9,5 @@ java {
 }
 dependencies {
     implementation(libs.javax.inject)
+    implementation(project(":common"))
 }
