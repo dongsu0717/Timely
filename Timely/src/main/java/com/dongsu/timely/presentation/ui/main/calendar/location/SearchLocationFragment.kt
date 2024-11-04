@@ -1,63 +1,82 @@
 package com.dongsu.timely.presentation.ui.main.calendar.location
 
-import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dongsu.timely.R
+import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.databinding.FragmentSearchLocationBinding
+import com.dongsu.timely.domain.model.PoiItem
 import com.dongsu.timely.presentation.common.BaseFragment
-import com.google.android.material.search.SearchBar
+import com.dongsu.timely.presentation.viewmodel.calendar.location.SearchLocationViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SearchLocationFragment : BaseFragment<FragmentSearchLocationBinding>(FragmentSearchLocationBinding::inflate) {
+class SearchLocationFragment :
+    BaseFragment<FragmentSearchLocationBinding>(FragmentSearchLocationBinding::inflate) {
 
-    private val apiKey = "l7xx7daab04e0de142cf800ce73e929f55e3"
+    private val searchViewModel: SearchLocationViewModel by viewModels()
+    private lateinit var searchAdapter: SearchAdapter
 
     override fun initView() {
-        with(binding) {
-            recyclerViewPoi.layoutManager = LinearLayoutManager(requireContext())
-            val searchAdapter = SearchAdapter { selectedPlace ->
-                val place = selectedPlace.name
-                val latitude = selectedPlace.noorLat
-                val longitude = selectedPlace.noorLon
-                val bundle = bundleOf("latitude" to latitude, "longitude" to longitude, "place" to place)
-                findNavController().navigate(R.id.action_searchLocationFragment_to_addScheduleFragment, bundle)
-            }
-            recyclerViewPoi.adapter = searchAdapter
-
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    if (query != null) {
-                        searchPlaces(query, searchAdapter)
-                    } else {
-                        searchView.requestFocus()
-                    }
-                    return false
-                }
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    return true
-                }
-            })
-        }
+        setLayoutManager()
+        setAdapter()
+        search()
+        getSearchLocationList()
     }
 
-    private fun searchPlaces(place: String, adapter: SearchAdapter) {
-        val call = RetrofitInstance.api.searchPlaces(keyword = place, apiKey = apiKey)
+    private fun setLayoutManager() {
+        binding.recyclerViewPoi.layoutManager = LinearLayoutManager(requireContext())
+    }
 
-        call.enqueue(object : retrofit2.Callback<TmapResponse> {
-            override fun onResponse(call: Call<TmapResponse>, response: retrofit2.Response<TmapResponse>) {
-                if (response.isSuccessful && response.body() != null) {
-                    adapter.submitList(response.body()!!.searchPoiInfo.pois.poi)
-                }
+    private fun setAdapter() {
+        searchAdapter = SearchAdapter { selectedPlace ->
+            val bundle = bundleOf(
+                "latitude" to selectedPlace.noorLat,
+                "longitude" to selectedPlace.noorLon,
+                "place" to selectedPlace.name
+            )
+            findNavController().navigate(
+                R.id.action_searchLocationFragment_to_addScheduleFragment,
+                bundle
+            )
+        }
+        binding.recyclerViewPoi.adapter = searchAdapter
+    }
+    private fun search(){
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let { searchViewModel.searchLocation(it) }
+                return false
             }
-
-            override fun onFailure(call: Call<TmapResponse>, t: Throwable) {
-                // 에러 처리
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
             }
         })
+    }
+    private fun getSearchLocationList() {
+        lifecycleScope.launch {
+            searchViewModel.locationsList.collectLatest { results ->
+                when (results) {
+                    is TimelyResult.Success -> {
+                        Log.d("SearchLocationFragment", "result: ${results.resultData}")
+                        searchAdapter.submitList(results.resultData)
+                    }
+                    is TimelyResult.Loading -> {
+                        // 로딩 중 처리
+                    }
+                    is TimelyResult.Error -> {
+                        // 에러 처리
+                    }
+                    else -> {}
+                }
+            }
+        }
     }
 }

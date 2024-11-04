@@ -10,12 +10,12 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class RepositoryModule {
+abstract class RepositoryModule {
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideScheduleRepository(scheduleRepositoryImpl: ScheduleRepositoryImpl): ScheduleRepository {
-        return scheduleRepositoryImpl
-    }
+    abstract fun provideScheduleRepository(
+        scheduleRepositoryImpl: ScheduleRepositoryImpl,
+    ): ScheduleRepository
 }
 
