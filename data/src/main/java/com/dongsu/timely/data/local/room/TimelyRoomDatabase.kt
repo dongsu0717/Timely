@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.dongsu.timely.data.local.dao.ScheduleDAO
 import com.dongsu.timely.data.local.entity.ScheduleInfo
 
-@Database(entities = [ScheduleInfo::class], version = 1, exportSchema = false)
+@Database(entities = [ScheduleInfo::class], version = 2, exportSchema = false)
 abstract class TimelyRoomDatabase : RoomDatabase() {
 
     abstract fun scheduleDao(): ScheduleDAO
@@ -23,6 +23,7 @@ abstract class TimelyRoomDatabase : RoomDatabase() {
                 instance ?: buildDatabase(context).also { instance = it }
             }
         }
+
         private fun buildDatabase(context: Context): TimelyRoomDatabase {
             return Room.databaseBuilder(
                 context,

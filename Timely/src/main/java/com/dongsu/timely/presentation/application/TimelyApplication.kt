@@ -8,7 +8,6 @@ class TimelyApplication:Application() {
 
     companion object{
         private lateinit var timelyApplication: TimelyApplication
-        fun getInstance(): TimelyApplication = timelyApplication
     }
     override fun onCreate() {
         super.onCreate()

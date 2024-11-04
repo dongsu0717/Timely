@@ -17,7 +17,6 @@ object RoomModule {
 
     @Singleton
     @Provides
-    @Singleton
     fun provideDatabase(@ApplicationContext context: Context): TimelyRoomDatabase {
         return TimelyRoomDatabase.getDatabase(context)
     }
