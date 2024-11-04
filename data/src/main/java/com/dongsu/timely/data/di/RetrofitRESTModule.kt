@@ -1,6 +1,6 @@
 package com.dongsu.timely.data.di
 
-import com.dongsu.timely.data.remote.service.TmapService
+import com.dongsu.data.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,13 +9,11 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitRESTModule {
-    private const val BASE_URL = "https://apis.openapi.sk.com/"
 
     @Singleton
     @Provides
@@ -24,13 +22,13 @@ object RetrofitRESTModule {
             level = HttpLoggingInterceptor.Level.BASIC
         }
 
-    @Singleton
-    @DefaultClient
-    @Provides
-    fun providesDefaultOkHttpClient(): OkHttpClient =
-        OkHttpClient.Builder().build()
+//    @Singleton
+//    @DefaultClient
+//    @Provides
+//    fun providesDefaultOkHttpClient(): OkHttpClient =
+//        OkHttpClient.Builder().build()
 
-    @LoggingClient
+//    @LoggingClient
     @Singleton
     @Provides
     fun providesOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
@@ -44,19 +42,19 @@ object RetrofitRESTModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(BASE_URL)
+        .baseUrl(BuildConfig.TMAP_BASE_URL)
         .client(okHttpClient)
         .build()
 
-    @Singleton
-    @Provides
-    fun provideTmapService(retrofit: Retrofit): TmapService =
-        retrofit.create(TmapService::class.java)
+//    @Singleton
+//    @Provides
+//    fun provideTmapService(retrofit: Retrofit): TmapService =
+//        retrofit.create(TmapService::class.java)
 }
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class DefaultClient
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class LoggingClient
+//@Qualifier
+//@Retention(AnnotationRetention.BINARY)
+//annotation class DefaultClient
+//
+//@Qualifier
+//@Retention(AnnotationRetention.BINARY)
+//annotation class LoggingClient
