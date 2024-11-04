@@ -55,7 +55,6 @@ class CalendarFragment: BaseFragment<FragmentCalendarBinding>(FragmentCalendarBi
 //                    // 달력에서 선택한 날짜 기준으로 저장됨
 //                    addSchedule()
 //                }
-                (activity as TimelyActivity).hideBottomNavigation()
                 findNavController().navigate(R.id.action_calendarFragment_to_addScheduleFragment)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
