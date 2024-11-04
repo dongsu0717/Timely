@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
@@ -16,6 +17,6 @@ object RetrofitModule {
     @Provides
     @Singleton
     fun provideLocationRepository(
-        tmapService: TmapService,
-    ): LocationRepository = LocationRepositoryImpl(tmapService)
+        retrofit: Retrofit,
+    ) :TmapService = retrofit.create(TmapService::class.java)
 }
