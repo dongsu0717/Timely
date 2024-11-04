@@ -39,10 +39,8 @@ class CalendarFragment: BaseFragment<FragmentCalendarBinding>(FragmentCalendarBi
 
     override fun initView() {
 
-        // 일정 추가 버튼
         settingAddScheduleButton()
 
-        // 커스텀 캘린더 셋팅
         settingKizitonwoseCalendar()
     }
     private fun settingAddScheduleButton(){

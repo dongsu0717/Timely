@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-//    id("kotlin-kapt")
-//    id ("com.google.dagger.hilt.android")
     alias(libs.plugins.hilt)
     kotlin("kapt")
 }
@@ -71,7 +69,7 @@ dependencies {
     //calendar library
     implementation("com.kizitonwose.calendar:view:2.6.0")
 
-    //annotations
+    //annotations. 해야 중복방지
     implementation("org.jetbrains:annotations:23.0.0")
 
 }
