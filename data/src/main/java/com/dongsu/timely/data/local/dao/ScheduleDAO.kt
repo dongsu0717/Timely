@@ -13,6 +13,9 @@ interface ScheduleDAO {
     @Transaction
     @Insert
     suspend fun insertSchedule(schedule: ScheduleInfo)
+
+    @Query("SELECT * FROM schedule")
+    suspend fun getAllSchedule(): MutableList<ScheduleInfo>
 //
 //    @Update
 //    fun updateSchedule(schedule: ScheduleInfo)
@@ -34,7 +37,4 @@ interface ScheduleDAO {
 //    //해당 월 스케줄 가져오기
 //    @Query("SELECT * FROM schedule WHERE startDate LIKE :month || '%'")
 //    fun getScheduleMonth(month: String): MutableList<ScheduleInfo>
-
-    @Query("SELECT * FROM schedule")
-    fun findAllSchedule(): MutableList<ScheduleInfo>
 }
