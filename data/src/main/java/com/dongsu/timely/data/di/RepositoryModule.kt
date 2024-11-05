@@ -1,8 +1,8 @@
 package com.dongsu.timely.data.di
 
-import com.dongsu.timely.data.repository.LocationRepositoryImpl
+import com.dongsu.timely.data.repository.TMapRepositoryImpl
 import com.dongsu.timely.data.repository.ScheduleRepositoryImpl
-import com.dongsu.timely.domain.repository.LocationRepository
+import com.dongsu.timely.domain.repository.TMapRepository
 import com.dongsu.timely.domain.repository.ScheduleRepository
 import dagger.Binds
 import dagger.Module
@@ -23,7 +23,7 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun provideLocationRepository(
-        locationRepositoryImpl: LocationRepositoryImpl,
-    ): LocationRepository
+        locationRepositoryImpl: TMapRepositoryImpl,
+    ): TMapRepository
 }
 

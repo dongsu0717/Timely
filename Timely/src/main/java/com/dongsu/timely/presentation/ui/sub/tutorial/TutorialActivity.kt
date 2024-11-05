@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.dongsu.timely.databinding.ActivityTutorialBinding
-import com.dongsu.timely.presentation.ui.sub.login.LoginActivity
+import com.dongsu.timely.presentation.ui.main.TimelyActivity
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
@@ -24,7 +24,7 @@ class TutorialActivity : AppCompatActivity() {
             sivSkipTutorial.clicks()
                 .debounce(2000)
                 .onEach {
-                    val intent = Intent(this@TutorialActivity, LoginActivity::class.java)
+                    val intent = Intent(this@TutorialActivity, TimelyActivity::class.java)
                     startActivity(intent)
                     finish()
                 }.launchIn(lifecycleScope)

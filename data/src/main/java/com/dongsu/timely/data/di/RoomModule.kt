@@ -2,7 +2,7 @@ package com.dongsu.timely.data.di
 
 import android.content.Context
 import androidx.room.Room
-import com.dongsu.timely.data.local.dao.ScheduleDAO
+import com.dongsu.timely.data.local.room.dao.ScheduleDAO
 import com.dongsu.timely.data.local.room.TimelyRoomDatabase
 import dagger.Module
 import dagger.Provides

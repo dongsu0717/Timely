@@ -1,7 +1,7 @@
 package com.dongsu.timely.data.repository
 
 import com.dongsu.timely.common.TimelyResult
-import com.dongsu.timely.data.local.dao.ScheduleDAO
+import com.dongsu.timely.data.local.room.dao.ScheduleDAO
 import com.dongsu.timely.data.mapper.ScheduleMapper
 import com.dongsu.timely.domain.model.Schedule
 import com.dongsu.timely.domain.repository.ScheduleRepository

@@ -4,12 +4,12 @@ import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.data.mapper.LocationMapper
 import com.dongsu.timely.data.remote.service.TmapService
 import com.dongsu.timely.domain.model.PoiItem
-import com.dongsu.timely.domain.repository.LocationRepository
+import com.dongsu.timely.domain.repository.TMapRepository
 import javax.inject.Inject
 
-class LocationRepositoryImpl @Inject constructor(
+class TMapRepositoryImpl @Inject constructor(
     private val tmapService: TmapService
-) : LocationRepository {
+) : TMapRepository {
     private val apiKey = "l7xx7daab04e0de142cf800ce73e929f55e3"
 
     override suspend fun searchPlaces(keyword: String): TimelyResult<MutableList<PoiItem>>{

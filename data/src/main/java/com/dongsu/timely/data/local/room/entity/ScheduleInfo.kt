@@ -1,4 +1,4 @@
-package com.dongsu.timely.data.local.entity
+package com.dongsu.timely.data.local.room.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

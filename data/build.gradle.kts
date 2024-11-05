@@ -22,7 +22,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        val kkumulBaseUrl = (properties["BASE_URL"] as? String)?.trim('"') ?: ""
+        val kkumulBaseUrl = (properties["TMAP_BASE_URL"] as? String)?.trim('"') ?: ""
         buildConfigField("String", "TMAP_BASE_URL", "\"$kkumulBaseUrl\"")
 
     }
