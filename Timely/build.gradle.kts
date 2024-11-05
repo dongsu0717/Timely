@@ -50,7 +50,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.legacy.support.v4)
     implementation(project(":common"))
-    implementation(project(":domain"))
+    implementation(project(":domain")) //feature모듈로 나눠야 할거같은데...
     implementation(project(":data"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -72,7 +72,4 @@ dependencies {
 
     //annotations. 해야 중복방지
     implementation("org.jetbrains:annotations:23.0.0")
-
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 }
