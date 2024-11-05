@@ -16,7 +16,7 @@ class SearchLocationViewModel @Inject constructor(
     private val searchLocationUseCase: SearchLocationUseCase,
 ) : ViewModel() {
 
-    private val _locationList = MutableStateFlow<TimelyResult<MutableList<PoiItem>>>(TimelyResult.No)
+    private val _locationList = MutableStateFlow<TimelyResult<MutableList<PoiItem>>>(TimelyResult.Empty)
     val locationsList = _locationList.asStateFlow()
 
     fun searchLocation(query: String) {

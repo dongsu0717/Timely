@@ -20,4 +20,21 @@ object ScheduleMapper{
             color = schedule.color
         )
     }
+
+    fun toDomain(scheduleInfo: ScheduleInfo): Schedule {
+        return Schedule(
+            title = scheduleInfo.title,
+            startDate = scheduleInfo.startDate,
+            lastDate = scheduleInfo.lastDate,
+            startTime = scheduleInfo.startTime,
+            endTime = scheduleInfo.endTime,
+            repeatDays = scheduleInfo.repeatDays,
+            appointmentPlace = scheduleInfo.appointmentPlace,
+            latitude = scheduleInfo.latitude,
+            longitude = scheduleInfo.longitude,
+            appointmentAlarm = scheduleInfo.appointmentAlarm,
+            appointmentAlarmTime = scheduleInfo.appointmentAlarmTime,
+            color = scheduleInfo.color
+        )
+    }
 }

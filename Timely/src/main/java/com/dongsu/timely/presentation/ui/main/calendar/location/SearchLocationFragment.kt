@@ -5,6 +5,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dongsu.timely.R
@@ -42,9 +43,14 @@ class SearchLocationFragment :
                 "longitude" to selectedPlace.noorLon,
                 "place" to selectedPlace.name
             )
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.searchLocationFragment, true)
+                .build()
+
             findNavController().navigate(
                 R.id.action_searchLocationFragment_to_addScheduleFragment,
-                bundle
+                bundle,
+                navOptions
             )
         }
         binding.recyclerViewPoi.adapter = searchAdapter
