@@ -17,12 +17,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import reactivecircus.flowbinding.android.view.clicks
 
-//fun <T> LifecycleOwner.collectWhenStarted(flow: StateFlow<T>, action: suspend (value: T) -> Unit) {
-//    lifecycleScope.launch {
-//        flow.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect(action)
-//    }
-//}
-//
+fun <T> LifecycleOwner.collectWhenStarted(flow: StateFlow<T>, action: suspend (value: T) -> Unit) {
+    lifecycleScope.launch {
+        flow.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect(action)
+    }
+}
+
 //fun Activity.hideSoftInput() {
 //    // 포커스 있는지 체크
 //    window.currentFocus?.let { view ->
