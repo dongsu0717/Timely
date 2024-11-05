@@ -1,11 +1,11 @@
-package com.dongsu.timely.data.local.dao
+package com.dongsu.timely.data.local.room.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.dongsu.timely.data.local.entity.ScheduleInfo
+import com.dongsu.timely.data.local.room.entity.ScheduleInfo
 
 @Dao
 interface ScheduleDAO {
