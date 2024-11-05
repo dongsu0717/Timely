@@ -17,9 +17,6 @@
             android:name=".presentation.ui.sub.tutorial.TutorialActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.ui.sub.login.LoginActivity"
-            android:exported="false" />
-        <activity
             android:name=".presentation.ui.main.TimelyActivity"
             android:exported="true"
             android:screenOrientation="portrait">
