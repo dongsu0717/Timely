@@ -22,7 +22,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun provideLocationRepository(
+    abstract fun provideTMapRepository(
         locationRepositoryImpl: TMapRepositoryImpl,
     ): TMapRepository
 }
