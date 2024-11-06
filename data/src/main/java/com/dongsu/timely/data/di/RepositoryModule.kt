@@ -1,5 +1,7 @@
 package com.dongsu.timely.data.di
 
+import com.dongsu.timely.data.datasource.ScheduleLocalDatasource
+import com.dongsu.timely.data.datasourceImpl.ScheduleLocalDatasourceImpl
 import com.dongsu.timely.data.repository.TMapRepositoryImpl
 import com.dongsu.timely.data.repository.ScheduleRepositoryImpl
 import com.dongsu.timely.domain.repository.TMapRepository
@@ -22,7 +24,13 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun provideLocationRepository(
+    abstract fun provideScheduleLocalDatasource(
+        scheduleLocalDatasourceImpl: ScheduleLocalDatasourceImpl
+    ): ScheduleLocalDatasource
+
+    @Binds
+    @Singleton
+    abstract fun provideTMapRepository(
         locationRepositoryImpl: TMapRepositoryImpl,
     ): TMapRepository
 }
