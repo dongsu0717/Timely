@@ -14,15 +14,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object RoomModule {
-
     @Singleton
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context): TimelyRoomDatabase {
-        return TimelyRoomDatabase.getDatabase(context)
-    }
-
-    @Provides
-    fun provideScheduleDao(database: TimelyRoomDatabase): ScheduleDAO {
-        return database.scheduleDao()
-    }
+    fun provideDatabase(
+        @ApplicationContext context: Context
+    ): TimelyRoomDatabase =
+        TimelyRoomDatabase.getDatabase(context)
 }

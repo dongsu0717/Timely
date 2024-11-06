@@ -31,7 +31,9 @@ object NetworkingModule {
 //    @LoggingClient
     @Singleton
     @Provides
-    fun providesOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
+    fun providesOkHttpClient(
+    httpLoggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient =
         OkHttpClient
             .Builder()
             .addInterceptor(httpLoggingInterceptor)
@@ -39,7 +41,9 @@ object NetworkingModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient
+    ): Retrofit =
         Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(BuildConfig.TMAP_BASE_URL)
