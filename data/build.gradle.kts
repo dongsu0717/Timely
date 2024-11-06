@@ -22,8 +22,11 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        val kkumulBaseUrl = (properties["TMAP_BASE_URL"] as? String)?.trim('"') ?: ""
-        buildConfigField("String", "TMAP_BASE_URL", "\"$kkumulBaseUrl\"")
+        val tmapBaseUrl = (properties["TMAP_BASE_URL"] as? String)?.trim('"') ?: ""
+        buildConfigField("String", "TMAP_BASE_URL", "\"$tmapBaseUrl\"")
+
+        val tmapApiKey = (properties["TMAP_API_KEY"] as? String)?.trim('"') ?: ""
+        buildConfigField("String", "TMAP_API_KEY", "\"$tmapApiKey\"")
 
     }
 
