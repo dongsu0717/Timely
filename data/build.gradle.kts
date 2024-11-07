@@ -17,13 +17,13 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        val kkumulBaseUrl = (properties["TMAP_BASE_URL"] as? String)?.trim('"') ?: ""
-        buildConfigField("String", "TMAP_BASE_URL", "\"$kkumulBaseUrl\"")
+        val tMapApiKey = (properties["TMAP_API_KEY"] as? String)?.trim('"') ?: ""
+        buildConfigField("String", "TMAP_API_KEY", "\"$tMapApiKey\"")
 
     }
 
@@ -76,6 +76,11 @@ dependencies {
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.8.0")
+
+    // Tmap SDK
+    implementation(files("libs/vsm-tmap-sdk-v2-android-1.6.60.aar"))
+    implementation(files("libs/tmap-sdk-1.5.aar"))
+
 }
 kapt {
     correctErrorTypes = true

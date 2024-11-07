@@ -22,13 +22,6 @@ object NetworkingModule {
             level = HttpLoggingInterceptor.Level.BASIC
         }
 
-//    @Singleton
-//    @DefaultClient
-//    @Provides
-//    fun providesDefaultOkHttpClient(): OkHttpClient =
-//        OkHttpClient.Builder().build()
-
-//    @LoggingClient
     @Singleton
     @Provides
     fun providesOkHttpClient(
@@ -50,15 +43,4 @@ object NetworkingModule {
         .client(okHttpClient)
         .build()
 
-//    @Singleton
-//    @Provides
-//    fun provideTmapService(retrofit: Retrofit): TmapService =
-//        retrofit.create(TmapService::class.java)
 }
-//@Qualifier
-//@Retention(AnnotationRetention.BINARY)
-//annotation class DefaultClient
-//
-//@Qualifier
-//@Retention(AnnotationRetention.BINARY)
-//annotation class LoggingClient
