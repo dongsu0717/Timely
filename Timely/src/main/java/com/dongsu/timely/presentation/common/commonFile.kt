@@ -1,9 +1,9 @@
 package com.dongsu.timely.presentation.common
 
-import android.content.Context
 import android.widget.Toast
+import com.dongsu.timely.presentation.application.TimelyApplication
 
 
-fun showToast(context: Context, message: String, duration: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(context, message, duration).show()
+fun toastShort(message: String){
+    Toast.makeText(TimelyApplication.getInstance(), message, Toast.LENGTH_SHORT).show()
 }

@@ -245,7 +245,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
 
                 is TimelyResult.Loading -> {}
                 is TimelyResult.Error -> {
-                    showToast(requireContext(), "일정을 불러오는데 실패했습니다.")
+                    toastShort("일정을 불러오는데 실패했습니다.")
                 }
 
                 else -> {}
