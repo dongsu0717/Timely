@@ -1,6 +1,7 @@
 package com.dongsu.timely.data.di
 
 import com.dongsu.data.BuildConfig
+import com.dongsu.timely.data.common.TMAP_BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,7 +40,7 @@ object NetworkingModule {
     ): Retrofit =
         Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(BuildConfig.TMAP_BASE_URL)
+        .baseUrl(TMAP_BASE_URL)
         .client(okHttpClient)
         .build()
 
