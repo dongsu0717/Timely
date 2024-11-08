@@ -1,5 +1,6 @@
 package com.dongsu.timely.presentation.ui.main.calendar.add
 
+import android.Manifest
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -20,7 +21,6 @@ import com.dongsu.timely.presentation.common.EnumRepeat
 import com.dongsu.timely.presentation.common.debouncedClickListener
 import com.dongsu.timely.presentation.common.formatDate
 import com.dongsu.timely.presentation.common.formatTimeToString
-import com.dongsu.timely.presentation.ui.main.TimelyActivity
 import com.dongsu.timely.presentation.viewmodel.calendar.add.AddScheduleViewModel
 import com.dongsu.timely.presentation.viewmodel.calendar.add.CurrentTimeViewModel
 import com.google.android.material.imageview.ShapeableImageView
@@ -116,7 +116,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             tvStartTime.debouncedClickListener(lifecycleScope) { chooseTime(tvStartTime) }
             tvEndTime.debouncedClickListener(lifecycleScope) { chooseTime(tvEndTime) }
             chooseRepeat()
-            iconPlace.setOnClickListener{ choosePlace() }
+            iconPlace.debouncedClickListener(lifecycleScope){ choosePlace() }
             // 알람 설정 스위치
             switchAppointmentAlarm.setOnCheckedChangeListener { _, isChecked ->
                 spinnerAlarm.visibility = if (isChecked) View.VISIBLE else View.GONE
@@ -165,8 +165,27 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             }
         }
     }
+    private val requestPermissionLauncher = PermissionUtils.registerLocationPermissions(
+        this,
+        onPermissionsGranted = { findNavController().navigate(R.id.action_addScheduleFragment_to_searchLocationFragment) },
+        onPermissionsDenied = {
+            if (PermissionUtils.shouldShowRequestPermissionRationaleForLocation(this)) {
+                PermissionUtils.showExplanationDialog(requireContext()) { requestLocationPermissions() }
+            } else {
+                PermissionUtils.showPermissionsDeniedDialog(requireContext())
+            }
+        }
+    )
     private fun choosePlace() {
-        findNavController().navigate(R.id.action_addScheduleFragment_to_searchLocationFragment)
+        if (PermissionUtils.isLocationServiceEnabled(requireContext())) {
+            if (PermissionUtils.areLocationPermissionsGranted(requireContext())) {
+                findNavController().navigate(R.id.action_addScheduleFragment_to_searchLocationFragment)
+            } else {
+                requestLocationPermissions()
+            }
+        } else {
+            PermissionUtils.showLocationServiceDialog(requireContext())
+        }
 //        {
 //            //밑에 데이터 저장하는거 나중에 실험
 //            popUpTo(R.id.addSchedulerFragment){
@@ -175,6 +194,14 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
 //            launchSingleTop = true
 //            restoreState = true
 //        }
+    }
+    private fun requestLocationPermissions() {
+        requestPermissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
     }
     private fun chooseAlarmTime(){
         binding.spinnerAlarm.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
