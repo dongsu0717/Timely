@@ -1,7 +1,7 @@
 package com.dongsu.timely.domain.model
 
 data class Schedule(
-    val title: String,
+    val title: String = "내일정",
     val startDate: String,
     val lastDate: String,
     val startTime: String,

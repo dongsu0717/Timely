@@ -51,18 +51,14 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
     }
 
     private fun settingAddScheduleButton() {
-        // 일정 추가 버튼 FlowBinding으로 UI이벤트 등록
+
         binding.fabAddSchedule.clicks()
             .onEach {
-//                if(binding.editTextSchedule.text.toString()==""){
-//                    // 일정 텍스트를 직접 입력하지 않고 추가하려고 할때
-//                    findNavController().navigate(R.id.action_mainFragment_to_addSchedulerFragment)
-//                }else{
-//                    // 일정 텍스트를 직접 입력했을 때 자동으로 일정 추가
-//                    // 달력에서 선택한 날짜 기준으로 저장됨
-//                    addSchedule()
-//                }
-                findNavController().navigate(R.id.action_calendarFragment_to_addScheduleFragment)
+                if (areLocationPermissionsGranted()) { //ACCESS_FINE_LOCATION 및 ACCESS_COARSE_LOCATION 권한이 모두 부여되었는지 확인
+                    findNavController().navigate(R.id.action_calendarFragment_to_addScheduleFragment)
+                } else {
+                    requestLocationPermissions() //권한이 부여되지 않은 경우 앱은 requestPermissions()를 사용하여 권한을 요청
+                }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
@@ -84,9 +80,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
 //        }
 //    }
     private fun setCalendarMonth(currentMonth: YearMonth) {
-        // 초기 editTextView 힌트 설정
-//        binding.editTextSchedule.hint = "${selectedDate.monthValue}월 ${selectedDate.dayOfMonth}일에 일정 추가"
-        // 초기 달력뷰 셋팅
         with(binding.calendarView) {
             val startMonth = currentMonth.minusMonths(5) // Adjust as needed
             val endMonth = currentMonth.plusMonths(5) // Adjust as needed
@@ -194,12 +187,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
                                         )
                                     )
                                 }
-                                // In the code above, we use the same `daysOfWeek` list
-                                // that was created when we set up the calendar.
-                                // However, we can also get the `daysOfWeek` list from the month data:
-                                // val daysOfWeek = data.weekDays.first().map { it.date.dayOfWeek }
-                                // Alternatively, you can get the value for this specific index:
-                                // val dayOfWeek = data.weekDays.first()[index].date.dayOfWeek
                             }
                     }
                 }
@@ -213,8 +200,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
     ) {
         container.view.debouncedClickListener(viewLifecycleOwner.lifecycleScope) {
             if (data.date == selectedDate) {
-                // 날짜를 한번 더 클릭하면 일정 리스트로 이동
-//                moveToScheduleList(data.date)
+
             } else {
                 selectedDayView(data, container)
             }
@@ -225,10 +211,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
         if (selectedDayView != null) selectedDayView?.background = null
         selectedDayView = container.view as LinearLayout
         selectedDate = data.date
-        // 날짜가 변경될 때마다 editText의 hint내용 변경
-//                    binding.editTextSchedule.hint =
-//                        "${data.date.monthValue}월 ${data.date.dayOfMonth}일에 일정 추가"
-        // 선택 날짜 테두리 표시
         selectedDayView?.background =
             resources.getDrawable(R.drawable.calendar_day_layout_selected, null)
     }
@@ -263,7 +245,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
 
                 is TimelyResult.Loading -> {}
                 is TimelyResult.Error -> {
-                    showToast(requireContext(), "일정을 불러오는데 실패했습니다.")
+                    toastShort("일정을 불러오는데 실패했습니다.")
                 }
 
                 else -> {}
@@ -288,46 +270,3 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
         calendarViewModel.findAllSchedule()
     }
 }
-
-//        collectWhenStarted(calendarViewModel.scheduleList){ result ->
-//            when (result) {
-//                is ScheduleResult.Success -> {
-//                    // 일정이 있을 경우 추가
-//                    result.resultData.filter { data.date == LocalDate.parse(it.startDate) }
-//                        .also { filteredList ->
-//                            if (filteredList.isNotEmpty()) {
-//                                container.scheduleBox.removeAllViews()
-//                                filteredList.forEach { schedule ->
-//                                    val scheduleView =
-//                                        ScheduleBoxBinding.inflate(
-//                                            layoutInflater
-//                                        )
-//                                    scheduleView.textViewScheduleTitle.text =
-//                                        schedule.title
-//                                    scheduleView.textViewScheduleTitle.setBackgroundColor(
-//                                        resources.getColor(
-//                                            getScheduleColorResource(schedule.color),
-//                                            null
-//                                        )
-//                                    )
-//                                    container.scheduleBox.addView(scheduleView.root)
-//                                }
-//                            }
-//                        }
-//                }
-//
-//                is ScheduleResult.Loading -> {}
-//                is ScheduleResult.RoomDBError -> {
-//                    toastShort("일정을 불러오는데 실패했습니다.")
-//                }
-//
-//                else -> {}
-//            }
-//        }
-//    }
-//    private fun moveToScheduleList(date: LocalDate) {
-//        val bundle = Bundle().also {
-//            it.putString("selectedDate", date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-//        }
-//        findNavController().navigate(R.id.action_mainFragment_to_scheduleListFragment, bundle)
-//    }

@@ -6,4 +6,6 @@ import com.dongsu.timely.domain.model.Schedule
 interface ScheduleRepository {
     suspend fun insertSchedule(schedule: Schedule)
     suspend fun getAllSchedule(): TimelyResult<MutableList<Schedule>>
+//    suspend fun updateSchedule()
+//    suspend fun deleteSchedule()
 }
