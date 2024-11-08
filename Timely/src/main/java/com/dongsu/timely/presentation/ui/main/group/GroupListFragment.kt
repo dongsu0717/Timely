@@ -1,4 +1,4 @@
-package com.dongsu.timely.presentation.ui.main.group.list
+package com.dongsu.timely.presentation.ui.main.group
 
 import com.dongsu.timely.databinding.FragmentGroupListBinding
 import com.dongsu.timely.presentation.common.BaseFragment
