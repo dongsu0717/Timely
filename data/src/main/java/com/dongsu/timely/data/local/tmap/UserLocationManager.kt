@@ -16,7 +16,7 @@ class UserLocationManager @Inject constructor(
 ) : TMapGpsManager.OnLocationChangedListener {
 
     private lateinit var gpsManager: TMapGpsManager
-    private var _currentLocation: TimelyResult<UserLocation> = TimelyResult.Empty
+    private var _currentLocation: TimelyResult<UserLocation> = TimelyResult.Empty //stateFlow로 바꿔줄 거임
     val currentLocation = _currentLocation
 
     //여기를 init 묶어버릴까 생각중
