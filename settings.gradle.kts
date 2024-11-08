@@ -20,7 +20,8 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Timely"
-include(":Timely")
+include(":presentation")
 include(":domain")
 include(":data")
 include(":common")
+include(":timely")
