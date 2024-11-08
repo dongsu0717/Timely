@@ -15,7 +15,7 @@ import com.dongsu.timely.presentation.common.BaseFragment
 import com.dongsu.timely.presentation.common.EnumColor
 import com.dongsu.timely.presentation.common.collectWhenStarted
 import com.dongsu.timely.presentation.common.debouncedClickListener
-import com.dongsu.timely.presentation.common.showToast
+import com.dongsu.timely.presentation.common.toastShort
 import com.dongsu.timely.presentation.ui.main.calendar.home.container.DayViewContainer
 import com.dongsu.timely.presentation.ui.main.calendar.home.container.MonthViewContainer
 import com.dongsu.timely.presentation.viewmodel.calendar.home.CalendarViewModel
@@ -33,7 +33,6 @@ import reactivecircus.flowbinding.android.view.clicks
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
-import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -54,11 +53,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
 
         binding.fabAddSchedule.clicks()
             .onEach {
-                if (areLocationPermissionsGranted()) { //ACCESS_FINE_LOCATION 및 ACCESS_COARSE_LOCATION 권한이 모두 부여되었는지 확인
                     findNavController().navigate(R.id.action_calendarFragment_to_addScheduleFragment)
-                } else {
-                    requestLocationPermissions() //권한이 부여되지 않은 경우 앱은 requestPermissions()를 사용하여 권한을 요청
-                }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
