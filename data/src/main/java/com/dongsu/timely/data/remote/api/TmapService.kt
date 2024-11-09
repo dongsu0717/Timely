@@ -1,4 +1,4 @@
-package com.dongsu.timely.data.remote.service
+package com.dongsu.timely.data.remote.api
 
 import com.dongsu.data.BuildConfig.TMAP_API_KEY
 import com.dongsu.timely.data.common.TMAP_CAR_URL

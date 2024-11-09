@@ -1,6 +1,6 @@
 package com.dongsu.timely.data.di
 
-import com.dongsu.timely.data.remote.service.TmapService
+import com.dongsu.timely.data.remote.api.TmapService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
