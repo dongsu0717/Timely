@@ -1,22 +1,19 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
     kotlin("kapt")
 }
 
 android {
-    namespace = "com.dongsu.timely"
+    namespace = "com.dongsu.service"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.dongsu.timely"
         minSdk = 26
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -38,12 +35,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":common"))
     implementation(project(":domain"))
-    implementation(project(":data"))
-    implementation(project(":presentation"))
-    implementation(project(":service"))
-
+    implementation(project(":common"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
