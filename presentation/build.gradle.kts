@@ -71,4 +71,9 @@ dependencies {
 
     //annotations. 해야 중복방지
     implementation("org.jetbrains:annotations:23.0.0")
+
+//    로그인
+//    libs.v2.user
+//    메세지
+//      libs.v2.share
 }
