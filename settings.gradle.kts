@@ -16,6 +16,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://devrepo.kakao.com/nexus/content/groups/public/") }
     }
     /*
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)

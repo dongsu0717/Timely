@@ -1,6 +1,10 @@
 package com.dongsu.timely
 
 import android.app.Application
+import android.util.Log
+import com.dongsu.timely.BuildConfig.KAKAO_API_KEY
+import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.util.Utility
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -12,9 +16,8 @@ class TimelyApplication:Application() {
     override fun onCreate() {
         super.onCreate()
         timelyApplication = this
-//        KakaoSdk.init(this, "ee0d873f3b14b4a89b04a43d24b5b421")
-//        val hashKey = Utility.getKeyHash(this)
-//        Log.d("hash",hashKey)
-
+        KakaoSdk.init(this,KAKAO_API_KEY)
+        val hashKey = Utility.getKeyHash(this)
+        Log.d("hash",hashKey)
     }
 }
