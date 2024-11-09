@@ -1,4 +1,4 @@
-package com.dongsu.service.common
+package com.dongsu.timely.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -42,7 +42,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val notification = NotificationCompat.Builder(context, channelId)
             .setContentTitle(scheduleTitle)
-            .setContentText(String.format(Locale.getDefault(),TIME_TO_SCHEDULE,alarmTime))
+            .setContentText(String.format(Locale.getDefault(), TIME_TO_SCHEDULE,alarmTime))
             .setSmallIcon(R.drawable.baseline_notifications_active_24)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)

@@ -1,4 +1,4 @@
-package com.dongsu.service.common
+package com.dongsu.timely.service
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -42,7 +42,7 @@ class AlarmRepositoryImpl @Inject constructor(
     }
 
     private fun createAlarmIntent(alarmSchedule: Schedule): Intent {
-        return Intent(context, com.dongsu.service.common.AlarmReceiver::class.java).apply {
+        return Intent(context, AlarmReceiver::class.java).apply {
             putExtra("scheduleTitle", alarmSchedule.title)
             putExtra("appointmentPlace", alarmSchedule.appointmentPlace)
             putExtra("latitude", alarmSchedule.latitude)

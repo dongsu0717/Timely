@@ -1,6 +1,6 @@
-package com.dongsu.service.common.di
+package com.dongsu.timely.service.di
 
-import com.dongsu.service.common.AlarmRepositoryImpl
+import com.dongsu.timely.service.AlarmRepositoryImpl
 import com.dongsu.timely.domain.repository.AlarmRepository
 import dagger.Binds
 import dagger.Module
