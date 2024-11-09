@@ -78,8 +78,8 @@ dependencies {
     implementation ("com.squareup.okhttp3:logging-interceptor:4.8.0")
 
     // Tmap SDK
-    implementation(files("libs/vsm-tmap-sdk-v2-android-1.6.60.aar"))
-    implementation(files("libs/tmap-sdk-1.5.aar"))
+//    implementation(files("libs/vsm-tmap-sdk-v2-android-1.6.60.aar"))
+//    implementation(files("libs/tmap-sdk-1.5.aar"))
 
 }
 kapt {

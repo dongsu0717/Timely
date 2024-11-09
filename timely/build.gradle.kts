@@ -42,6 +42,8 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":presentation"))
+    implementation(project(":service"))
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

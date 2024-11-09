@@ -59,7 +59,7 @@
 
         -->
         <receiver
-            android:name="com.dongsu.timely.data.receiver.AlarmReceiver"
+            android:name="com.dongsu.service.common.AlarmReceiver"
             android:enabled="true"
             android:exported="true" >
         </receiver>

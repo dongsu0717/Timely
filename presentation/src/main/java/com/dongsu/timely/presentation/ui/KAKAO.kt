@@ -1,5 +1,7 @@
 //package com.dongsu.timely.presentation.ui
 //
+//import com.dongsu.presentation.R
+//
 //package com.example.dongsu
 //
 //import android.content.ContentValues.TAG
