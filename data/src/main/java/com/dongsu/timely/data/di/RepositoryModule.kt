@@ -1,7 +1,7 @@
 package com.dongsu.timely.data.di
 
 import com.dongsu.timely.data.datasource.ScheduleLocalDatasource
-import com.dongsu.timely.data.datasourceImpl.ScheduleLocalDatasourceImpl
+import com.dongsu.timely.data.datasource.datasourceImpl.ScheduleLocalDatasourceImpl
 import com.dongsu.timely.data.repository.AlarmRepositoryImpl
 import com.dongsu.timely.data.repository.TMapRepositoryImpl
 import com.dongsu.timely.data.repository.ScheduleRepositoryImpl
