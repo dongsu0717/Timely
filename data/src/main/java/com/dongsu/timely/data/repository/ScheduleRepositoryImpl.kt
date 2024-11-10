@@ -9,11 +9,9 @@ import javax.inject.Inject
 class ScheduleRepositoryImpl @Inject constructor(
     private val scheduleLocalDatasource: ScheduleLocalDatasource
 ): ScheduleRepository {
+    override suspend fun insertSchedule(schedule: Schedule)
+    = scheduleLocalDatasource.insertSchedule(schedule)
 
-    override suspend fun insertSchedule(schedule: Schedule) {
-        scheduleLocalDatasource.insertSchedule(schedule)
-    }
-
-    override suspend fun getAllSchedule(): TimelyResult<MutableList<Schedule>> =
-        scheduleLocalDatasource.getAllSchedule()
+    override suspend fun getAllSchedule(): TimelyResult<MutableList<Schedule>>
+    = scheduleLocalDatasource.getAllSchedule()
 }

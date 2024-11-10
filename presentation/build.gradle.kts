@@ -72,8 +72,6 @@ dependencies {
     //annotations. 해야 중복방지
     implementation("org.jetbrains:annotations:23.0.0")
 
-//    로그인
-//    libs.v2.user
-//    메세지
-//      libs.v2.share
+    implementation ("com.kakao.sdk:v2-user:2.20.6")
+    implementation ("com.kakao.sdk:v2-share:2.20.6")
 }

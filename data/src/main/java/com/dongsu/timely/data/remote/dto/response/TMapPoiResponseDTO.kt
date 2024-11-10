@@ -1,4 +1,4 @@
-package com.dongsu.timely.data.remote.dto
+package com.dongsu.timely.data.remote.dto.response
 
 data class TMapPoiResponseDTO(
     val searchPoiInfo: SearchPoiInfoDTO

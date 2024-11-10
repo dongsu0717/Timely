@@ -1,5 +1,6 @@
 package com.dongsu.timely.data.di
 
+import com.dongsu.timely.data.remote.api.LoginService
 import com.dongsu.timely.data.remote.api.TmapService
 import dagger.Module
 import dagger.Provides
@@ -13,8 +14,18 @@ import javax.inject.Singleton
 object ServiceModule {
 
     @Provides
+    @TMap
     @Singleton
-    fun provideLocationRepository(
-        retrofit: Retrofit,
-    ) :TmapService = retrofit.create(TmapService::class.java)
+    fun provideTMapRepository(
+        @TMap retrofit: Retrofit,
+    ): TmapService = retrofit.create(TmapService::class.java)
+
+    @Provides
+    @Timely
+    @Singleton
+    fun provideUserRepository(
+        @Timely retrofit: Retrofit,
+    ): LoginService = retrofit.create(LoginService::class.java)
 }
+
+

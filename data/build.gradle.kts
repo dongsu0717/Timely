@@ -12,6 +12,8 @@ val properties = Properties().apply {
     load(rootProject.file("local.properties").inputStream())
 }
 
+
+
 android {
     namespace = "com.dongsu.data"
     compileSdk = 34
@@ -25,6 +27,8 @@ android {
         val tMapApiKey = (properties["TMAP_API_KEY"] as? String)?.trim('"') ?: ""
         buildConfigField("String", "TMAP_API_KEY", "\"$tMapApiKey\"")
 
+        val timelyHostURL = (properties["TIMELY_HOST_URL"] as? String)?.trim('"') ?: ""
+        buildConfigField("String", "TIMELY_HOST_URL", "\"$timelyHostURL\"")
     }
 
     buildTypes {

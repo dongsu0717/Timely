@@ -38,10 +38,10 @@
                     android:scheme="kakaoee0d873f3b14b4a89b04a43d24b5b421" />
             </intent-filter>
         </activity>
+        -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
-            android:value="ee0d873f3b14b4a89b04a43d24b5b421" />
-
+            android:value="${kakaoApiKey}" />
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
@@ -53,13 +53,11 @@
 
                 <data
                     android:host="oauth"
-                    android:scheme="kakaoee0d873f3b14b4a89b04a43d24b5b421" />
+                    android:scheme="kakao${kakaoApiKey}" />
             </intent-filter>
         </activity>
-
-        -->
         <receiver
-            android:name="com.dongsu.service.common.AlarmReceiver"
+            android:name=".service.AlarmReceiver"
             android:enabled="true"
             android:exported="true" >
         </receiver>
