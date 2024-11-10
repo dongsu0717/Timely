@@ -16,10 +16,10 @@ class UserRemoteDatasourceImpl @Inject constructor(
 
     override suspend fun sendToken(user: User) {
         val response = loginService.sendToken(sendTokenRequest = UserMapper.toDto(user))
-        Log.e("서버에 카카오토큰 저장 성공",user.accessToken)
+        Log.e("서버에 카카오토큰 저장 성공","${response.body()?.accessToken}")
         response.body()?.let { body ->
+            Log.e("서버에서 accessToken받기", "${body.accessToken}")
             userLocalDatasource.saveLoginStatus(body.accessToken, body.refreshToken)
         }
-        Log.e("서버에서 accessToken받기", "${response.body()?.accessToken}")
     }
 }

@@ -15,7 +15,6 @@ object SharedPreferencesModule {
     @Provides
     fun provideSharedPreferences(
         @ApplicationContext context: Context
-    ): SharedPreferences {
-        return context.getSharedPreferences("UserSession", Context.MODE_PRIVATE)
-    }
+    ): SharedPreferences = context.getSharedPreferences("UserSession", Context.MODE_PRIVATE)
+
 }

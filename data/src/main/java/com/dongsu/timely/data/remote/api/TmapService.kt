@@ -15,7 +15,7 @@ interface TmapService {
     suspend fun searchPlaces(
         @Query("version") version: Int = 1,
         @Query("searchKeyword") keyword: String,
-        @Query("appKey") apiKey: String
+        @Query("appKey") apiKey: String = TMAP_API_KEY
     ): Response<TMapPoiResponseDTO>
 
     @GET(TMAP_CAR_URL)

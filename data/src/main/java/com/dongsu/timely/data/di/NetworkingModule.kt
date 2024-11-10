@@ -20,15 +20,14 @@ object NetworkingModule {
 
     @Singleton
     @Provides
-    fun providesHttpLoggingInterceptor() = HttpLoggingInterceptor()
-        .apply {
-            level = HttpLoggingInterceptor.Level.BASIC
-        }
+    fun providesHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BASIC
+    }
 
     @Singleton
     @Provides
     fun providesOkHttpClient(
-    httpLoggingInterceptor: HttpLoggingInterceptor
+        httpLoggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient =
         OkHttpClient
             .Builder()
@@ -42,10 +41,10 @@ object NetworkingModule {
         okHttpClient: OkHttpClient
     ): Retrofit =
         Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(TMAP_BASE_URL)
-        .client(okHttpClient)
-        .build()
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(TMAP_BASE_URL)
+            .client(okHttpClient)
+            .build()
 
     @Singleton
     @Timely
@@ -60,6 +59,7 @@ object NetworkingModule {
             .build()
 
 }
+
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class TMap

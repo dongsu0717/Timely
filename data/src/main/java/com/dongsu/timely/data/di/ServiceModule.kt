@@ -18,14 +18,14 @@ object ServiceModule {
     @Singleton
     fun provideTMapRepository(
         @TMap retrofit: Retrofit,
-    ) :TmapService = retrofit.create(TmapService::class.java)
+    ): TmapService = retrofit.create(TmapService::class.java)
 
     @Provides
     @Timely
     @Singleton
     fun provideUserRepository(
         @Timely retrofit: Retrofit,
-    ) : LoginService = retrofit.create(LoginService::class.java)
+    ): LoginService = retrofit.create(LoginService::class.java)
 }
 
 

@@ -15,7 +15,7 @@ class UserLocalDatasourceImpl @Inject constructor(
 
     override suspend fun saveLoginStatus(accessToken: String, refreshToken: String) {
         sharedPreferences.edit().apply {
-            Log.e("sharedPreferences에 저장성공","$accessToken, $refreshToken")
+            Log.e("sharedPreferences저장성공","$accessToken, $refreshToken")
             putString("access_token", accessToken)
             putString("refresh_token", refreshToken)
             putBoolean("is_logged_in", true)

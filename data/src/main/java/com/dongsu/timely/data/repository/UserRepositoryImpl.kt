@@ -11,15 +11,14 @@ class UserRepositoryImpl @Inject constructor(
     private val userLocalDatasource: UserLocalDatasource,
     private val userRemoteDatasource: UserRemoteDatasource
 ): UserRepository {
-    override suspend fun sendToken(user: User) {
-        userRemoteDatasource.sendToken(user)
-    }
+    override suspend fun sendToken(user: User)
+    = userRemoteDatasource.sendToken(user)
 
-    override suspend fun saveStatus(accessToken: String, refreshToken: String) {
-        userLocalDatasource.saveLoginStatus(accessToken,refreshToken)
-    }
+    override suspend fun saveStatus(accessToken: String, refreshToken: String)
+    = userLocalDatasource.saveLoginStatus(accessToken,refreshToken)
 
-    override suspend fun isLoggedIn():TimelyResult<Boolean> = userLocalDatasource.isLoggedIn()
+    override suspend fun isLoggedIn():TimelyResult<Boolean>
+    = userLocalDatasource.isLoggedIn()
 
     override suspend fun getUserProfile() {
     }
