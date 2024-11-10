@@ -4,8 +4,8 @@ import com.dongsu.data.BuildConfig.TMAP_API_KEY
 import com.dongsu.timely.data.common.TMAP_CAR_URL
 import com.dongsu.timely.data.common.TMAP_POI
 import com.dongsu.timely.data.common.TMAP_WALK_URL
-import com.dongsu.timely.data.remote.dto.TMapDistanceCalculationResponseDto
-import com.dongsu.timely.data.remote.dto.TMapPoiResponseDTO
+import com.dongsu.timely.data.remote.dto.response.TMapDistanceCalculationResponseDto
+import com.dongsu.timely.data.remote.dto.response.TMapPoiResponseDTO
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
