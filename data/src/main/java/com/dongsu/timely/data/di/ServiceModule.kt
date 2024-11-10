@@ -17,4 +17,11 @@ object ServiceModule {
     fun provideLocationRepository(
         retrofit: Retrofit,
     ) :TmapService = retrofit.create(TmapService::class.java)
+
+    @Provides
+    @Timely
+    @Singleton
+    fun provideUserRepository(
+        @Timely retrofit: Retrofit,
+    ) : LoginService = retrofit.create(LoginService::class.java)
 }
