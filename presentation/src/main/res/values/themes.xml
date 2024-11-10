@@ -30,6 +30,9 @@
     <style name="Banana">
         <item name="android:tint">@color/dark_banana</item>
     </style>
+    <style name="Tangerine">
+        <item name="android:tint">@color/dark_tangerine</item>
+    </style>
     <style name="AppBarDark" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="background">@color/app_bar_color_dark</item>
         <item name="titleTextColor">@color/text_color_dark</item>

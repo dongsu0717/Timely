@@ -57,4 +57,7 @@
 
     <!--위치 검색 -->
     <string name="search_location">검색어를 입력하세요.</string>
+
+    <!--그룹리스트-->
+    <string name="group_name">그룹 이름</string>
 </resources>
