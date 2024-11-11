@@ -5,7 +5,7 @@ import com.dongsu.timely.data.common.TMAP_CAR_URL
 import com.dongsu.timely.data.common.TMAP_POI
 import com.dongsu.timely.data.common.TMAP_WALK_URL
 import com.dongsu.timely.data.remote.dto.response.TMapDistanceCalculationResponseDto
-import com.dongsu.timely.data.remote.dto.response.TMapPoiResponseDTO
+import com.dongsu.timely.data.remote.dto.response.TMapPoiResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -16,7 +16,7 @@ interface TmapService {
         @Query("version") version: Int = 1,
         @Query("searchKeyword") keyword: String,
         @Query("appKey") apiKey: String = TMAP_API_KEY
-    ): Response<TMapPoiResponseDTO>
+    ): Response<TMapPoiResponse>
 
     @GET(TMAP_CAR_URL)
     suspend fun getCarResult(
