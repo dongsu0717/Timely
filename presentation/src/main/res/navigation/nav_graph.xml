@@ -61,6 +61,9 @@
         <action
             android:id="@+id/action_groupListFragment_to_groupDateFragment"
             app:destination="@id/groupDateFragment" />
+        <action
+            android:id="@+id/action_groupListFragment_to_groupCreateFragment"
+            app:destination="@id/groupCreateFragment" />
     </fragment>
     <fragment
         android:id="@+id/groupLocationFragment"
@@ -109,4 +112,12 @@
         android:id="@+id/profileSettingFragment"
         android:name="com.dongsu.timely.presentation.ui.main.profile.ProfileSettingFragment"
         android:label="ProfileSettingFragment" />
+    <fragment
+        android:id="@+id/groupCreateFragment"
+        android:name="com.dongsu.timely.presentation.ui.main.group.create.GroupCreateFragment"
+        android:label="GroupCreateFragment" >
+        <action
+            android:id="@+id/action_groupCreateFragment_to_groupListFragment"
+            app:destination="@id/groupListFragment" />
+    </fragment>
 </navigation>

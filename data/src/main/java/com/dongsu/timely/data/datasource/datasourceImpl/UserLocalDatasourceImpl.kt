@@ -9,9 +9,7 @@ import javax.inject.Inject
 class UserLocalDatasourceImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ): UserLocalDatasource {
-    override suspend fun getToken() {
-
-    }
+    override fun getToken(): String = sharedPreferences.getString("access_token", "").toString()
 
     override suspend fun saveLoginStatus(accessToken: String, refreshToken: String) {
         sharedPreferences.edit().apply {

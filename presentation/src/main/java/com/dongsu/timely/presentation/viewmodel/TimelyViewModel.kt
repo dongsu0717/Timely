@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dongsu.timely.common.TimelyResult
-import com.dongsu.timely.domain.model.User
 import com.dongsu.timely.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +20,7 @@ class TimelyViewModel @Inject constructor(
     val loginStatus = _loginStatus.asStateFlow()
 
     suspend fun sendToken(token: String) {
-        userRepository.sendToken(User(token))
+        userRepository.sendToken(token)
     }
 
     fun isLoggedIn() {

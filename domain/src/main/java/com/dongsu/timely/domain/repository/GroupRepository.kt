@@ -1,7 +1,7 @@
 package com.dongsu.timely.domain.repository
 
 interface GroupRepository {
-    suspend fun createGroup()
+    suspend fun createGroup(groupName: String)
     suspend fun getMyGroupList()
     suspend fun inviteGroup()
     suspend fun joinGroup()

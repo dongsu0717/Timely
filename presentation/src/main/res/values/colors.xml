@@ -37,12 +37,13 @@
     <color name="divider_color_light">#E0E0E0</color>
     <color name="highlight_color_light">#FFBB86FC</color>
 
-    <!-- Dark Mode Event Colors -->
+    <!-- Dark Mode Schedule Colors -->
     <color name="dark_lavender">#a4bdfc</color>
     <color name="dark_sage">#7ae7bf</color>
     <color name="dark_grape">#dbadff</color>
     <color name="dark_flamingo">#ff887c</color>
     <color name="dark_banana">#fbd75b</color>
+    <!-- Dark Mode Group Colors -->
     <color name="dark_tangerine">#ffb878</color>
     <color name="dark_peacock">#46d6db</color>
     <color name="dark_graphite">#e1e1e1</color>
@@ -50,12 +51,13 @@
     <color name="dark_basil">#51b749</color>
     <color name="dark_tomato">#dc2127</color>
 
-    <!-- Light Mode Event Colors -->
+    <!-- Light Mode Schedule Colors -->
     <color name="light_lavender">#6A9EF2</color>
     <color name="light_sage">#1BC4A1</color>
     <color name="light_grape">#A56CFF</color>
     <color name="light_flamingo">#FF4F3D</color>
     <color name="light_banana">#FCE74C</color>
+    <!-- Light Mode Group Colors -->
     <color name="light_tangerine">#FFA94C</color>
     <color name="light_peacock">#00B4B5</color>
     <color name="light_graphite">#B0B0B0</color>

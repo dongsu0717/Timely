@@ -1,7 +1,6 @@
 package com.dongsu.timely.data.repository
 
 import com.dongsu.timely.common.TimelyResult
-import com.dongsu.timely.data.di.TMap
 import com.dongsu.timely.data.mapper.LocationMapper
 import com.dongsu.timely.data.remote.api.TmapService
 import com.dongsu.timely.domain.model.PoiItem
@@ -9,7 +8,7 @@ import com.dongsu.timely.domain.repository.TMapRepository
 import javax.inject.Inject
 
 class TMapRepositoryImpl @Inject constructor(
-    @TMap private val tmapService: TmapService,
+    private val tmapService: TmapService,
 //    private val userLocationManager: UserLocationManager
 ) : TMapRepository {
 
