@@ -1,10 +1,12 @@
 package com.dongsu.timely.data.di
 
-import com.dongsu.timely.data.repository.TMapRepositoryImpl
+import com.dongsu.timely.data.repository.GroupRepositoryImpl
 import com.dongsu.timely.data.repository.ScheduleRepositoryImpl
+import com.dongsu.timely.data.repository.TMapRepositoryImpl
 import com.dongsu.timely.data.repository.UserRepositoryImpl
-import com.dongsu.timely.domain.repository.TMapRepository
+import com.dongsu.timely.domain.repository.GroupRepository
 import com.dongsu.timely.domain.repository.ScheduleRepository
+import com.dongsu.timely.domain.repository.TMapRepository
 import com.dongsu.timely.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
@@ -34,5 +36,10 @@ abstract class RepositoryModule {
         userRepositoryImpl: UserRepositoryImpl,
     ): UserRepository
 
+    @Binds
+    @Singleton
+    abstract fun provideGroupRepository(
+        groupRepositoryImpl: GroupRepositoryImpl,
+    ): GroupRepository
 }
 
