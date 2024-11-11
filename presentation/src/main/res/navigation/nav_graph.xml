@@ -62,7 +62,7 @@
     </fragment>
     <fragment
         android:id="@+id/groupListFragment"
-        android:name="com.dongsu.timely.presentation.ui.main.group.GroupListFragment"
+        android:name="com.dongsu.timely.presentation.ui.main.group.list.GroupListFragment"
         android:label="GroupListFragment">
         <action
             android:id="@+id/action_groupListFragment_to_groupDateFragment"

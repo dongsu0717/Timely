@@ -1,4 +1,4 @@
-package com.dongsu.timely.presentation.ui.main.group
+package com.dongsu.timely.presentation.ui.main.group.list
 
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
