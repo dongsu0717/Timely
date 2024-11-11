@@ -12,5 +12,9 @@ const val KAKAO_TAG = "KakaoLoginManager"
 //저장
 const val SAVE_SUCCESS = "저장였습니다."
 const val SAVE_ERROR = "저장에 실패하였습니다."
-const val LOADING = "로딩중..."
+const val LOADING = "저장중..."
 const val OMG = "니가왜떠???"
+
+//가져오기
+const val GET_ERROR = "데이터를 가져오는데 실패하였습니다."
+const val GET_LOADING = "가져오는중...."

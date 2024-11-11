@@ -1,18 +1,18 @@
 package com.dongsu.timely.data.remote.dto.response
 
-data class TMapPoiResponseDTO(
-    val searchPoiInfo: SearchPoiInfoDTO
+data class TMapPoiResponse(
+    val searchPoiInfo: SearchPoiInfo
 )
 
-data class SearchPoiInfoDTO(
+data class SearchPoiInfo(
     val pois: PoisDTO
 )
 
 data class PoisDTO(
-    val poi: MutableList<PoiItemDTO>
+    val poi: MutableList<PoiItemResponse>
 )
 
-data class PoiItemDTO(
+data class PoiItemResponse(
     val name: String,
     val noorLat: String, // 위도
     val noorLon: String  // 경도
