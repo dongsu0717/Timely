@@ -15,7 +15,7 @@ class GroupListAdapter(
 
     class GroupListViewHolder(private val binding: ItemGroupListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(group: Group, onGroupClick: (Group) -> Unit) {
-            binding.tvGroupName.text = group.name
+            binding.tvGroupName.text = group.groupName
             binding.root.setOnClickListener {
                 onGroupClick(group)
             }
@@ -35,7 +35,7 @@ class GroupListAdapter(
 
     class GroupDiffCallback : DiffUtil.ItemCallback<Group>() {
         override fun areItemsTheSame(oldItem: Group, newItem: Group): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.groupId == newItem.groupId
         }
 
         override fun areContentsTheSame(oldItem: Group, newItem: Group): Boolean {

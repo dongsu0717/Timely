@@ -5,6 +5,7 @@ import com.dongsu.timely.data.remote.dto.request.GroupRequest
 import com.dongsu.timely.data.remote.dto.response.GroupResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface GroupService {
@@ -14,4 +15,6 @@ interface GroupService {
         @Body groupRequest: GroupRequest
     ):Response<GroupResponse>
 
+    @GET(GROUP)
+    suspend fun getMyGroupList() : Response<List<GroupResponse>>
 }

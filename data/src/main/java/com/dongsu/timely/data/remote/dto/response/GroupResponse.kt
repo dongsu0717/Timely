@@ -9,8 +9,8 @@ data class GroupResponse(
     @SerializedName("groupName")
     val groupName: String,
 
-    @SerializedName("userResponse")
-    val userResponse: UserResponse,
+    @SerializedName("hostUser")
+    val hostUser: UserResponse,
 
     @SerializedName("createAt")
     val createAt: String,
