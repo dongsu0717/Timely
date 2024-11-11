@@ -1,5 +1,6 @@
 package com.dongsu.timely.presentation.ui.main.calendar.add
 
+import PermissionUtils
 import android.Manifest
 import android.util.Log
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.FragmentAddScheduleBinding
 import com.dongsu.timely.domain.model.Schedule
@@ -34,13 +36,14 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
 
     private val addScheduleViewModel: AddScheduleViewModel by viewModels()
     private val currentViewModel: CurrentTimeViewModel by viewModels()
-//    private var scheduleId: Int = NO_SCHEDULE_ID
 
     private var repeatDays = EnumRepeat.NO.repeat
     private var appointmentAlarmTime = EnumAlarmTime.BEFORE_1_HOUR.time
     private var color = EnumColor.LAVENDER.color
     private var latitude = 0.0
     private var longitude = 0.0
+
+    private val args: AddScheduleFragmentArgs by navArgs()
 
     override fun initView() {
         setupArgument()
@@ -51,11 +54,9 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
         choiceSchedule()
     }
     private fun setupArgument(){
-        arguments?.let {
-            latitude = it.getString("latitude")?.toDoubleOrNull() ?: 0.0
-            longitude = it.getString("longitude")?.toDoubleOrNull() ?: 0.0
-            binding.tvAppointmentPlace.text = it.getString("place") ?: "약속 장소"
-        }
+            latitude = args.latitude.toDouble()
+            longitude = args.longitude.toDouble()
+            binding.tvAppointmentPlace.text = args.place
     }
     private fun toolbarSetting() = binding.toolbar.inflateMenu(R.menu.toolbar_menu)
     private fun toolbarAction(){

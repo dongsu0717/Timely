@@ -2,15 +2,14 @@ package com.dongsu.timely.presentation.ui.main.calendar.location
 
 import android.util.Log
 import androidx.appcompat.widget.SearchView
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dongsu.presentation.R
-import com.dongsu.timely.common.TimelyResult
 import com.dongsu.presentation.databinding.FragmentSearchLocationBinding
+import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.PoiItem
 import com.dongsu.timely.presentation.common.BaseFragment
 import com.dongsu.timely.presentation.viewmodel.calendar.location.SearchLocationViewModel
@@ -37,23 +36,19 @@ class SearchLocationFragment :
     }
 
     private fun setAdapter() {
-        searchAdapter = SearchAdapter { selectedPlace ->
-            val bundle = bundleOf(
-                "latitude" to selectedPlace.noorLat,
-                "longitude" to selectedPlace.noorLon,
-                "place" to selectedPlace.name
-            )
-            val navOptions = NavOptions.Builder()
-                .setPopUpTo(R.id.searchLocationFragment, true)
-                .build()
-
-            findNavController().navigate(
-                R.id.action_searchLocationFragment_to_addScheduleFragment,
-                bundle,
-                navOptions
-            )
-        }
+        searchAdapter = SearchAdapter { setNaviGraph(it) }
         binding.recyclerViewPoi.adapter = searchAdapter
+    }
+    private fun setNaviGraph(poiItem: PoiItem) {
+        val action = SearchLocationFragmentDirections.actionSearchLocationFragmentToAddScheduleFragment(
+            poiItem.noorLat,
+            poiItem.noorLon,
+            poiItem.name
+        )
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.searchLocationFragment, inclusive = true)
+            .build()
+        findNavController().navigate(action,navOptions)
     }
     private fun search(){
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
