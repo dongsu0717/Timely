@@ -1,9 +1,10 @@
 package com.dongsu.timely.data.di
 
+import com.dongsu.timely.data.datasource.GroupRemoteDatasource
 import com.dongsu.timely.data.datasource.ScheduleLocalDatasource
-import com.dongsu.timely.data.datasource.ScheduleRemoteDatasource
 import com.dongsu.timely.data.datasource.UserLocalDatasource
 import com.dongsu.timely.data.datasource.UserRemoteDatasource
+import com.dongsu.timely.data.datasource.datasourceImpl.GroupRemoteDatasourceImpl
 import com.dongsu.timely.data.datasource.datasourceImpl.ScheduleLocalDatasourceImpl
 import com.dongsu.timely.data.datasource.datasourceImpl.UserLocalDatasourceImpl
 import com.dongsu.timely.data.datasource.datasourceImpl.UserRemoteDatasourceImpl
@@ -34,4 +35,9 @@ abstract class DatasourceModule {
         userLocalDatasourceImpl: UserLocalDatasourceImpl
     ): UserLocalDatasource
 
+    @Binds
+    @Singleton
+    abstract fun provideGroupRemoteDatasource(
+        groupRemoteDatasourceImpl: GroupRemoteDatasourceImpl
+    ): GroupRemoteDatasource
 }
