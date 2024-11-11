@@ -60,4 +60,7 @@
 
     <!--그룹리스트-->
     <string name="group_name">그룹 이름</string>
+
+    <!--스케줄-->
+    <string name="participation">참석</string>
 </resources>

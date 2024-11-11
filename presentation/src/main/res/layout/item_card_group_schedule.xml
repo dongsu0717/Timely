@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app1="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="30dp"
+    app1:cardCornerRadius="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/text_margin">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_group_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/group_name"
+            app1:layout_constraintStart_toStartOf="parent"
+            app1:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_group_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_margin"
+            android:hint="장소"
+            app1:layout_constraintStart_toStartOf="parent"
+            app1:layout_constraintTop_toBottomOf="@+id/tv_group_name" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_group_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_margin"
+            android:hint="시간"
+            app1:layout_constraintBottom_toBottomOf="parent"
+            app1:layout_constraintStart_toStartOf="parent"
+            app1:layout_constraintTop_toBottomOf="@+id/tv_group_place" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/siv_people"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/group"
+            android:layout_marginEnd="@dimen/flow_margin"
+            app1:layout_constraintEnd_toStartOf="@+id/siv_notification"
+            app1:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_people"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:hint="5"
+            app1:layout_constraintStart_toEndOf="@+id/siv_people"
+            app1:layout_constraintBottom_toBottomOf="@id/siv_people"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/siv_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_notifications_24"
+            app1:layout_constraintEnd_toEndOf="parent"
+            app1:layout_constraintTop_toTopOf="parent"
+            app1:layout_constraintStart_toStartOf="@+id/checkBox_participation"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/participation"
+            app1:layout_constraintBottom_toBottomOf="@+id/checkBox_participation"
+            app1:layout_constraintEnd_toStartOf="@+id/checkBox_participation"
+            app1:layout_constraintTop_toTopOf="@+id/checkBox_participation" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkBox_participation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app1:layout_constraintBottom_toBottomOf="parent"
+            app1:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
