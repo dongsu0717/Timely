@@ -58,27 +58,36 @@
             app:destination="@id/groupAddScheduleFragment" />
         <argument
             android:name="groupId"
-            app:argType="integer" />
+            app:argType="integer"
+            android:defaultValue="0"/>
     </fragment>
     <fragment
         android:id="@+id/groupListFragment"
         android:name="com.dongsu.timely.presentation.ui.main.group.list.GroupListFragment"
         android:label="GroupListFragment">
         <action
-            android:id="@+id/action_groupListFragment_to_groupDateFragment"
-            app:destination="@id/groupDateFragment">
+            android:id="@+id/action_groupListFragment_to_groupCreateFragment"
+            app:destination="@id/groupCreateFragment" />
+        <action
+            android:id="@+id/action_groupListFragment_to_groupPageFragment"
+            app:destination="@id/groupPageFragment" >
             <argument
                 android:name="groupId"
                 app:argType="integer" />
+            <argument
+                android:name="groupName"
+                app:argType="string" />
         </action>
-        <action
-            android:id="@+id/action_groupListFragment_to_groupCreateFragment"
-            app:destination="@id/groupCreateFragment" />
     </fragment>
     <fragment
         android:id="@+id/groupLocationFragment"
         android:name="com.dongsu.timely.presentation.ui.main.group.location.GroupLocationFragment"
-        android:label="GroupLocationFragment" />
+        android:label="GroupLocationFragment">
+        <argument
+            android:name="groupId"
+            app:argType="integer"
+            android:defaultValue="0"/>
+    </fragment>
     <fragment
         android:id="@+id/groupManagementFragment"
         android:name="com.dongsu.timely.presentation.ui.main.group.management.GroupManagementFragment"
@@ -86,6 +95,10 @@
         <action
             android:id="@+id/action_groupManagementFragment_to_groupSettingFragment"
             app:destination="@id/groupSettingFragment" />
+        <argument
+            android:name="groupId"
+            app:argType="integer"
+            android:defaultValue="0"/>
     </fragment>
     <fragment
         android:id="@+id/groupSettingFragment"
@@ -132,5 +145,18 @@
         <action
             android:id="@+id/action_groupCreateFragment_to_groupListFragment"
             app:destination="@id/groupListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/groupPageFragment"
+        android:name="com.dongsu.timely.presentation.ui.main.group.GroupPageFragment"
+        android:label="GroupPageFragment">
+        <argument
+            android:name="groupId"
+            app:argType="integer"
+            android:defaultValue="0"/>
+        <argument
+            android:name="groupName"
+            app:argType="string"
+            android:defaultValue="Timely" />
     </fragment>
 </navigation>
