@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/groupAddScheduleFragment"
-        android:name="com.dongsu.timely.presentation.ui.main.group.schedule.GroupAddScheduleFragment"
+        android:name="com.dongsu.timely.presentation.ui.main.group.add.GroupAddScheduleFragment"
         android:label="GroupAddScheduleFragment">
         <action
             android:id="@+id/action_groupAddScheduleFragment_to_searchLocationFragment"
