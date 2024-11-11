@@ -12,11 +12,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.ActivityTimelyBinding
 import com.dongsu.timely.common.TimelyResult
+import com.dongsu.timely.presentation.common.CommonDialogFragment
 import com.dongsu.timely.presentation.common.LOGIN_MESSAGE
 import com.dongsu.timely.presentation.common.LOGIN_NEGATIVE_BUTTON
 import com.dongsu.timely.presentation.common.LOGIN_POSITIVE_BUTTON
 import com.dongsu.timely.presentation.common.LOGIN_TITLE
-import com.dongsu.timely.presentation.common.CommonDialogFragment
 import com.dongsu.timely.presentation.kakao.KaKaoLoginManager
 import com.dongsu.timely.presentation.viewmodel.TimelyViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,7 +50,7 @@ class TimelyActivity : AppCompatActivity() {
     private fun setBottomNavigationVisibility(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.bottomNavigation.visibility = when (destination.id) {
-                R.id.calendarFragment, R.id.groupListFragment, R.id.profileFragment, R.id.groupDateFragment, R.id.groupLocationFragment, R.id.groupManagementFragment -> View.VISIBLE
+                R.id.calendarFragment, R.id.groupListFragment, R.id.profileFragment, R.id.groupDateFragment, R.id.groupLocationFragment, R.id.groupManagementFragment, R.id.groupPageFragment-> View.VISIBLE
                 else -> View.GONE
             }
         }
