@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
     kotlin("kapt")
+    alias(libs.plugins.google.gms.google.services)
+
 }
 
 val properties = Properties().apply {
@@ -75,4 +77,6 @@ dependencies {
     //kakao
     implementation ("com.kakao.sdk:v2-user:2.20.6")
     implementation ("com.kakao.sdk:v2-share:2.20.6")
+    implementation(libs.firebase.messaging)
+
 }

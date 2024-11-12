@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
     kotlin("kapt")
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -48,4 +49,9 @@ dependencies {
     //hilt
     implementation(libs.google.hilt)
     kapt(libs.hilt.compiler)
+
+    //fcm
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.analytics)
+    implementation(platform(libs.firebase.bom))
 }
