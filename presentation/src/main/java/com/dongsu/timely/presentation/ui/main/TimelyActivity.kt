@@ -1,6 +1,8 @@
 package com.dongsu.timely.presentation.ui.main
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +13,8 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.ActivityTimelyBinding
+import com.dongsu.timely.common.GROUP_ID
+import com.dongsu.timely.common.GROUP_NAME
 import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.presentation.common.CommonDialogFragment
 import com.dongsu.timely.presentation.common.LOGIN_MESSAGE
@@ -27,21 +31,21 @@ class TimelyActivity : AppCompatActivity() {
 
     private val timelyViewModel: TimelyViewModel by viewModels()
     private lateinit var kakaoLoginManager: KaKaoLoginManager
-
+    private lateinit var navController: NavController
     private lateinit var binding: ActivityTimelyBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityTimelyBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setupBottomNavigation()
+        navController = setNavController()
+        setupBottomNavigation(navController)
+        checkArgument(navController)
         setKaKaoLoginManager()
     }
+    private fun setNavController(): NavController = (supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment).navController
 
-    private fun setupBottomNavigation() {
-        val navController =
-            (supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment).navController
+    private fun setupBottomNavigation(navController: NavController) {
         binding.bottomNavigation.setupWithNavController(navController)
         setBottomNavigationVisibility(navController)
         setupNavigation(navController)
@@ -91,4 +95,31 @@ class TimelyActivity : AppCompatActivity() {
         kakaoLoginManager.initiateKakaoLogin()
     }.show(supportFragmentManager, "LoginDialogFragment")
 
+    private fun checkArgument(navController: NavController) {
+        val groupId = intent.getIntExtra(GROUP_ID,-1)
+        val groupName = intent.getStringExtra(GROUP_NAME)
+        Log.e("timly",groupId.toString())
+        if (groupId != -1 && groupName != null) {
+            goGroupDetail(navController, groupId,groupName)
+            Log.e("timely","$groupId")
+        }
+    }
+    private fun goGroupDetail(navController: NavController, groupId: Int,groupName: String) {
+        val bundle = Bundle().apply {
+            putInt(GROUP_ID, groupId)
+            putString(GROUP_NAME, groupName)
+        }
+        navController.navigate(R.id.groupPageFragment, bundle)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        intent.let { nonNullIntent ->
+            val groupId = nonNullIntent.getIntExtra(GROUP_ID, -1)
+            val groupName = nonNullIntent.getStringExtra(GROUP_NAME)
+            if (groupId != -1 && groupName != null) {
+                goGroupDetail(navController, groupId, groupName)
+            }
+        }
+    }
 }
