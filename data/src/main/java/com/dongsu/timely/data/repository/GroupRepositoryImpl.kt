@@ -1,6 +1,6 @@
 package com.dongsu.timely.data.repository
 
-import com.dongsu.timely.data.datasource.GroupRemoteDatasource
+import com.dongsu.timely.data.datasource.remote.GroupRemoteDatasource
 import com.dongsu.timely.domain.model.Group
 import com.dongsu.timely.domain.repository.GroupRepository
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package com.dongsu.timely.data.datasource
+package com.dongsu.timely.data.datasource.remote
 
 import com.dongsu.timely.domain.model.Group
 

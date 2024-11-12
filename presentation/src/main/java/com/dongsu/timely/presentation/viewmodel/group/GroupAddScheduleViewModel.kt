@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.GroupSchedule
-import com.dongsu.timely.domain.usecase.schedule.GroupAddScheduleUseCase
+import com.dongsu.timely.domain.usecase.GroupAddScheduleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

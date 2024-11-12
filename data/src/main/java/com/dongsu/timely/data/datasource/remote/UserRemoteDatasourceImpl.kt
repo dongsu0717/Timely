@@ -1,8 +1,7 @@
-package com.dongsu.timely.data.datasource.datasourceImpl.remote
+package com.dongsu.timely.data.datasource.remote
 
 import android.util.Log
-import com.dongsu.timely.data.datasource.UserLocalDatasource
-import com.dongsu.timely.data.datasource.UserRemoteDatasource
+import com.dongsu.timely.data.datasource.local.UserLocalDatasource
 import com.dongsu.timely.data.mapper.UserMapper
 import com.dongsu.timely.data.remote.api.LoginService
 import javax.inject.Inject

@@ -1,7 +1,7 @@
 package com.dongsu.timely.data.repository
 
 import com.dongsu.timely.common.TimelyResult
-import com.dongsu.timely.data.datasource.ScheduleLocalDatasource
+import com.dongsu.timely.data.datasource.local.ScheduleLocalDatasource
 import com.dongsu.timely.domain.model.Schedule
 import com.dongsu.timely.domain.repository.ScheduleRepository
 import javax.inject.Inject

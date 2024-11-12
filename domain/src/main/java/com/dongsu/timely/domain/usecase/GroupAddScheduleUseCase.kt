@@ -1,4 +1,4 @@
-package com.dongsu.timely.domain.usecase.schedule
+package com.dongsu.timely.domain.usecase
 
 import com.dongsu.timely.domain.common.DEFAULT_TITLE
 import com.dongsu.timely.domain.model.GroupSchedule

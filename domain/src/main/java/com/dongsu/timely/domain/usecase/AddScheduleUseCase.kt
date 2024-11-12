@@ -1,4 +1,4 @@
-package com.dongsu.timely.domain.usecase.schedule
+package com.dongsu.timely.domain.usecase
 
 import com.dongsu.timely.domain.common.LOCAL_DATE_TIME_FORMAT
 import com.dongsu.timely.domain.model.Schedule

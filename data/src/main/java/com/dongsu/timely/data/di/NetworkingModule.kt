@@ -2,7 +2,7 @@ package com.dongsu.timely.data.di
 
 import com.dongsu.timely.data.common.TIMELY_BASE_URL
 import com.dongsu.timely.data.common.TMAP_BASE_URL
-import com.dongsu.timely.data.datasource.UserLocalDatasource
+import com.dongsu.timely.data.datasource.local.UserLocalDatasource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

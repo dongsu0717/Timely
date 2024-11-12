@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.PoiItem
-import com.dongsu.timely.domain.usecase.schedule.SearchLocationUseCase
+import com.dongsu.timely.domain.usecase.SearchLocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
