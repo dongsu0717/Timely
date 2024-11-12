@@ -1,5 +1,6 @@
 package com.dongsu.timely.data.di
 
+import com.dongsu.timely.data.remote.api.FCMService
 import com.dongsu.timely.data.remote.api.GroupScheduleService
 import com.dongsu.timely.data.remote.api.GroupService
 import com.dongsu.timely.data.remote.api.LoginService
@@ -38,6 +39,12 @@ object ServiceModule {
     fun provideGroupScheduleRepository(
         @TimelyAuth retrofit: Retrofit,
     ): GroupScheduleService = retrofit.create(GroupScheduleService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideFCMRepository(
+        @TimelyAuth retrofit: Retrofit,
+    ): FCMService = retrofit.create(FCMService::class.java)
 }
 
 
