@@ -12,7 +12,9 @@ import com.dongsu.timely.presentation.common.GROUP_MANAGEMENT
 import com.dongsu.timely.presentation.common.GROUP_SCHEDULE
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class GroupPageFragment : BaseFragment<FragmentGroupPageBinding>(FragmentGroupPageBinding::inflate) {
 
     private lateinit var toolbar: Toolbar
