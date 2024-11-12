@@ -1,4 +1,4 @@
-package com.dongsu.timely.data.datasource.datasourceImpl
+package com.dongsu.timely.data.datasource.datasourceImpl.local
 
 import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.data.datasource.ScheduleLocalDatasource

@@ -1,4 +1,4 @@
-package com.dongsu.timely.data.datasource.datasourceImpl
+package com.dongsu.timely.data.datasource.datasourceImpl.local
 
 import android.content.SharedPreferences
 import android.util.Log
