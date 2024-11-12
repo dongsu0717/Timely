@@ -56,7 +56,7 @@ class GroupListFragment: BaseFragment<FragmentGroupListBinding>(FragmentGroupLis
                 is TimelyResult.Loading -> {
                     toastShort(requireContext(), GET_LOADING)
                 }
-                is TimelyResult.Error -> {
+                is TimelyResult.NetworkError -> {
                     toastShort(requireContext(), GET_ERROR)
                 }
                 else -> {}

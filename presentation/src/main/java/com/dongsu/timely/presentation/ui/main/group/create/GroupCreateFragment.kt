@@ -51,7 +51,7 @@ class GroupCreateFragment: BaseFragment<FragmentGroupCreateBinding>(FragmentGrou
                 is TimelyResult.Loading -> {
                     toastShort(requireContext(), LOADING)
                 }
-                is TimelyResult.Error -> {
+                is TimelyResult.NetworkError -> {
                     toastShort(requireContext(), SAVE_ERROR)
                 }
                 else -> {

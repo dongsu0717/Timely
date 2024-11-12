@@ -18,7 +18,7 @@ class TMapRepositoryImpl @Inject constructor(
             val poiItems = response.body()?.searchPoiInfo?.pois?.poi?.map { LocationMapper.toDomain(it) }?.toMutableList() ?: mutableListOf()
             TimelyResult.Success(poiItems)
         } catch (e: Exception) {
-            TimelyResult.Error(e)
+            TimelyResult.NetworkError(e)
         }
 
 //    override suspend fun getMyLocation() : TimelyResult<UserLocation> = userLocationManager.currentLocation
