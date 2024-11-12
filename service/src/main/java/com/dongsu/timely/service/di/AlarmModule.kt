@@ -2,8 +2,8 @@ package com.dongsu.timely.service.di
 
 import com.dongsu.timely.domain.repository.AlarmRepository
 import com.dongsu.timely.domain.repository.FCMRepository
-import com.dongsu.timely.service.AlarmRepositoryImpl
-import com.dongsu.timely.service.FCMRepositoryImpl
+import com.dongsu.timely.service.alarm.AlarmRepositoryImpl
+import com.dongsu.timely.service.fcm.FCMRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
