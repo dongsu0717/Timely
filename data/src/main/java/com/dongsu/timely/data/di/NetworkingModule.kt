@@ -1,5 +1,7 @@
 package com.dongsu.timely.data.di
 
+import com.dongsu.timely.data.common.AUTH_HEADER
+import com.dongsu.timely.data.common.BEARER
 import com.dongsu.timely.data.common.TIMELY_BASE_URL
 import com.dongsu.timely.data.common.TMAP_BASE_URL
 import com.dongsu.timely.data.datasource.local.UserLocalDatasource
@@ -32,7 +34,7 @@ object NetworkingModule {
         userLocalDatasource: UserLocalDatasource
     ): Interceptor = Interceptor { chain ->
         val requestBuilder = chain.request().newBuilder()
-            .addHeader("Authorization", "Bearer ${userLocalDatasource.getToken()}")
+            .addHeader(AUTH_HEADER, "$BEARER ${userLocalDatasource.getToken()}")
         chain.proceed(requestBuilder.build())
     }
 
