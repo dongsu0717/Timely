@@ -3,6 +3,7 @@ package com.dongsu.timely.data.repository
 import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.data.datasource.remote.GroupScheduleRemoteDatasource
 import com.dongsu.timely.domain.model.GroupSchedule
+import com.dongsu.timely.domain.model.GroupScheduleInfo
 import com.dongsu.timely.domain.repository.GroupScheduleRepository
 import javax.inject.Inject
 
@@ -13,7 +14,7 @@ class GroupScheduleRepositoryImpl @Inject constructor(
     = groupScheduleRemoteDatasource.insertSchedule(groupId, groupSchedule)
 
 
-    override suspend fun getAllSchedule(groupId: Int): TimelyResult<List<GroupSchedule>> {
+    override suspend fun getAllSchedule(groupId: Int): TimelyResult<List<GroupScheduleInfo>> {
         return groupScheduleRemoteDatasource.getAllSchedule(groupId)
     }
 

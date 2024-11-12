@@ -4,6 +4,7 @@ import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.data.mapper.GroupScheduleMapper
 import com.dongsu.timely.data.remote.api.GroupScheduleService
 import com.dongsu.timely.domain.model.GroupSchedule
+import com.dongsu.timely.domain.model.GroupScheduleInfo
 import javax.inject.Inject
 
 class GroupScheduleRemoteDatasourceImpl @Inject constructor(
@@ -14,7 +15,7 @@ class GroupScheduleRemoteDatasourceImpl @Inject constructor(
         groupScheduleService.insertSchedule(groupId, GroupScheduleMapper.toDto(groupSchedule))
     }
 
-    override suspend fun getAllSchedule(groupId: Int): TimelyResult<List<GroupSchedule>> {
+    override suspend fun getAllSchedule(groupId: Int): TimelyResult<List<GroupScheduleInfo>> {
         val response = groupScheduleService.getAllScheduleList(groupId)
         val scheduleList = response.body()?.map { GroupScheduleMapper.toDomain(it) } ?: listOf()
         return TimelyResult.Success(scheduleList)
