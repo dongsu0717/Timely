@@ -1,8 +1,8 @@
 package com.dongsu.timely.data.repository
 
 import com.dongsu.timely.common.TimelyResult
-import com.dongsu.timely.data.datasource.UserLocalDatasource
-import com.dongsu.timely.data.datasource.UserRemoteDatasource
+import com.dongsu.timely.data.datasource.local.UserLocalDatasource
+import com.dongsu.timely.data.datasource.remote.UserRemoteDatasource
 import com.dongsu.timely.domain.repository.UserRepository
 import javax.inject.Inject
 

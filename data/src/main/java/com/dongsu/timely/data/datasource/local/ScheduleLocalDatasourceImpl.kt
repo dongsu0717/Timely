@@ -1,7 +1,6 @@
-package com.dongsu.timely.data.datasource.datasourceImpl.local
+package com.dongsu.timely.data.datasource.local
 
 import com.dongsu.timely.common.TimelyResult
-import com.dongsu.timely.data.datasource.ScheduleLocalDatasource
 import com.dongsu.timely.data.local.room.dao.ScheduleDAO
 import com.dongsu.timely.data.mapper.ScheduleMapper
 import com.dongsu.timely.domain.model.Schedule

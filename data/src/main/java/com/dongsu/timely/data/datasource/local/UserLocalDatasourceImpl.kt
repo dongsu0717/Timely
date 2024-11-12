@@ -1,9 +1,8 @@
-package com.dongsu.timely.data.datasource.datasourceImpl.local
+package com.dongsu.timely.data.datasource.local
 
 import android.content.SharedPreferences
 import android.util.Log
 import com.dongsu.timely.common.TimelyResult
-import com.dongsu.timely.data.datasource.UserLocalDatasource
 import javax.inject.Inject
 
 class UserLocalDatasourceImpl @Inject constructor(

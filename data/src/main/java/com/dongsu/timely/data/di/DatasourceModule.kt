@@ -1,15 +1,15 @@
 package com.dongsu.timely.data.di
 
-import com.dongsu.timely.data.datasource.GroupRemoteDatasource
-import com.dongsu.timely.data.datasource.GroupScheduleRemoteDatasource
-import com.dongsu.timely.data.datasource.ScheduleLocalDatasource
-import com.dongsu.timely.data.datasource.UserLocalDatasource
-import com.dongsu.timely.data.datasource.UserRemoteDatasource
-import com.dongsu.timely.data.datasource.datasourceImpl.local.ScheduleLocalDatasourceImpl
-import com.dongsu.timely.data.datasource.datasourceImpl.local.UserLocalDatasourceImpl
-import com.dongsu.timely.data.datasource.datasourceImpl.remote.GroupRemoteDatasourceImpl
-import com.dongsu.timely.data.datasource.datasourceImpl.remote.GroupScheduleRemoteDatasourceImpl
-import com.dongsu.timely.data.datasource.datasourceImpl.remote.UserRemoteDatasourceImpl
+import com.dongsu.timely.data.datasource.remote.GroupRemoteDatasource
+import com.dongsu.timely.data.datasource.remote.GroupScheduleRemoteDatasource
+import com.dongsu.timely.data.datasource.local.ScheduleLocalDatasource
+import com.dongsu.timely.data.datasource.local.UserLocalDatasource
+import com.dongsu.timely.data.datasource.remote.UserRemoteDatasource
+import com.dongsu.timely.data.datasource.local.ScheduleLocalDatasourceImpl
+import com.dongsu.timely.data.datasource.local.UserLocalDatasourceImpl
+import com.dongsu.timely.data.datasource.remote.GroupRemoteDatasourceImpl
+import com.dongsu.timely.data.datasource.remote.GroupScheduleRemoteDatasourceImpl
+import com.dongsu.timely.data.datasource.remote.UserRemoteDatasourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
