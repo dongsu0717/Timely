@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "621772124798",
+    "project_id": "fcmtest-3c5d1",
+    "storage_bucket": "fcmtest-3c5d1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621772124798:android:57056f01e2fceb01895e2f",
+        "android_client_info": {
+          "package_name": "com.dongsu.timely"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHT4cTw1lgoJSkTt9QX4arxTkYFYRy3Yg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621772124798:android:3301e3e977d96e77895e2f",
+        "android_client_info": {
+          "package_name": "com.example.fcmtest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHT4cTw1lgoJSkTt9QX4arxTkYFYRy3Yg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

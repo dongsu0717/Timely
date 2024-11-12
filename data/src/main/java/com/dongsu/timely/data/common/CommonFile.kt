@@ -13,6 +13,12 @@ suspend fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }
+//Auth
+const val AUTH_HEADER = "Authorization"
+const val BEARER = "Bearer"
+const val ACCESS_TOKEN = "access_token"
+const val REFRESH_TOKEN = "refresh_token"
+const val IS_LOGGED_IN = "is_logged_in"
 
 //TMP_URL
 const val TMAP_BASE_URL = "https://apis.openapi.sk.com/"
@@ -46,3 +52,9 @@ const val JOIN_GROUP = "$API_VERSION/groups/signup/{inviteCode)"
 //group schedule
 const val GROUP_SCHEDULE = "$API_VERSION/groups/{groupId}/schedule"
 const val GROUP_SCHEDULE_PARTICIPATION = "$API_VERSION/groups/{groupId}/schedule/{scheduleId}/participation"
+
+//fcm
+const val FCM = "$API_VERSION/fcm"
+
+//another
+const val EMPTY_STRING = ""
