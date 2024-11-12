@@ -1,5 +1,6 @@
 package com.dongsu.timely.domain.usecase.schedule
 
+import com.dongsu.timely.domain.common.LOCAL_DATE_TIME_FORMAT
 import com.dongsu.timely.domain.model.Schedule
 import com.dongsu.timely.domain.repository.AlarmRepository
 import com.dongsu.timely.domain.repository.ScheduleRepository
@@ -21,7 +22,7 @@ class AddScheduleUseCase @Inject constructor(
         }
     }
     private fun convertToLocalDateTime(date: String, time: String): LocalDateTime {
-        val localDate = LocalDateTime.parse("$date $time", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+        val localDate = LocalDateTime.parse("$date $time", DateTimeFormatter.ofPattern(LOCAL_DATE_TIME_FORMAT))
         return localDate
     }
 }

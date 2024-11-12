@@ -1,4 +1,4 @@
-package com.dongsu.timely.data.datasource.datasourceImpl
+package com.dongsu.timely.data.datasource.datasourceImpl.remote
 
 import android.util.Log
 import com.dongsu.timely.data.datasource.UserLocalDatasource

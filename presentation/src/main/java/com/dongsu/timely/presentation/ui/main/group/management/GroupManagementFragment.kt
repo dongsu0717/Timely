@@ -1,11 +1,14 @@
 package com.dongsu.timely.presentation.ui.main.group.management
 
+import android.util.Log
 import com.dongsu.presentation.databinding.FragmentGroupManagementBinding
-import com.dongsu.timely.presentation.common.BaseFragment
+import com.dongsu.timely.presentation.common.BaseTabFragment
 
-class GroupManagementFragment: BaseFragment<FragmentGroupManagementBinding>(FragmentGroupManagementBinding::inflate) {
+class GroupManagementFragment: BaseTabFragment<FragmentGroupManagementBinding>(FragmentGroupManagementBinding::inflate) {
+
+
     override fun initView() {
-        TODO("Not yet implemented")
+        Log.e("관리", groupId.toString())
     }
 
 }

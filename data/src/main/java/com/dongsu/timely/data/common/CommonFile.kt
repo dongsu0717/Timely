@@ -40,6 +40,7 @@ const val REISSUED_ALL_TOKEN = "auth/token/refresh"
 //group
 const val GROUP = "$API_VERSION/groups"
 const val GROUP_INFO = "$API_VERSION/groups/{groupId}"
+const val GROUP_SCHEDULE = "$API_VERSION/groups/{groupId}/schedule"
 const val INVITE_GROUP = "$API_VERSION/groups/{groupId}/invite-code"
 const val JOIN_GROUP = "$API_VERSION/groups/signup/{inviteCode)"
 

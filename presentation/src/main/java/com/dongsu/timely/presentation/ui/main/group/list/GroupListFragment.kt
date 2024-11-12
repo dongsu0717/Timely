@@ -1,6 +1,5 @@
-package com.dongsu.timely.presentation.ui.main.group
+package com.dongsu.timely.presentation.ui.main.group.list
 
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -39,8 +38,8 @@ class GroupListFragment: BaseFragment<FragmentGroupListBinding>(FragmentGroupLis
         binding.rvGroupList.adapter = groupListAdapter
     }
     private fun actionGroupClick(group: Group){
-        val bundle = bundleOf("groupId" to group.groupId)
-        findNavController().navigate(R.id.action_groupListFragment_to_groupDateFragment, bundle)
+        val action = GroupListFragmentDirections.actionGroupListFragmentToGroupPageFragment(group.groupId,group.groupName)
+        findNavController().navigate(action)
     }
     private fun getGroupList(){
         lifecycleScope.launch {
@@ -57,7 +56,7 @@ class GroupListFragment: BaseFragment<FragmentGroupListBinding>(FragmentGroupLis
                 is TimelyResult.Loading -> {
                     toastShort(requireContext(), GET_LOADING)
                 }
-                is TimelyResult.Error -> {
+                is TimelyResult.NetworkError -> {
                     toastShort(requireContext(), GET_ERROR)
                 }
                 else -> {}

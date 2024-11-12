@@ -16,7 +16,7 @@ class GroupCreateViewModel @Inject constructor(
             groupRepository.createGroup(groupName)
             TimelyResult.Success(Unit)
         } catch (e: Exception) {
-            TimelyResult.Error(e)
+            TimelyResult.NetworkError(e)
         }
     }
 }

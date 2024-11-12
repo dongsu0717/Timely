@@ -1,5 +1,6 @@
 package com.dongsu.timely.presentation.ui.main.calendar.home
 
+//import com.dongsu.timely.presentation.common.toastShort
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -8,14 +9,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.dongsu.presentation.R
-import com.dongsu.timely.common.TimelyResult
 import com.dongsu.presentation.databinding.FragmentCalendarBinding
 import com.dongsu.presentation.databinding.ScheduleBoxBinding
+import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.presentation.common.BaseFragment
 import com.dongsu.timely.presentation.common.EnumColor
 import com.dongsu.timely.presentation.common.collectWhenStarted
 import com.dongsu.timely.presentation.common.debouncedClickListener
-//import com.dongsu.timely.presentation.common.toastShort
 import com.dongsu.timely.presentation.ui.main.calendar.home.container.DayViewContainer
 import com.dongsu.timely.presentation.ui.main.calendar.home.container.MonthViewContainer
 import com.dongsu.timely.presentation.viewmodel.calendar.home.CalendarViewModel
@@ -239,7 +239,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
                 }
 
                 is TimelyResult.Loading -> {}
-                is TimelyResult.Error -> {
+                is TimelyResult.RoomDBError -> {
 //                    toastShort("일정을 불러오는데 실패했습니다.")
                 }
 

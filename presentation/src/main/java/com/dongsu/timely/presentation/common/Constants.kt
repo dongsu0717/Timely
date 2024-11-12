@@ -18,3 +18,14 @@ const val OMG = "니가왜떠???"
 //가져오기
 const val GET_ERROR = "데이터를 가져오는데 실패하였습니다."
 const val GET_LOADING = "가져오는중...."
+
+//bundle
+const val GROUP_ID = "groupId"
+
+//tab
+const val GROUP_SCHEDULE = "일정"
+const val GROUP_LOCATION = "위치"
+const val GROUP_MANAGEMENT = "관리"
+
+//groupSchedule
+const val DEFAULT_ALARM_TIME = 1
