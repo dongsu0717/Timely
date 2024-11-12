@@ -1,4 +1,4 @@
-package com.dongsu.timely.service
+package com.dongsu.timely.service.alarm
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -14,6 +14,17 @@ import androidx.core.app.NotificationCompat
 import com.dongsu.service.R
 import com.dongsu.timely.domain.model.ScheduleDistanceTime
 import com.dongsu.timely.domain.model.UserLocation
+import com.dongsu.timely.service.common.ALARM_ID
+import com.dongsu.timely.service.common.ALARM_ROUTE_ID
+import com.dongsu.timely.service.common.PERSONAL_CHANNEL_ID
+import com.dongsu.timely.service.common.PERSONAL_CHANNEL_NAME
+import com.dongsu.timely.service.common.PERSONAL_ROUTE_CHANNEL_DESCRIPTION
+import com.dongsu.timely.service.common.PERSONAL_ROUTE_CHANNEL_ID
+import com.dongsu.timely.service.common.PERSONAL_ROUTE_CHANNEL_NAME
+import com.dongsu.timely.service.common.TIME_TO_SCHEDULE
+import com.dongsu.timely.service.common.TMAP_MARKET_URL
+import com.dongsu.timely.service.common.TMAP_PACKAGE_NAME
+import com.dongsu.timely.service.common.TMAP_ROUTE_URL
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -1,4 +1,4 @@
-package com.dongsu.timely.service
+package com.dongsu.timely.service.common
 
 const val LOADING_GET_LOCATION = "위치 정보를 가져오는 중입니다 "
 const val ERROR_GET_LOCATION = "위치 정보를 가져오는데 실패했습니다."

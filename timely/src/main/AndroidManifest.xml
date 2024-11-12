@@ -57,7 +57,7 @@
             </intent-filter>
         </activity>
         <receiver
-            android:name=".service.AlarmReceiver"
+            android:name=".service.alarm.AlarmReceiver"
             android:enabled="true"
             android:exported="true" >
         </receiver>
