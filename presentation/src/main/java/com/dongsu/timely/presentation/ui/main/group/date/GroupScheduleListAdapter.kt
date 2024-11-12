@@ -6,15 +6,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dongsu.presentation.databinding.ItemCardGroupScheduleBinding
-import com.dongsu.timely.domain.model.GroupSchedule
+import com.dongsu.timely.domain.model.GroupScheduleInfo
 
 
 class GroupScheduleListAdapter(
-    private val onCheckBoxClick: (GroupSchedule, Boolean) -> Unit
-) : ListAdapter<GroupSchedule, GroupScheduleListAdapter.GroupScheduleListViewHolder>(GroupDiffCallback()) {
+    private val onCheckBoxClick: (GroupScheduleInfo, Boolean) -> Unit
+) : ListAdapter<GroupScheduleInfo, GroupScheduleListAdapter.GroupScheduleListViewHolder>(GroupDiffCallback()) {
 
     class GroupScheduleListViewHolder(private val binding: ItemCardGroupScheduleBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(groupSchedule: GroupSchedule, onCheckBoxClick: (GroupSchedule,Boolean) -> Unit){
+        fun bind(groupSchedule: GroupScheduleInfo, onCheckBoxClick: (GroupScheduleInfo, Boolean) -> Unit){
             with(binding){
                 tvGroupName.text = groupSchedule.title
                 tvGroupPlace.text = groupSchedule.location
@@ -38,12 +38,12 @@ class GroupScheduleListAdapter(
         holder.bind(groupSchedule, onCheckBoxClick)
     }
 
-    class GroupDiffCallback : DiffUtil.ItemCallback<GroupSchedule>() {
-        override fun areItemsTheSame(oldItem: GroupSchedule, newItem: GroupSchedule): Boolean {
-            return oldItem.longitude == newItem.longitude
+    class GroupDiffCallback : DiffUtil.ItemCallback<GroupScheduleInfo>() {
+        override fun areItemsTheSame(oldItem: GroupScheduleInfo, newItem: GroupScheduleInfo): Boolean {
+            return oldItem.scheduleId == newItem.scheduleId
         }
 
-        override fun areContentsTheSame(oldItem: GroupSchedule, newItem: GroupSchedule): Boolean {
+        override fun areContentsTheSame(oldItem: GroupScheduleInfo, newItem: GroupScheduleInfo): Boolean {
             return oldItem == newItem
         }
 

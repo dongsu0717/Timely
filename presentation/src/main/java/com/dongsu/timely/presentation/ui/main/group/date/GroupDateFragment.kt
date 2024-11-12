@@ -35,11 +35,11 @@ class GroupDateFragment : BaseTabFragment<FragmentGroupDateBinding>(FragmentGrou
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
     private fun setAdapter() {
-        groupScheduleListAdapter = GroupScheduleListAdapter{ groupSchedule, isChecked ->
+        groupScheduleListAdapter = GroupScheduleListAdapter{ groupScheduleInfo, isChecked ->
             if(isChecked) {
-
+                groupDateViewModel.participationSchedule(groupId, groupScheduleInfo.scheduleId)
             } else {
-
+                groupDateViewModel.cancelParticipationSchedule(groupId, groupScheduleInfo.scheduleId)
             }
         }
         binding.recyclerView.adapter= groupScheduleListAdapter
