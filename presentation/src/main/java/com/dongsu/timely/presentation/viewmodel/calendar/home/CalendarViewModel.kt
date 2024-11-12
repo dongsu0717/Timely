@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.Schedule
-import com.dongsu.timely.domain.usecase.schedule.GetScheduleListUseCase
+import com.dongsu.timely.domain.usecase.GetScheduleListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
