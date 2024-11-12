@@ -26,3 +26,6 @@ const val GROUP_ID = "groupId"
 const val GROUP_SCHEDULE = "일정"
 const val GROUP_LOCATION = "위치"
 const val GROUP_MANAGEMENT = "관리"
+
+//groupSchedule
+const val DEFAULT_ALARM_TIME = 1

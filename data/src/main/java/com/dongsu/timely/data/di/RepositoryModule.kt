@@ -1,10 +1,12 @@
 package com.dongsu.timely.data.di
 
 import com.dongsu.timely.data.repository.GroupRepositoryImpl
+import com.dongsu.timely.data.repository.GroupScheduleRepositoryImpl
 import com.dongsu.timely.data.repository.ScheduleRepositoryImpl
 import com.dongsu.timely.data.repository.TMapRepositoryImpl
 import com.dongsu.timely.data.repository.UserRepositoryImpl
 import com.dongsu.timely.domain.repository.GroupRepository
+import com.dongsu.timely.domain.repository.GroupScheduleRepository
 import com.dongsu.timely.domain.repository.ScheduleRepository
 import com.dongsu.timely.domain.repository.TMapRepository
 import com.dongsu.timely.domain.repository.UserRepository
@@ -41,5 +43,12 @@ abstract class RepositoryModule {
     abstract fun provideGroupRepository(
         groupRepositoryImpl: GroupRepositoryImpl,
     ): GroupRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideGroupScheduleRepository(
+        groupShedRepositoryImpl: GroupScheduleRepositoryImpl,
+    ): GroupScheduleRepository
+
 }
 

@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.FragmentSearchLocationBinding
@@ -22,6 +23,7 @@ class SearchLocationFragment :
     BaseFragment<FragmentSearchLocationBinding>(FragmentSearchLocationBinding::inflate) {
 
     private val searchViewModel: SearchLocationViewModel by viewModels()
+    private val args: SearchLocationFragmentArgs by navArgs()
     private lateinit var searchAdapter: SearchAdapter
 
     override fun initView() {
@@ -40,15 +42,11 @@ class SearchLocationFragment :
         binding.recyclerViewPoi.adapter = searchAdapter
     }
     private fun setNaviGraph(poiItem: PoiItem) {
-        val action = SearchLocationFragmentDirections.actionSearchLocationFragmentToAddScheduleFragment(
-            poiItem.noorLat,
-            poiItem.noorLon,
-            poiItem.name
-        )
-        val navOptions = NavOptions.Builder()
-            .setPopUpTo(R.id.searchLocationFragment, inclusive = true)
-            .build()
-        findNavController().navigate(action,navOptions)
+        if (args.groupId != 0) {
+            goGroupAddSchedule(poiItem)
+        } else{
+            goAddSchedule(poiItem)
+        }
     }
     private fun search(){
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -72,12 +70,34 @@ class SearchLocationFragment :
                     is TimelyResult.Loading -> {
                         // 로딩 중 처리
                     }
-                    is TimelyResult.Error -> {
+                    is TimelyResult.NetworkError -> {
                         // 에러 처리
                     }
                     else -> {}
                 }
             }
         }
+    }
+    private fun goGroupAddSchedule(poiItem: PoiItem) {
+        val action = SearchLocationFragmentDirections.actionSearchLocationFragmentToGroupAddScheduleFragment(
+            poiItem.noorLat,
+            poiItem.noorLon,
+            poiItem.name
+        )
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.searchLocationFragment, inclusive = true)
+            .build()
+        findNavController().navigate(action,navOptions)
+    }
+    private fun goAddSchedule(poiItem: PoiItem) {
+        val action = SearchLocationFragmentDirections.actionSearchLocationFragmentToAddScheduleFragment(
+            poiItem.noorLat,
+            poiItem.noorLon,
+            poiItem.name
+        )
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.searchLocationFragment, inclusive = true)
+            .build()
+        findNavController().navigate(action,navOptions)
     }
 }
