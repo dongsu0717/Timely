@@ -8,5 +8,6 @@ interface GroupScheduleRepository {
     suspend fun insertSchedule(groupId: Int,groupSchedule: GroupSchedule)
     suspend fun getAllSchedule(groupId: Int): TimelyResult<List<GroupScheduleInfo>>
     suspend fun getSchedule()
-    suspend fun participationSchedule()
+    suspend fun participationSchedule(groupId: Int, scheduleId: Int)
+    suspend fun cancelParticipationSchedule(groupId: Int, scheduleId: Int)
 }

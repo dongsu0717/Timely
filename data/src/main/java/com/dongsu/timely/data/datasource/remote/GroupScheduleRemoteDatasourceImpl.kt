@@ -20,6 +20,14 @@ class GroupScheduleRemoteDatasourceImpl @Inject constructor(
         val scheduleList = response.body()?.map { GroupScheduleMapper.toDomain(it) } ?: listOf()
         return TimelyResult.Success(scheduleList)
     }
+
+    override suspend fun participationSchedule(groupId: Int, scheduleId: Int) {
+        groupScheduleService.participationSchedule(groupId, scheduleId)
+    }
+
+    override suspend fun cancelParticipationSchedule(groupId: Int, scheduleId: Int) {
+        groupScheduleService.cancelParticipationSchedule(groupId, scheduleId)
+    }
 }
 
 

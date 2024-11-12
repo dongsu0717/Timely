@@ -14,11 +14,16 @@ class GroupScheduleRepositoryImpl @Inject constructor(
     = groupScheduleRemoteDatasource.insertSchedule(groupId, groupSchedule)
 
 
-    override suspend fun getAllSchedule(groupId: Int): TimelyResult<List<GroupScheduleInfo>> {
-        return groupScheduleRemoteDatasource.getAllSchedule(groupId)
-    }
+    override suspend fun getAllSchedule(groupId: Int): TimelyResult<List<GroupScheduleInfo>>
+    = groupScheduleRemoteDatasource.getAllSchedule(groupId)
+
 
     override suspend fun getSchedule() {}
 
-    override suspend fun participationSchedule() {}
+    override suspend fun participationSchedule(groupId: Int, scheduleId: Int)
+    = groupScheduleRemoteDatasource.participationSchedule(groupId, scheduleId)
+
+    override suspend fun cancelParticipationSchedule(groupId: Int, scheduleId: Int)
+    = groupScheduleRemoteDatasource.cancelParticipationSchedule(groupId, scheduleId)
+
 }
