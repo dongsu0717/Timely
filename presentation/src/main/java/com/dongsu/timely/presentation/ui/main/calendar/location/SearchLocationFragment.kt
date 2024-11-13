@@ -82,7 +82,8 @@ class SearchLocationFragment :
         val action = SearchLocationFragmentDirections.actionSearchLocationFragmentToGroupAddScheduleFragment(
             poiItem.noorLat,
             poiItem.noorLon,
-            poiItem.name
+            poiItem.name,
+            args.groupId
         )
         val navOptions = NavOptions.Builder()
             .setPopUpTo(R.id.searchLocationFragment, inclusive = true)
