@@ -166,6 +166,9 @@
             <argument
                 android:name="place"
                 app:argType="string" />
+            <argument
+                android:name="groupId"
+                app:argType="integer" />
         </action>
         <argument
             android:name="groupId"
