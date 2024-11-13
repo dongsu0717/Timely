@@ -74,9 +74,16 @@ dependencies {
     implementation(libs.google.hilt)
     kapt(libs.hilt.compiler)
 
-    //kakao
+    //kakao login, share
     implementation ("com.kakao.sdk:v2-user:2.20.6")
     implementation ("com.kakao.sdk:v2-share:2.20.6")
+
+    //kakao map
+    implementation ("com.kakao.maps.open:android:2.12.8")
+    
+    //fcm
     implementation(libs.firebase.messaging)
+
+
 
 }

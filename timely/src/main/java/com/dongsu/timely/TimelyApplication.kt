@@ -5,6 +5,7 @@ import android.util.Log
 import com.dongsu.timely.BuildConfig.KAKAO_API_KEY
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.util.Utility
+import com.kakao.vectormap.KakaoMapSdk
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -17,6 +18,7 @@ class TimelyApplication:Application() {
         super.onCreate()
         timelyApplication = this
         KakaoSdk.init(this,KAKAO_API_KEY)
+        KakaoMapSdk.init(this,KAKAO_API_KEY)
         val hashKey = Utility.getKeyHash(this)
         Log.d("hash",hashKey)
     }

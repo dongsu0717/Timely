@@ -64,4 +64,8 @@
     <color name="light_blueberry">#3C78E8</color>
     <color name="light_basil">#5DCB65</color>
     <color name="light_tomato">#EA2128</color>
+
+
+    <!-- 약속 장소 위치 Polygon-->
+    <color name="place_color">#6371FF04</color>"
 </resources>
