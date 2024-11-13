@@ -72,6 +72,10 @@ dependencies {
     //annotations. 해야 중복방지
     implementation("org.jetbrains:annotations:23.0.0")
 
+    //kakao login, share
     implementation ("com.kakao.sdk:v2-user:2.20.6")
     implementation ("com.kakao.sdk:v2-share:2.20.6")
+
+    //kakao map
+    implementation ("com.kakao.maps.open:android:2.12.8")
 }
