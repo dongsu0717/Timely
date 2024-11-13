@@ -13,7 +13,7 @@ object GroupMapper {
             Group(
                 groupId = groupResponse.groupId,
                 groupName = groupResponse.groupName,
-                users = UserMapper.toDomainUser(groupResponse.hostUser),
+                users = UserMapper.toDomain(groupResponse.hostUser),
                 createdAt = groupResponse.createAt,
                 memberNumber = groupResponse.memberNumber
             )

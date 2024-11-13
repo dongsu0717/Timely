@@ -2,10 +2,12 @@ package com.dongsu.timely.presentation.ui.main.group.location
 
 import android.graphics.Color
 import android.util.Log
+import androidx.fragment.app.viewModels
 import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.FragmentGroupLocationBinding
 import com.dongsu.timely.presentation.common.BaseTabFragment
 import com.dongsu.timely.presentation.common.CommonUtils
+import com.dongsu.timely.presentation.viewmodel.group.GroupLocationViewModel
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
@@ -20,6 +22,7 @@ import com.kakao.vectormap.shape.Polygon
 
 class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(FragmentGroupLocationBinding::inflate)  {
 
+    private val groupLocationViewModel: GroupLocationViewModel by viewModels()
     private lateinit var mapView: MapView
 
     private val startZoomLevel = 15

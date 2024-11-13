@@ -8,7 +8,7 @@ object UserMapper {
     fun toDto(token: String): SendTokenRequest {
         return SendTokenRequest(accessToken = token)
     }
-    fun toDomainUser(userResponse: UserResponse): User {
+    fun toDomain(userResponse: UserResponse): User {
         return User(
             userId = userResponse.userId,
             email = userResponse.email,
