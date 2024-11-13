@@ -34,6 +34,7 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
         Log.e("그룹스케줄추가", "$args")
         setupToolbar()
         toolbarAction()
+        setupArgs()
         getCurrentDataAndTime()
         choiceSchedule()
     }
@@ -53,6 +54,9 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
                 else -> false
             }
         }
+    }
+    private fun setupArgs() {
+        binding.tvAppointmentPlace.text = args.place
     }
     private fun choiceSchedule() {
         with(binding) {
