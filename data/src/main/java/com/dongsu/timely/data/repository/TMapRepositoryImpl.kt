@@ -1,7 +1,7 @@
 package com.dongsu.timely.data.repository
 
 import com.dongsu.timely.common.TimelyResult
-import com.dongsu.timely.data.mapper.LocationMapper
+import com.dongsu.timely.data.mapper.PoiLocationMapper
 import com.dongsu.timely.data.remote.api.TmapService
 import com.dongsu.timely.domain.model.PoiItem
 import com.dongsu.timely.domain.repository.TMapRepository
@@ -15,7 +15,7 @@ class TMapRepositoryImpl @Inject constructor(
     override suspend fun searchPlaces(keyword: String): TimelyResult<MutableList<PoiItem>>
     = try {
             val response = tmapService.searchPlaces(keyword = keyword)
-            val poiItems = response.body()?.searchPoiInfo?.pois?.poi?.map { LocationMapper.toDomain(it) }?.toMutableList() ?: mutableListOf()
+            val poiItems = response.body()?.searchPoiInfo?.pois?.poi?.map { PoiLocationMapper.toDomain(it) }?.toMutableList() ?: mutableListOf()
             TimelyResult.Success(poiItems)
         } catch (e: Exception) {
             TimelyResult.NetworkError(e)
