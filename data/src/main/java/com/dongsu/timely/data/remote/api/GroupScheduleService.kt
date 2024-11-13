@@ -8,6 +8,7 @@ import com.dongsu.timely.data.remote.dto.request.LocationRequest
 import com.dongsu.timely.data.remote.dto.response.CommonResponse
 import com.dongsu.timely.data.remote.dto.response.GroupScheduleResponse
 import com.dongsu.timely.data.remote.dto.response.ParticipationMemberResponse
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -42,10 +43,10 @@ interface GroupScheduleService {
     ): Response<Unit>
 
     @PUT(LOCATION)
-    suspend fun updateMyLocation(
+    fun updateMyLocation(
         @Path("scheduleId") scheduleId: Int,
-        @Body updateLocationRequest: LocationRequest
-    ): Response<Unit>
+        @Body locationRequest: LocationRequest
+    ): Call<Unit>
 
     @GET(LOCATION)
     suspend fun getGroupLocation(
