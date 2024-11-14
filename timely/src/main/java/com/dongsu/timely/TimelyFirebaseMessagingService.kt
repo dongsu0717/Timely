@@ -22,6 +22,7 @@ import com.dongsu.timely.presentation.ui.main.TimelyActivity
 import com.dongsu.timely.service.common.FCM_APPOINTMENT_BODY
 import com.dongsu.timely.service.common.FCM_APPOINTMENT_CHANNEL_ID
 import com.dongsu.timely.service.common.FCM_APPOINTMENT_CHANNEL_NAME
+import com.dongsu.timely.service.common.FCM_APPOINTMENT_TITLE
 import com.dongsu.timely.service.common.FCM_CREATE_SCHEDULE_BODY
 import com.dongsu.timely.service.common.FCM_CREATE_SCHEDULE_CHANNEL_ID
 import com.dongsu.timely.service.common.FCM_CREATE_SCHEDULE_CHANNEL_NAME
@@ -106,8 +107,8 @@ class TimelyFirebaseMessagingService : FirebaseMessagingService() {
     private fun createAppointmentNotification(groupName: String, scheduleTitle: String)
             = NotificationCompat.Builder(this, FCM_CREATE_SCHEDULE_CHANNEL_ID)
         .setSmallIcon(com.dongsu.service.R.drawable.baseline_notifications_active_24)
-        .setContentTitle(groupName)
-        .setContentText(String.format(Locale.getDefault(), FCM_APPOINTMENT_BODY, scheduleTitle))
+        .setContentTitle(String.format(Locale.getDefault(), FCM_APPOINTMENT_TITLE, scheduleTitle))
+        .setContentText(FCM_APPOINTMENT_BODY)
         .setAutoCancel(true)
         .build()
 
@@ -131,6 +132,7 @@ class TimelyFirebaseMessagingService : FirebaseMessagingService() {
         )
         val scheduleStartTimeStr = message.data[SCHEDULE_START_TIME].toString()
         val initialDelay = calculateInitialDelay(scheduleStartTimeStr, 30)
+
         val workRequest: WorkRequest = OneTimeWorkRequestBuilder<LocationWorker>()
             .setConstraints(constraints)
 //            .setInitialDelay(initialDelay, TimeUnit.MINUTES) //실제 약속시간시간 30분전에 울리는거
@@ -139,6 +141,7 @@ class TimelyFirebaseMessagingService : FirebaseMessagingService() {
             .build()
         WorkManager.getInstance(applicationContext).enqueue(workRequest)
     }
+
     private fun calculateInitialDelay(startTimeStr: String, minutesBefore: Long): Long {
         val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
         val scheduleStartTime = LocalDateTime.parse(startTimeStr, formatter)
@@ -147,4 +150,5 @@ class TimelyFirebaseMessagingService : FirebaseMessagingService() {
         val delayDuration = Duration.between(currentTime, scheduleStartTime.minusMinutes(minutesBefore))
         return if (delayDuration.isNegative) 0 else delayDuration.toMinutes()
     }
+
 }
