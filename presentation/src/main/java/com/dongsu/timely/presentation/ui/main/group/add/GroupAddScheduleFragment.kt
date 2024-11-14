@@ -46,6 +46,7 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
             when (it.itemId) {
                 R.id.action_save -> {
                     saveSchedule()
+                    findNavController().popBackStack()
                     true
                 }
 
