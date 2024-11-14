@@ -136,7 +136,7 @@ class TimelyFirebaseMessagingService : FirebaseMessagingService() {
         val workRequest: WorkRequest = OneTimeWorkRequestBuilder<LocationWorker>()
             .setConstraints(constraints)
 //            .setInitialDelay(initialDelay, TimeUnit.MINUTES) //실제 약속시간시간 30분전에 울리는거
-            .setInitialDelay(15,TimeUnit.SECONDS) //실험용 15초뒤에 작동 시키기
+            .setInitialDelay(10,TimeUnit.SECONDS) //실험용 15초뒤에 작동 시키기
             .setInputData(workData)
             .build()
         WorkManager.getInstance(applicationContext).enqueue(workRequest)

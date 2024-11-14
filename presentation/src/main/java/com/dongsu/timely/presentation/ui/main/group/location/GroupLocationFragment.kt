@@ -25,9 +25,11 @@ import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.label.LabelTextBuilder
 import com.kakao.vectormap.shape.Polygon
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(FragmentGroupLocationBinding::inflate)  {
 
     private val groupLocationViewModel: GroupLocationViewModel by viewModels()
@@ -40,7 +42,6 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
     override fun initView() {
         Log.e("위치프래그먼트", groupId.toString())
         checkStartMap()
-
     }
     private val readyCallback: KakaoMapReadyCallback = object : KakaoMapReadyCallback() {
         override fun onMapReady(kakaoMap: KakaoMap) {
@@ -116,10 +117,14 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
         override fun onMapDestroy() = toastShort(requireContext(),"onMapDestroy") // 지도 API 가 정상적으로 종료될 때 호출됨
         override fun onMapError(error: java.lang.Exception) = toastShort(requireContext(),"onMapError")  // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
     }
+
+
     private fun checkStartMap(){
         lifecycleScope.launch {
             val scheduleId = getScheduleIdShowMap()
+            Log.e("GroupLocationFragment","가져올 scheduleId: $scheduleId")
             if (scheduleId != null && scheduleId != -1) {
+                Log.e("GroupLocationFragment","맵 열릴 scheduleId: $scheduleId")
                 binding.tvNothingScheduleTime.visibility = View.GONE
                 mapView = binding.mapView
                 mapView.start(lifeCycleCallback, readyCallback)
@@ -131,9 +136,10 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
 
     private fun getParticipationMember(kakaoMap: KakaoMap){
         lifecycleScope.launch {
-            groupLocationViewModel.groupMembersLocation.collectLatest { members ->
+            groupLocationViewModel.groupMembersLocation.collectLatest { members -> //멤버들 가져오기
                 when(members){
                     is TimelyResult.Success -> {
+                        Log.e("멤버들 가져오기", members.resultData.toString())
                         updateMemberLocationsOnMap(kakaoMap,members.resultData)
                     }
                     is TimelyResult.Loading -> {
@@ -152,11 +158,10 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
     }
     private fun updateMemberLocationsOnMap(kakaoMap: KakaoMap, members: List<ParticipationMember>) {
         val labelManager = kakaoMap.labelManager
-
         members.forEach { member ->
             // 라벨 스타일 설정
             val labelStyle = LabelStyles.from(
-                LabelStyle.from(R.drawable.blue_marker).setTextStyles(32, Color.BLACK)
+                LabelStyle.from(R.drawable.current_location).setTextStyles(32, Color.BLACK)
             )
             val location = LatLng.from(member.userLocation.locationLatitude, member.userLocation.locationLongitude)
             val labelTextBuilder = LabelTextBuilder().setTexts(member.user.nickname)

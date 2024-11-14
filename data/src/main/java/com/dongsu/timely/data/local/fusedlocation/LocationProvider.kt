@@ -20,10 +20,10 @@ class LocationProvider @Inject constructor(
 
         val locationRequest = LocationRequest.Builder(
             Priority.PRIORITY_HIGH_ACCURACY,
-            3_000L
+            2_000L
         ).apply {
             setMinUpdateIntervalMillis(2_000L)
-            setMaxUpdateDelayMillis(10_000L) // 최대 지연 시간 (15초)
+            setMaxUpdateDelayMillis(3_000L)
         }.build()
 
         fusedLocationClient.requestLocationUpdates(

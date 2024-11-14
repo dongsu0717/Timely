@@ -23,9 +23,11 @@ class GroupLocationViewModel @Inject constructor(
 
     fun getParticipationMemberLocation(scheduleId: Int) {
         viewModelScope.launch {
-            _groupMembersLocation.value = groupScheduleRepository.getParticipationMemberLocation(scheduleId)
+            _groupMembersLocation.value =
+                groupScheduleRepository.getParticipationMemberLocation(scheduleId)
         }
     }
-    suspend fun getScheduleIdShowMap(groupId: Int): Int? // return값 Int는 scheduleId
-    = getScheduleShowMapUseCase(groupId)
+    suspend fun getScheduleIdShowMap(groupId: Int): Int? { // return값 Int는 scheduleId
+        return getScheduleShowMapUseCase.a(groupId)
+    }
 }

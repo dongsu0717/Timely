@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetScheduleShowMapUseCase @Inject constructor(
     private val groupScheduleRepository: GroupScheduleRepository
 ){
-    suspend operator fun invoke(groupId: Int): Int? {
+    suspend  fun a(groupId: Int): Int? {
         var scheduleId: Int? = null
             val result = groupScheduleRepository.getAllSchedule(groupId)
             when (result) {
@@ -17,13 +17,13 @@ class GetScheduleShowMapUseCase @Inject constructor(
                     val now = LocalDateTime.now()
                     val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
                     scheduleId = result.resultData.firstOrNull { schedule ->
-                        val startTime = LocalDateTime.parse(schedule.startTime, formatter)
-                        startTime.isBefore(now.minusMinutes(30)) && schedule.isAlarmEnabled
-                    }?.scheduleId
+                        val startTime = LocalDateTime.parse(schedule.groupSchedule.startTime, formatter)
+
+                        startTime.isAfter(now) && startTime.isBefore(now.plusMinutes(30)) && schedule.isParticipating
+                    }?.groupSchedule?.scheduleId
                 }
                 else -> {}
             }
         return scheduleId
     }
-
 }
