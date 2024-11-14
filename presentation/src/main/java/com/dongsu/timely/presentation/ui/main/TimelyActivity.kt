@@ -15,6 +15,7 @@ import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.ActivityTimelyBinding
 import com.dongsu.timely.common.GROUP_ID
 import com.dongsu.timely.common.GROUP_NAME
+import com.dongsu.timely.common.SCHEDULE_ID
 import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.presentation.common.CommonDialogFragment
 import com.dongsu.timely.presentation.common.LOGIN_MESSAGE
@@ -73,6 +74,7 @@ class TimelyActivity : AppCompatActivity() {
                     }
                     return@setOnItemSelectedListener false
                 }
+                // else -> it.onNavDestinationSelected(navController)
             }
             it.onNavDestinationSelected(navController)
         }
@@ -98,27 +100,30 @@ class TimelyActivity : AppCompatActivity() {
     private fun checkArgument(navController: NavController) {
         val groupId = intent.getIntExtra(GROUP_ID,-1)
         val groupName = intent.getStringExtra(GROUP_NAME)
+        val scheduleId = intent.getIntExtra(SCHEDULE_ID, -1)
+
         Log.e("timly",groupId.toString())
-        if (groupId != -1 && groupName != null) {
-            goGroupDetail(navController, groupId,groupName)
-            Log.e("timely","$groupId")
+        if (groupId != -1) {
+            goGroupDetail(navController, groupId, groupName, scheduleId)
         }
     }
-    private fun goGroupDetail(navController: NavController, groupId: Int,groupName: String) {
+    private fun goGroupDetail(navController: NavController, groupId: Int,groupName: String?, scheduleId: Int) {
         val bundle = Bundle().apply {
             putInt(GROUP_ID, groupId)
-            putString(GROUP_NAME, groupName)
+            groupName?.let { putString(GROUP_NAME, it) }
+            if (scheduleId != -1) putInt(SCHEDULE_ID, scheduleId)
         }
         navController.navigate(R.id.groupPageFragment, bundle)
     }
-
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         intent.let { nonNullIntent ->
             val groupId = nonNullIntent.getIntExtra(GROUP_ID, -1)
             val groupName = nonNullIntent.getStringExtra(GROUP_NAME)
-            if (groupId != -1 && groupName != null) {
-                goGroupDetail(navController, groupId, groupName)
+            val scheduleId = nonNullIntent.getIntExtra(SCHEDULE_ID, -1)
+
+            if (groupId != -1) {
+                goGroupDetail(navController, groupId, groupName, scheduleId)
             }
         }
     }
