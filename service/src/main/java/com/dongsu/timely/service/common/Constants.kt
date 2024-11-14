@@ -26,14 +26,15 @@ const val FCM_APPOINTMENT_CHANNEL_NAME = "SCHEDULE_BEFORE_ALARM"
 
 //FCM 알람
 const val FCM_CREATE_SCHEDULE_BODY = "'%s' 스케줄이 추가되었습니다."
-const val FCM_APPOINTMENT_BODY = "'%s' 스케줄 1시간전 입니다."
+const val FCM_APPOINTMENT_TITLE = "'%s' 스케줄 1시간전 입니다."
+const val FCM_APPOINTMENT_BODY = "약속시간 30분전부터 위치 공유가 시작됩니다. "
 
 //Foreground Service 채널
 const val FOREGROUND_SERVICE_CHANNEL_ID = "FOREGROUND_SERVICE"
 const val FOREGROUND_SERVICE_CHANNEL_NAME = "FOREGROUND_SERVICE"
 
 //Foreground Service 알람
-const val FOREGROUND_SERVICE_BODY = "'%s'스케줄의 위치추적이 시작됩니다"
+const val FOREGROUND_SERVICE_BODY = "'%s'스케줄의 위치 공유가 시작됩니다. "
 
 
 //알림 ID
