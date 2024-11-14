@@ -67,7 +67,6 @@ class GroupScheduleListAdapter(
             tvGroupPlace.text = groupSchedule.location
             tvGroupTime.text = formatDateTime(groupSchedule.startTime)
             if(!groupSchedule.isAlarmEnabled) sivNotification.setImageResource(R.drawable.baseline_notifications_off_24)
-            checkBoxParticipation.isChecked = groupSchedule.isAlarmEnabled
         }
     }
 }
