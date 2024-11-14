@@ -23,7 +23,7 @@ class LocationProvider @Inject constructor(
             3_000L
         ).apply {
             setMinUpdateIntervalMillis(2_000L)
-            setMaxUpdateDelayMillis(15_000L) // 최대 지연 시간 (15초)
+            setMaxUpdateDelayMillis(10_000L) // 최대 지연 시간 (15초)
         }.build()
 
         fusedLocationClient.requestLocationUpdates(
