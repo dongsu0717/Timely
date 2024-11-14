@@ -14,8 +14,8 @@ import androidx.core.app.NotificationCompat
 import com.dongsu.service.R
 import com.dongsu.timely.domain.model.ScheduleDistanceTime
 import com.dongsu.timely.domain.model.UserLocation
-import com.dongsu.timely.service.common.ALARM_ID
-import com.dongsu.timely.service.common.ALARM_ROUTE_ID
+import com.dongsu.timely.service.common.NOTIFICATION_ROUTE_ID
+import com.dongsu.timely.service.common.NOTIFICATION_SCHEDULE_ID
 import com.dongsu.timely.service.common.PERSONAL_CHANNEL_ID
 import com.dongsu.timely.service.common.PERSONAL_CHANNEL_NAME
 import com.dongsu.timely.service.common.PERSONAL_ROUTE_CHANNEL_DESCRIPTION
@@ -59,7 +59,7 @@ class AlarmReceiver : BroadcastReceiver() {
             .setAutoCancel(true)
             .build()
 
-        notificationManager.notify(ALARM_ID, notification)
+        notificationManager.notify(NOTIFICATION_SCHEDULE_ID, notification)
     }
     private suspend fun makeRouteNotification(context: Context, scheduleTitle: String, appointmentPlace: String, destinationLatitude: Double, destinationLongitude: Double) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -91,7 +91,7 @@ class AlarmReceiver : BroadcastReceiver() {
             .setAutoCancel(true)
 //            .setContentIntent(pendingIntent)
             .build()
-        notificationManager.notify(ALARM_ROUTE_ID, notification)
+        notificationManager.notify(NOTIFICATION_ROUTE_ID, notification)
     }
     private suspend fun getCurrentLocation(context: Context): UserLocation {
         var startLatitude = 0.0
