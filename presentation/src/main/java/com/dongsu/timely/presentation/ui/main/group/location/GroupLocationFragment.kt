@@ -9,6 +9,7 @@ import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.FragmentGroupLocationBinding
 import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.ParticipationMember
+import com.dongsu.timely.domain.model.PlaceLocation
 import com.dongsu.timely.presentation.common.BaseTabFragment
 import com.dongsu.timely.presentation.common.CommonUtils.toastShort
 import com.dongsu.timely.presentation.common.GET_ERROR
@@ -20,11 +21,18 @@ import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
 import com.kakao.vectormap.MapViewInfo
+import com.kakao.vectormap.animation.Interpolation
 import com.kakao.vectormap.label.LabelOptions
 import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.label.LabelTextBuilder
+import com.kakao.vectormap.shape.DotPoints
 import com.kakao.vectormap.shape.Polygon
+import com.kakao.vectormap.shape.PolygonOptions
+import com.kakao.vectormap.shape.ShapeLayer
+import com.kakao.vectormap.shape.ShapeManager
+import com.kakao.vectormap.shape.animation.CircleWave
+import com.kakao.vectormap.shape.animation.CircleWaves
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -35,9 +43,15 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
     private val groupLocationViewModel: GroupLocationViewModel by viewModels()
     private lateinit var mapView: MapView
 
+
     private val startZoomLevel = 15
     private val startPosition = LatLng.from(37.46819965686225, 126.90119500104446)
     private lateinit var circleWavePolygon: Polygon
+    private lateinit var shapeManager: ShapeManager
+    private lateinit var shapeLayer: ShapeLayer
+
+    private var placeLatitude: Double? = null
+    private var placeLongitude: Double? = null
 
     override fun initView() {
         Log.e("위치프래그먼트", groupId.toString())
@@ -49,13 +63,18 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
             // 인증 후 API 가 정상적으로 실행될 때 호출됨
             Log.i("k3f", "startPosition: " + kakaoMap.cameraPosition!!.position.toString())
             Log.i("k3f", "startZoomLevel: " + kakaoMap.zoomLevel)
-            val labelManager = kakaoMap.labelManager
-            val shapeManager = kakaoMap.shapeManager
-            val routeLineManager = kakaoMap.routeLineManager
-            val mapWidgetManager = kakaoMap.mapWidgetManager
-            val trackingManager = kakaoMap.trackingManager
+//            val labelManager = kakaoMap.labelManager
+//            val shapeManager = kakaoMap.shapeManager
+//            val routeLineManager = kakaoMap.routeLineManager
+//            val mapWidgetManager = kakaoMap.mapWidgetManager
+//            val trackingManager = kakaoMap.trackingManager
 //            getCircleWaveAnimator(kakaoMap)
             getParticipationMember(kakaoMap)
+            getAppointmentPlace(kakaoMap)
+
+            shapeManager = kakaoMap.shapeManager!!
+            shapeLayer = shapeManager.layer
+            createAnimator()
             //라벨 스타일 생성
 //            val styles = labelManager?.addLabelStyles(
 //                LabelStyles.from(
@@ -118,10 +137,12 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
         override fun onMapError(error: java.lang.Exception) = toastShort(requireContext(),"onMapError")  // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
     }
 
-
     private fun checkStartMap(){
         lifecycleScope.launch {
-            val scheduleId = getScheduleIdShowMap()
+            val locationInfo = getScheduleIdShowMap()
+            val scheduleId = locationInfo.scheduleId
+            placeLatitude = locationInfo.locationLatitude
+            placeLongitude = locationInfo.locationLongitude
             Log.e("GroupLocationFragment","가져올 scheduleId: $scheduleId")
             if (scheduleId != null && scheduleId != -1) {
                 Log.e("GroupLocationFragment","맵 열릴 scheduleId: $scheduleId")
@@ -132,7 +153,7 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
             }
         }
     }
-    private suspend fun getScheduleIdShowMap():Int? = groupLocationViewModel.getScheduleIdShowMap(groupId)
+    private suspend fun getScheduleIdShowMap():PlaceLocation = groupLocationViewModel.getScheduleIdShowMap(groupId)
 
     private fun getParticipationMember(kakaoMap: KakaoMap){
         lifecycleScope.launch {
@@ -170,5 +191,35 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
                 .setTexts(labelTextBuilder)
             labelManager?.layer?.addLabel(labelOptions)
         }
+    }
+    private fun getAppointmentPlace(kakaoMap: KakaoMap) {
+        if (placeLatitude != null && placeLongitude != null) {
+            val placeLocation = LatLng.from(placeLatitude!!, placeLongitude!!)
+            val labelStyle = LabelStyles.from(
+                LabelStyle.from(R.drawable.green_marker)
+            )
+            val labelOptions = LabelOptions.from(placeLocation)
+                .setStyles(labelStyle)
+            kakaoMap.labelManager?.layer?.addLabel(labelOptions)
+        }
+    }
+    private fun createAnimator(){
+        val circleWaves = CircleWaves.from("animator1")
+            .setDuration(3000)
+            .setRepeatCount(1000)
+            .setInterpolation(Interpolation.CubicIn)
+            .addCircleWave(CircleWave.from(0.7f, 0.0f, 0.0f, 100.0f))
+        shapeManager.addAnimator(circleWaves)
+        if(placeLatitude != null && placeLongitude != null){
+            val circle: Polygon = shapeLayer.addPolygon(getCircleOptions(LatLng.from(placeLatitude!!, placeLongitude!!), 1))
+            shapeManager.getAnimator("animator1").addPolygons(circle)
+            shapeManager.getAnimator("animator1").start()
+        }
+    }
+    private fun getCircleOptions(center: LatLng?, radius: Int): PolygonOptions {
+        return PolygonOptions.from(
+            DotPoints.fromCircle(center, radius.toFloat()),
+            Color.parseColor("#078c03")
+        )
     }
 }
