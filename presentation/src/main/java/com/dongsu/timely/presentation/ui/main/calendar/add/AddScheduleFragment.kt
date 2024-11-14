@@ -17,6 +17,7 @@ import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.FragmentAddScheduleBinding
 import com.dongsu.timely.domain.model.Schedule
 import com.dongsu.timely.presentation.common.BaseFragment
+import com.dongsu.timely.presentation.common.CommonUtils
 import com.dongsu.timely.presentation.common.EnumAlarmTime
 import com.dongsu.timely.presentation.common.EnumColor
 import com.dongsu.timely.presentation.common.EnumRepeat
@@ -64,6 +65,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             when (it.itemId) {
                 R.id.action_save -> {
                     saveSchedule()
+                    findNavController().popBackStack()
                     true
                 }
                 R.id.action_back -> {
@@ -89,6 +91,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
                 appointmentAlarm, appointmentAlarmTime, color
             )
             addScheduleViewModel.insertSchedule(schedule)
+            CommonUtils.toastShort(requireContext(), "일정이 추가되었습니다.")
 //            if (scheduleId != NO_SCHEDULE_ID) {
 //                viewModel.updateSchedule(schedule)
 //            } else {
