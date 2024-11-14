@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.ParticipationMember
+import com.dongsu.timely.domain.model.PlaceLocation
 import com.dongsu.timely.domain.repository.GroupScheduleRepository
 import com.dongsu.timely.domain.usecase.GetScheduleShowMapUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +28,7 @@ class GroupLocationViewModel @Inject constructor(
                 groupScheduleRepository.getParticipationMemberLocation(scheduleId)
         }
     }
-    suspend fun getScheduleIdShowMap(groupId: Int): Int? { // return값 Int는 scheduleId
-        return getScheduleShowMapUseCase.a(groupId)
+    suspend fun getScheduleIdShowMap(groupId: Int): PlaceLocation { // return값 Int는 scheduleId
+        return getScheduleShowMapUseCase(groupId)
     }
 }
