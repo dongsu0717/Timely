@@ -6,8 +6,8 @@ import com.dongsu.timely.data.common.LOCATION
 import com.dongsu.timely.data.remote.dto.request.GroupScheduleRequest
 import com.dongsu.timely.data.remote.dto.request.LocationRequest
 import com.dongsu.timely.data.remote.dto.response.CommonResponse
-import com.dongsu.timely.data.remote.dto.response.GroupScheduleResponse
 import com.dongsu.timely.data.remote.dto.response.ParticipationMemberResponse
+import com.dongsu.timely.data.remote.dto.response.TotalGroupScheduleInfoResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -27,7 +27,7 @@ interface GroupScheduleService {
     @GET(GROUP_SCHEDULE)
     suspend fun getAllScheduleList(
         @Path("groupId") groupId: Int
-    ): Response<List<GroupScheduleResponse>>
+    ): Response<List<TotalGroupScheduleInfoResponse>>
 
     @POST(GROUP_SCHEDULE_PARTICIPATION)
     suspend fun participationSchedule(

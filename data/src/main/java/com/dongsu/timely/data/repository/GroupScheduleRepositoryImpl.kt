@@ -4,8 +4,8 @@ import android.util.Log
 import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.data.datasource.remote.GroupScheduleRemoteDatasource
 import com.dongsu.timely.domain.model.GroupSchedule
-import com.dongsu.timely.domain.model.GroupScheduleInfo
 import com.dongsu.timely.domain.model.ParticipationMember
+import com.dongsu.timely.domain.model.TotalGroupScheduleInfo
 import com.dongsu.timely.domain.repository.GroupScheduleRepository
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ class GroupScheduleRepositoryImpl @Inject constructor(
     = groupScheduleRemoteDatasource.insertSchedule(groupId, groupSchedule)
 
 
-    override suspend fun getAllSchedule(groupId: Int): TimelyResult<List<GroupScheduleInfo>> {
+    override suspend fun getAllSchedule(groupId: Int): TimelyResult<List<TotalGroupScheduleInfo>> {
         val result = groupScheduleRemoteDatasource.getAllSchedule(groupId)
         when(result){
             is TimelyResult.Success -> {

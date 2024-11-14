@@ -7,21 +7,21 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.ItemCardGroupScheduleBinding
-import com.dongsu.timely.domain.model.GroupScheduleInfo
+import com.dongsu.timely.domain.model.TotalGroupScheduleInfo
 import com.dongsu.timely.presentation.common.formatDateTime
 
 
 class GroupScheduleListAdapter(
-    private val onCheckBoxClick: (GroupScheduleInfo, Boolean) -> Unit
-) : ListAdapter<GroupScheduleInfo, GroupScheduleListAdapter.GroupScheduleListViewHolder>(
+    private val onCheckBoxClick: (TotalGroupScheduleInfo, Boolean) -> Unit
+) : ListAdapter<TotalGroupScheduleInfo, GroupScheduleListAdapter.GroupScheduleListViewHolder>(
     GroupDiffCallback()
 ) {
 
     inner class GroupScheduleListViewHolder(private val binding: ItemCardGroupScheduleBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
-            groupSchedule: GroupScheduleInfo,
-            onCheckBoxClick: (GroupScheduleInfo, Boolean) -> Unit
+            groupSchedule: TotalGroupScheduleInfo,
+            onCheckBoxClick: (TotalGroupScheduleInfo, Boolean) -> Unit
         ) {
             setCardView(binding, groupSchedule)
             binding.checkBoxParticipation.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -41,17 +41,17 @@ class GroupScheduleListAdapter(
         holder.bind(groupSchedule, onCheckBoxClick)
     }
 
-    class GroupDiffCallback : DiffUtil.ItemCallback<GroupScheduleInfo>() {
+    class GroupDiffCallback : DiffUtil.ItemCallback<TotalGroupScheduleInfo>() {
         override fun areItemsTheSame(
-            oldItem: GroupScheduleInfo,
-            newItem: GroupScheduleInfo
+            oldItem: TotalGroupScheduleInfo,
+            newItem: TotalGroupScheduleInfo
         ): Boolean {
-            return oldItem.scheduleId == newItem.scheduleId
+            return oldItem.groupSchedule.scheduleId == newItem.groupSchedule.scheduleId
         }
 
         override fun areContentsTheSame(
-            oldItem: GroupScheduleInfo,
-            newItem: GroupScheduleInfo
+            oldItem: TotalGroupScheduleInfo,
+            newItem: TotalGroupScheduleInfo
         ): Boolean {
             return oldItem == newItem
         }
@@ -60,13 +60,14 @@ class GroupScheduleListAdapter(
 
     private fun setCardView(
         binding: ItemCardGroupScheduleBinding,
-        groupSchedule: GroupScheduleInfo
+        groupSchedule: TotalGroupScheduleInfo
     ) {
         with(binding) {
-            tvGroupName.text = groupSchedule.title
-            tvGroupPlace.text = groupSchedule.location
-            tvGroupTime.text = formatDateTime(groupSchedule.startTime)
-            if(!groupSchedule.isAlarmEnabled) sivNotification.setImageResource(R.drawable.baseline_notifications_off_24)
+            tvGroupName.text = groupSchedule.groupSchedule.title
+            tvGroupPlace.text = groupSchedule.groupSchedule.location
+            tvGroupTime.text = formatDateTime(groupSchedule.groupSchedule.startTime)
+            if(!groupSchedule.groupSchedule.isAlarmEnabled) sivNotification.setImageResource(R.drawable.baseline_notifications_off_24)
+            if(groupSchedule.isParticipating) checkBoxParticipation.isChecked = true
         }
     }
 }

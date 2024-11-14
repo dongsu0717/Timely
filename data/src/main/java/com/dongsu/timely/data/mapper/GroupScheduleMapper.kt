@@ -2,8 +2,10 @@ package com.dongsu.timely.data.mapper
 
 import com.dongsu.timely.data.remote.dto.request.GroupScheduleRequest
 import com.dongsu.timely.data.remote.dto.response.GroupScheduleResponse
+import com.dongsu.timely.data.remote.dto.response.TotalGroupScheduleInfoResponse
 import com.dongsu.timely.domain.model.GroupSchedule
 import com.dongsu.timely.domain.model.GroupScheduleInfo
+import com.dongsu.timely.domain.model.TotalGroupScheduleInfo
 
 object GroupScheduleMapper {
     fun toDto(groupSchedule: GroupSchedule): GroupScheduleRequest {
@@ -18,7 +20,6 @@ object GroupScheduleMapper {
             locationLongitude = groupSchedule.longitude
         )
     }
-
     fun toDomain(groupScheduleResponse: GroupScheduleResponse): GroupScheduleInfo {
         return GroupScheduleInfo(
             scheduleId = groupScheduleResponse.scheduleId,
@@ -32,6 +33,13 @@ object GroupScheduleMapper {
             location = groupScheduleResponse.location,
             locationLatitude = groupScheduleResponse.locationLatitude,
             locationLongitude = groupScheduleResponse.locationLongitude
+        )
+    }
+
+    fun toDomainTotal(totalGroupScheduleInfoResponse: TotalGroupScheduleInfoResponse): TotalGroupScheduleInfo {
+        return TotalGroupScheduleInfo(
+            groupSchedule = toDomain(totalGroupScheduleInfoResponse.groupSchedule),
+            isParticipating = totalGroupScheduleInfoResponse.isParticipating
         )
     }
 
