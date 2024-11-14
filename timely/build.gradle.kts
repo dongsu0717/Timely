@@ -80,10 +80,9 @@ dependencies {
 
     //kakao map
     implementation ("com.kakao.maps.open:android:2.12.8")
-    
+
     //fcm
     implementation(libs.firebase.messaging)
 
-
-
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 }
