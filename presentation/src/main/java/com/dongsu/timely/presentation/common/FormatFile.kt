@@ -1,5 +1,6 @@
 package com.dongsu.timely.presentation.common
 
+import android.icu.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -22,4 +23,11 @@ fun combineDateTime(startDate: String, time: String): String {
     val localTime = LocalTime.parse(time, timeFormatter)
 
     return date.atTime(localTime).format(dateTimeFormatter)
+}
+fun formatDateTime(input: String): String {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("yyyy년M월d일 H시m분", Locale.getDefault())
+
+    val date = inputFormat.parse(input)
+    return outputFormat.format(date)
 }

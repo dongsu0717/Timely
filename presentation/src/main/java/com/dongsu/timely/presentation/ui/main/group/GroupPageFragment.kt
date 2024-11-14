@@ -29,7 +29,8 @@ class GroupPageFragment : BaseFragment<FragmentGroupPageBinding>(FragmentGroupPa
         setupTabLayoutAndViewPager()
     }
     private fun checkArgs() {
-        Log.e("GroupPageFragment", "checkArgs: ${args}")
+        Log.e("GroupPageFragment", "navArgs: ${args}")
+        Log.e("GroupPageFragment", "Argment: ${arguments}")
     }
 
     private fun setupToolbar() {

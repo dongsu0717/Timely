@@ -52,6 +52,7 @@ const val JOIN_GROUP = "$API_VERSION/groups/signup/{inviteCode)"
 //group schedule
 const val GROUP_SCHEDULE = "$API_VERSION/groups/{groupId}/schedule"
 const val GROUP_SCHEDULE_PARTICIPATION = "$API_VERSION/groups/{groupId}/schedule/{scheduleId}/participation"
+const val LOCATION = "$API_VERSION/locations/{scheduleId}"
 
 //fcm
 const val FCM = "$API_VERSION/fcm"

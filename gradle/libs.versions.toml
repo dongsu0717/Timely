@@ -21,6 +21,7 @@ ksp = "2.0.0-1.0.24"
 googleGmsGoogleServices = "4.4.2"
 firebaseMessaging = "24.0.3"
 firebaseBom = "33.5.1"
+playServicesLocation = "21.3.0"
 #v2Talk = "2.20.6"
 #v2User = "2.20.6"
 
@@ -72,6 +73,7 @@ flowbinding-material = { module = "io.github.reactivecircus.flowbinding:flowbind
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 
 
 #kakaotalk

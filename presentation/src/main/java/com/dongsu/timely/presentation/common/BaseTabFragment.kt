@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.dongsu.timely.common.GROUP_ID
 
 
 abstract class BaseTabFragment<VB : ViewBinding>(
@@ -36,7 +37,7 @@ abstract class BaseTabFragment<VB : ViewBinding>(
     abstract fun initView()
 
     private fun extractGroupId() {
-        _groupId = arguments?.getInt(GROUP_ID) ?: 0
+        _groupId = arguments?.getInt(GROUP_ID) ?: -1
         Log.e("공통",groupId.toString())
     }
     override fun onDestroyView() {

@@ -3,7 +3,7 @@ package com.dongsu.timely.presentation.viewmodel.group
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dongsu.timely.common.TimelyResult
-import com.dongsu.timely.domain.model.GroupScheduleInfo
+import com.dongsu.timely.domain.model.TotalGroupScheduleInfo
 import com.dongsu.timely.domain.repository.GroupScheduleRepository
 import com.dongsu.timely.domain.usecase.ParticipationScheduleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +18,7 @@ class GroupDataViewModel @Inject constructor(
     private val participationScheduleUseCase: ParticipationScheduleUseCase
 ): ViewModel() {
 
-    private var _groupScheduleList = MutableStateFlow<TimelyResult<List<GroupScheduleInfo>>>(TimelyResult.Empty)
+    private var _groupScheduleList = MutableStateFlow<TimelyResult<List<TotalGroupScheduleInfo>>>(TimelyResult.Empty)
     val groupScheduleList = _groupScheduleList.asStateFlow()
 
     fun getGroupSchedule(groupId: Int) {

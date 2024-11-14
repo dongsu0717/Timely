@@ -3,7 +3,7 @@ package com.dongsu.timely.presentation.ui.main.group
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.dongsu.timely.presentation.common.GROUP_ID
+import com.dongsu.timely.common.GROUP_ID
 import com.dongsu.timely.presentation.ui.main.group.date.GroupDateFragment
 import com.dongsu.timely.presentation.ui.main.group.location.GroupLocationFragment
 import com.dongsu.timely.presentation.ui.main.group.management.GroupManagementFragment
