@@ -39,10 +39,10 @@ class LocationService : Service() {
         val scheduleStartTime = intent?.getStringExtra(SCHEDULE_START_TIME)
         val channelId = intent?.getStringExtra(CHANNEL_ID)
         Log.e("서비스로 넘어온 데이터","groupId: $groupId, groupName: $groupName, scheduleId: $scheduleId, scheduleTitle: $scheduleTitle, scheduleStartTime: $scheduleStartTime, channelId: $channelId")
-        if(groupId != -1 && scheduleId != -1){
-            locationReceiver.startReceivingLocation(scheduleId!!.toInt())
-            startForegroundService(groupId!!,groupName,scheduleId,scheduleTitle)
-        }
+        if(groupId != -1 && groupId != null && scheduleId != -1 && scheduleId != null){
+            locationReceiver.startReceivingLocation(scheduleId.toInt())
+            startForegroundService(groupId,groupName,scheduleId,scheduleTitle)
+        } else Log.e("서비스 실행x", "groupId: $groupId scheduleId: $scheduleId")
         return START_STICKY
     }
 
