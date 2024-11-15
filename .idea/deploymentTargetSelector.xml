@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="timely">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-11-15T11:24:44.780932Z">
+        <DropdownSelection timestamp="2024-11-15T11:41:36.568559800Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Dongsu\.android\avd\Pixel_2_XL_API_31.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=LGMX800K1bd99370" />
             </handle>
           </Target>
         </DropdownSelection>

@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat
 import com.dongsu.timely.R
 import com.dongsu.timely.common.NOTIFICATION_ROUTE_ID
 import com.dongsu.timely.common.NOTIFICATION_SCHEDULE_ID
+import com.dongsu.timely.common.NotificationUtils
 import com.dongsu.timely.common.PERSONAL_CHANNEL_ID
 import com.dongsu.timely.common.PERSONAL_CHANNEL_NAME
 import com.dongsu.timely.common.PERSONAL_ROUTE_CHANNEL_DESCRIPTION
@@ -26,47 +27,60 @@ import com.dongsu.timely.common.TMAP_ROUTE_URL
 import com.dongsu.timely.domain.model.ScheduleDistanceTime
 import com.dongsu.timely.domain.model.UserLocation
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.Locale
 
 @AndroidEntryPoint
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        val (scheduleTitle, appointmentPlace, destinationLatitude, destinationLongitude, alarmTime) = extractAlarmData(intent) //구조 분해 선언 처음 적용
+        val (scheduleTitle, appointmentPlace, destinationLatitude, destinationLongitude, alarmTime) = extractAlarmData(
+            intent
+        ) //구조 분해 선언 처음 적용
         Log.e("약속 장소 위치", "latitude: $destinationLatitude, longitude: $destinationLongitude")
-        if (destinationLatitude != 0.0 || destinationLongitude != 0.0) {
-            CoroutineScope(Dispatchers.IO).launch {
-                makeRouteNotification(context,scheduleTitle, appointmentPlace, destinationLatitude, destinationLongitude)
-            }
-        } else makeNotification(context,scheduleTitle,alarmTime)
+
+        if (destinationLatitude != 0.0 || destinationLongitude != 0.0) { //일정 장소 있으면 거리,시간 계산
+            createRouteNotification(
+                context,
+                scheduleTitle,
+                appointmentPlace,
+                destinationLatitude,
+                destinationLongitude
+            )
+        } else createNotification(context, scheduleTitle, alarmTime)
     }
-    private fun makeNotification(context: Context, scheduleTitle: String, alarmTime: Int) {
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val channelId = PERSONAL_CHANNEL_ID
-        val channelName = PERSONAL_CHANNEL_NAME
 
-        val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
-        notificationManager.createNotificationChannel(channel)
-
-        val notification = NotificationCompat.Builder(context, channelId)
-            .setContentTitle(scheduleTitle)
-            .setContentText(String.format(Locale.getDefault(), TIME_TO_SCHEDULE,alarmTime))
-            .setSmallIcon(R.drawable.baseline_notifications_active_24)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setAutoCancel(true)
-            .build()
-
+    private fun createNotification(context: Context, scheduleTitle: String, alarmTime: Int) {
+        val notificationManager = NotificationUtils.createNotificationManager(context)
+        NotificationUtils.createNotificationChannel(
+            notificationManager,
+            PERSONAL_CHANNEL_ID,
+            PERSONAL_CHANNEL_NAME
+        )
+        val notification = NotificationUtils.createNotification(
+            context = context,
+            channelId = PERSONAL_CHANNEL_ID,
+            smallIcon = R.drawable.baseline_notifications_active_24,
+            title = scheduleTitle,
+            message = String.format(Locale.getDefault(), TIME_TO_SCHEDULE, alarmTime),
+            priority = NotificationCompat.PRIORITY_HIGH
+        ).build()
         notificationManager.notify(NOTIFICATION_SCHEDULE_ID, notification)
     }
-    private suspend fun makeRouteNotification(context: Context, scheduleTitle: String, appointmentPlace: String, destinationLatitude: Double, destinationLongitude: Double) {
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val channelId = PERSONAL_ROUTE_CHANNEL_ID
-        val channelName = PERSONAL_ROUTE_CHANNEL_NAME
 
-        val channel = NotificationChannel(channelId,channelName,NotificationManager.IMPORTANCE_HIGH).apply {
+    private fun createRouteNotification(
+        context: Context,
+        scheduleTitle: String,
+        appointmentPlace: String,
+        destinationLatitude: Double,
+        destinationLongitude: Double
+    ) {
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        val channel = NotificationChannel(
+            PERSONAL_ROUTE_CHANNEL_ID,
+            PERSONAL_ROUTE_CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
             description = PERSONAL_ROUTE_CHANNEL_DESCRIPTION
             enableLights(true)
             lightColor = Color.RED
@@ -83,7 +97,7 @@ class AlarmReceiver : BroadcastReceiver() {
 //        val formattedCarTime = formatTime(carTime)
 //        val formattedWalkTime = formatTime(walkTime)
 
-        val notification = NotificationCompat.Builder(context, channelId)
+        val notification = NotificationCompat.Builder(context, PERSONAL_ROUTE_CHANNEL_ID)
             .setContentTitle(scheduleTitle)
 //            .setContentText(String.format(Locale.getDefault(), TIME_TO_ROUTE_SCHEDULE,formattedDistance,formattedCarTime,formattedWalkTime))
 //            .setSmallIcon(R.drawable.baseline_notifications_active_24)
@@ -93,7 +107,8 @@ class AlarmReceiver : BroadcastReceiver() {
             .build()
         notificationManager.notify(NOTIFICATION_ROUTE_ID, notification)
     }
-    private suspend fun getCurrentLocation(context: Context): UserLocation {
+
+    private fun getCurrentLocation(context: Context): UserLocation {
         var startLatitude = 0.0
         var startLongitude = 0.0
 //        userLocationManager.getCurrentLocation() //이게 실행되는 순간 getDistanceAndTime도 실행된다..
@@ -118,12 +133,16 @@ class AlarmReceiver : BroadcastReceiver() {
 //        }
         return UserLocation(startLatitude, startLongitude)
     }
+
     private suspend fun getDistanceAndTime(
-        startLatitude: Double, startLongitude: Double, destinationLatitude: Double, destinationLongitude: Double
+        startLatitude: Double,
+        startLongitude: Double,
+        destinationLatitude: Double,
+        destinationLongitude: Double
     ): ScheduleDistanceTime {
-        var distance :Long = 0
-        var carTime:Long  = 0
-        var walkTime:Long = 0
+        var distance: Long = 0
+        var carTime: Long = 0
+        var walkTime: Long = 0
 //        tMapService.getCarResult(startX = startLongitude, startY = startLatitude, endX = destinationLongitude, endY = destinationLatitude).let {
 //            if (it.isSuccessful) {
 //                distance = it.body()!!.features.first().properties.totalDistance
@@ -141,8 +160,9 @@ class AlarmReceiver : BroadcastReceiver() {
 //                Log.e("실패",it.errorBody().toString())
 //            }
 //        }
-        return ScheduleDistanceTime(distance,carTime,walkTime)
+        return ScheduleDistanceTime(distance, carTime, walkTime)
     }
+
     private fun createTMapPendingIntent(
         context: Context,
         appointmentPlace: String,
@@ -185,16 +205,22 @@ class AlarmReceiver : BroadcastReceiver() {
         )
     }
 
-    private fun extractAlarmData(intent: Intent): AlarmData {
+    private fun extractAlarmData(intent: Intent): ScheduleAlarmData {
         val scheduleTitle = intent.getStringExtra("scheduleTitle") ?: ""
         val appointmentPlace = intent.getStringExtra("appointmentPlace") ?: ""
         val destinationLatitude = intent.getDoubleExtra("latitude", 0.0)
         val destinationLongitude = intent.getDoubleExtra("longitude", 0.0)
         val alarmTime = intent.getIntExtra("alarmTime", 60)
-        return AlarmData(scheduleTitle, appointmentPlace, destinationLatitude, destinationLongitude,alarmTime)
+        return ScheduleAlarmData(
+            scheduleTitle,
+            appointmentPlace,
+            destinationLatitude,
+            destinationLongitude,
+            alarmTime
+        )
     }
 
-    data class AlarmData(
+    data class ScheduleAlarmData(
         val scheduleTitle: String,
         val appointmentPlace: String,
         val destinationLatitude: Double,
