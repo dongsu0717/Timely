@@ -1,4 +1,4 @@
-package com.dongsu.timely.service.alarm
+package com.dongsu.timely.receiver
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -11,20 +11,20 @@ import android.graphics.Color
 import android.net.Uri
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.dongsu.service.R
+import com.dongsu.timely.R
+import com.dongsu.timely.common.NOTIFICATION_ROUTE_ID
+import com.dongsu.timely.common.NOTIFICATION_SCHEDULE_ID
+import com.dongsu.timely.common.PERSONAL_CHANNEL_ID
+import com.dongsu.timely.common.PERSONAL_CHANNEL_NAME
+import com.dongsu.timely.common.PERSONAL_ROUTE_CHANNEL_DESCRIPTION
+import com.dongsu.timely.common.PERSONAL_ROUTE_CHANNEL_ID
+import com.dongsu.timely.common.PERSONAL_ROUTE_CHANNEL_NAME
+import com.dongsu.timely.common.TIME_TO_SCHEDULE
+import com.dongsu.timely.common.TMAP_MARKET_URL
+import com.dongsu.timely.common.TMAP_PACKAGE_NAME
+import com.dongsu.timely.common.TMAP_ROUTE_URL
 import com.dongsu.timely.domain.model.ScheduleDistanceTime
 import com.dongsu.timely.domain.model.UserLocation
-import com.dongsu.timely.service.common.NOTIFICATION_ROUTE_ID
-import com.dongsu.timely.service.common.NOTIFICATION_SCHEDULE_ID
-import com.dongsu.timely.service.common.PERSONAL_CHANNEL_ID
-import com.dongsu.timely.service.common.PERSONAL_CHANNEL_NAME
-import com.dongsu.timely.service.common.PERSONAL_ROUTE_CHANNEL_DESCRIPTION
-import com.dongsu.timely.service.common.PERSONAL_ROUTE_CHANNEL_ID
-import com.dongsu.timely.service.common.PERSONAL_ROUTE_CHANNEL_NAME
-import com.dongsu.timely.service.common.TIME_TO_SCHEDULE
-import com.dongsu.timely.service.common.TMAP_MARKET_URL
-import com.dongsu.timely.service.common.TMAP_PACKAGE_NAME
-import com.dongsu.timely.service.common.TMAP_ROUTE_URL
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -86,7 +86,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val notification = NotificationCompat.Builder(context, channelId)
             .setContentTitle(scheduleTitle)
 //            .setContentText(String.format(Locale.getDefault(), TIME_TO_ROUTE_SCHEDULE,formattedDistance,formattedCarTime,formattedWalkTime))
-            .setSmallIcon(R.drawable.baseline_notifications_active_24)
+//            .setSmallIcon(R.drawable.baseline_notifications_active_24)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
 //            .setContentIntent(pendingIntent)

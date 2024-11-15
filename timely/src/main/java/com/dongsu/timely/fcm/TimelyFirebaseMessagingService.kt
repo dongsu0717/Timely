@@ -1,4 +1,4 @@
-package com.dongsu.timely
+package com.dongsu.timely.fcm
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -12,22 +12,24 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import androidx.work.workDataOf
+import com.dongsu.timely.R
 import com.dongsu.timely.common.CHANNEL_ID
+import com.dongsu.timely.common.FCM_APPOINTMENT_BODY
+import com.dongsu.timely.common.FCM_APPOINTMENT_CHANNEL_ID
+import com.dongsu.timely.common.FCM_APPOINTMENT_CHANNEL_NAME
+import com.dongsu.timely.common.FCM_APPOINTMENT_TITLE
+import com.dongsu.timely.common.FCM_CREATE_SCHEDULE_BODY
+import com.dongsu.timely.common.FCM_CREATE_SCHEDULE_CHANNEL_ID
+import com.dongsu.timely.common.FCM_CREATE_SCHEDULE_CHANNEL_NAME
 import com.dongsu.timely.common.GROUP_ID
 import com.dongsu.timely.common.GROUP_NAME
+import com.dongsu.timely.common.NOTIFICATION_FCM_APPOINTMENT_ALARM_ID
+import com.dongsu.timely.common.NOTIFICATION_FCM_CREATE_SCHEDULE_ID
 import com.dongsu.timely.common.SCHEDULE_ID
 import com.dongsu.timely.common.SCHEDULE_START_TIME
 import com.dongsu.timely.common.SCHEDULE_TITLE
 import com.dongsu.timely.presentation.ui.main.TimelyActivity
-import com.dongsu.timely.service.common.FCM_APPOINTMENT_BODY
-import com.dongsu.timely.service.common.FCM_APPOINTMENT_CHANNEL_ID
-import com.dongsu.timely.service.common.FCM_APPOINTMENT_CHANNEL_NAME
-import com.dongsu.timely.service.common.FCM_APPOINTMENT_TITLE
-import com.dongsu.timely.service.common.FCM_CREATE_SCHEDULE_BODY
-import com.dongsu.timely.service.common.FCM_CREATE_SCHEDULE_CHANNEL_ID
-import com.dongsu.timely.service.common.FCM_CREATE_SCHEDULE_CHANNEL_NAME
-import com.dongsu.timely.service.common.NOTIFICATION_FCM_APPOINTMENT_ALARM_ID
-import com.dongsu.timely.service.common.NOTIFICATION_FCM_CREATE_SCHEDULE_ID
+import com.dongsu.timely.work.LocationWorker
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import java.time.Duration
@@ -65,7 +67,9 @@ class TimelyFirebaseMessagingService : FirebaseMessagingService() {
 
     private fun createSchedulePushMessage(groupId: Int, groupName: String, scheduleTitle: String) {
         val notificationManager = createNotificationManager()
-        createChannel(notificationManager,FCM_CREATE_SCHEDULE_CHANNEL_ID, FCM_CREATE_SCHEDULE_CHANNEL_NAME)
+        createChannel(notificationManager,
+            FCM_CREATE_SCHEDULE_CHANNEL_ID, FCM_CREATE_SCHEDULE_CHANNEL_NAME
+        )
         val pendingIntent = createPendingIntent(groupId,groupName)
         val notification = createNotification(pendingIntent,groupName,scheduleTitle)
         notificationManager.notify(NOTIFICATION_FCM_CREATE_SCHEDULE_ID, notification)
@@ -98,7 +102,7 @@ class TimelyFirebaseMessagingService : FirebaseMessagingService() {
     }
     private fun createNotification(pendingIntent: PendingIntent, groupName: String, scheduleTitle: String)
     = NotificationCompat.Builder(this, FCM_CREATE_SCHEDULE_CHANNEL_ID)
-        .setSmallIcon(com.dongsu.service.R.drawable.baseline_notifications_active_24)
+        .setSmallIcon(R.drawable.baseline_notifications_active_24)
         .setContentTitle(groupName)
         .setContentText(String.format(Locale.getDefault(), FCM_CREATE_SCHEDULE_BODY, scheduleTitle))
         .setAutoCancel(true)
@@ -106,7 +110,7 @@ class TimelyFirebaseMessagingService : FirebaseMessagingService() {
         .build()
     private fun createAppointmentNotification(groupName: String, scheduleTitle: String)
             = NotificationCompat.Builder(this, FCM_CREATE_SCHEDULE_CHANNEL_ID)
-        .setSmallIcon(com.dongsu.service.R.drawable.baseline_notifications_active_24)
+        .setSmallIcon(R.drawable.baseline_notifications_active_24)
         .setContentTitle(String.format(Locale.getDefault(), FCM_APPOINTMENT_TITLE, scheduleTitle))
         .setContentText(FCM_APPOINTMENT_BODY)
         .setAutoCancel(true)

@@ -1,4 +1,4 @@
-package com.dongsu.timely
+package com.dongsu.timely.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,17 +9,17 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.dongsu.timely.common.CHANNEL_ID
+import com.dongsu.timely.common.FOREGROUND_SERVICE_BODY
+import com.dongsu.timely.common.FOREGROUND_SERVICE_CHANNEL_ID
+import com.dongsu.timely.common.FOREGROUND_SERVICE_CHANNEL_NAME
 import com.dongsu.timely.common.GROUP_ID
 import com.dongsu.timely.common.GROUP_NAME
+import com.dongsu.timely.common.NOTIFICATION_FOREGROUND_LOCATION_ID
 import com.dongsu.timely.common.SCHEDULE_ID
 import com.dongsu.timely.common.SCHEDULE_START_TIME
 import com.dongsu.timely.common.SCHEDULE_TITLE
 import com.dongsu.timely.data.local.fusedlocation.LocationReceiver
 import com.dongsu.timely.presentation.ui.main.TimelyActivity
-import com.dongsu.timely.service.common.FOREGROUND_SERVICE_BODY
-import com.dongsu.timely.service.common.FOREGROUND_SERVICE_CHANNEL_ID
-import com.dongsu.timely.service.common.FOREGROUND_SERVICE_CHANNEL_NAME
-import com.dongsu.timely.service.common.NOTIFICATION_FOREGROUND_LOCATION_ID
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 import javax.inject.Inject

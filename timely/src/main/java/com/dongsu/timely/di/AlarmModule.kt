@@ -1,9 +1,8 @@
-package com.dongsu.timely.service.di
+package com.dongsu.timely.di
 
 import com.dongsu.timely.domain.repository.AlarmRepository
 import com.dongsu.timely.domain.repository.FCMRepository
-import com.dongsu.timely.service.alarm.AlarmRepositoryImpl
-import com.dongsu.timely.service.fcm.FCMRepositoryImpl
+import com.dongsu.timely.fcm.FCMRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,7 +16,7 @@ abstract class AlarmModule {
     @Binds
     @Singleton
     abstract fun bindAlarmScheduler(
-        alarmSchedulerImpl: AlarmRepositoryImpl
+        alarmSchedulerImpl: com.dongsu.timely.receiver.AlarmRepositoryImpl
     ): AlarmRepository
 
     @Binds

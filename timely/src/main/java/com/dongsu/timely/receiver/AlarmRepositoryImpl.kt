@@ -1,4 +1,4 @@
-package com.dongsu.timely.service.alarm
+package com.dongsu.timely.receiver
 
 import android.app.AlarmManager
 import android.app.PendingIntent

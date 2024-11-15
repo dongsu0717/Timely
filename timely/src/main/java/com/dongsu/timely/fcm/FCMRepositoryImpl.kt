@@ -1,4 +1,4 @@
-package com.dongsu.timely.service.fcm
+package com.dongsu.timely.fcm
 
 import android.util.Log
 import com.dongsu.timely.domain.repository.FCMRepository

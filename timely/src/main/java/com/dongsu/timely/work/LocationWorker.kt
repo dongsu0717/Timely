@@ -1,4 +1,4 @@
-package com.dongsu.timely
+package com.dongsu.timely.work
 
 import android.content.Context
 import android.content.Intent
@@ -11,6 +11,7 @@ import com.dongsu.timely.common.GROUP_NAME
 import com.dongsu.timely.common.SCHEDULE_ID
 import com.dongsu.timely.common.SCHEDULE_START_TIME
 import com.dongsu.timely.common.SCHEDULE_TITLE
+import com.dongsu.timely.service.LocationService
 
 class LocationWorker(
     context: Context,
