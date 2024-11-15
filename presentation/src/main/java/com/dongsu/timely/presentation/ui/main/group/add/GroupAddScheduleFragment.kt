@@ -35,26 +35,22 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
     override fun initView() {
         Log.e("그룹스케줄추가", "$args")
         setupToolbar()
-        toolbarAction()
         setupArgs()
         getCurrentDataAndTime()
         choiceSchedule()
     }
-    private fun setupToolbar() = binding.toolbar.inflateMenu(R.menu.toolbar_menu)
-    private fun toolbarAction() {
-        binding.toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.action_save -> {
-                    saveSchedule()
-                    findNavController().popBackStack()
-                    true
+    private fun setupToolbar(){
+        binding.toolbar.toolbarCommon.apply {
+            setNavigationOnClickListener { findNavController().popBackStack() }
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.action_save -> {
+                        saveSchedule()
+                        findNavController().popBackStack()
+                        true
+                    }
+                    else -> false
                 }
-
-                R.id.action_back -> {
-                    findNavController().popBackStack()
-                }
-
-                else -> false
             }
         }
     }

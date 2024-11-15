@@ -15,7 +15,8 @@
             android:layout_height="wrap_content"
             app:navigationIcon="@drawable/baseline_arrow_back_24"
             app:titleCentered="true"
-            app:title="그룹 이름"/>
+            app:title="그룹 이름"
+            app:menu="@menu/toolbar_save_menu"/>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
