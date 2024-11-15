@@ -60,7 +60,6 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":presentation"))
-    implementation(project(":service"))
 
 
     implementation(libs.androidx.core.ktx)
@@ -83,6 +82,8 @@ dependencies {
 
     //fcm
     implementation(libs.firebase.messaging)
+    implementation(libs.firebase.analytics)
+    implementation(platform(libs.firebase.bom))
 
     implementation("androidx.work:work-runtime-ktx:2.9.0")
 }

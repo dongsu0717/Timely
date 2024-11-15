@@ -32,12 +32,12 @@
         android:theme="@style/Base.Theme.Timely"
         tools:targetApi="31">
         <service
-            android:name=".LocationService"
+            android:name=".service.LocationService"
             android:enabled="true"
             android:exported="true"
             android:stopWithTask="false"/>
         <service
-            android:name=".TimelyFirebaseMessagingService"
+            android:name=".fcm.TimelyFirebaseMessagingService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -63,7 +63,7 @@
             </intent-filter>
         </activity>
         <receiver
-            android:name=".service.alarm.AlarmReceiver"
+            android:name=".receiver.AlarmReceiver"
             android:enabled="true"
             android:exported="true"></receiver>
 

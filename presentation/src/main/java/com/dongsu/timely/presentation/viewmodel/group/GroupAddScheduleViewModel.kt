@@ -27,7 +27,7 @@ class GroupAddScheduleViewModel @Inject constructor(
 
     init {
         updateCurrentDate()
-        updateCurrentTime()
+        updateAfterTwentyMinTime()
     }
 
     suspend fun addSchedule(groupId: Int, groupSchedule: GroupSchedule): TimelyResult<Unit> =
@@ -38,9 +38,11 @@ class GroupAddScheduleViewModel @Inject constructor(
             .format(Calendar.getInstance().time)
     }
 
-    private fun updateCurrentTime() {
+    private fun updateAfterTwentyMinTime() {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.MINUTE, 20)
         _currentTimeFlow.value = SimpleDateFormat("HH:mm", Locale.getDefault())
-            .format(Calendar.getInstance().time)
+            .format(calendar.time)
     }
 
     private fun formatCurrentTime() = SimpleDateFormat("HH:mm", Locale.getDefault())
