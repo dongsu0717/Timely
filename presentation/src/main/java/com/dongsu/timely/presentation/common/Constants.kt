@@ -12,7 +12,8 @@ const val KAKAO_TAG = "KakaoLoginManager"
 //저장
 const val SAVE_SUCCESS = "저장였습니다."
 const val SAVE_ERROR = "저장에 실패하였습니다."
-const val LOADING = "저장중..."
+const val SAVING = "저장중..."
+const val LOADING = "로딩중..."
 const val OMG = "니가왜떠???"
 
 //가져오기
@@ -28,3 +29,8 @@ const val GROUP_MANAGEMENT = "관리"
 
 //groupSchedule
 const val DEFAULT_ALARM_TIME = 1
+
+//inviteGroup
+const val INVITE_GROUP_MESSAGE = """Timely로 초대합니다. 
+    개인 및 일정 관리의 최고의 어플!!. """
+const val INVITE_CODE = "inviteCode"
