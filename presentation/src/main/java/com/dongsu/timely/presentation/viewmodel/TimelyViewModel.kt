@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dongsu.timely.common.TimelyResult
+import com.dongsu.timely.domain.repository.GroupRepository
 import com.dongsu.timely.domain.repository.UserRepository
 import com.dongsu.timely.domain.usecase.UserTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TimelyViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val groupRepository: GroupRepository,
     private val userTokenUseCase: UserTokenUseCase
 ): ViewModel() {
 
@@ -31,4 +33,7 @@ class TimelyViewModel @Inject constructor(
             Log.e("loginStatus", _loginStatus.toString())
         }
     }
+    suspend fun joinGroup(inviteCode: String)
+    = groupRepository.joinGroup(inviteCode)
+
 }

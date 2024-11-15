@@ -10,10 +10,10 @@ import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.presentation.common.BaseFragment
 import com.dongsu.timely.presentation.common.CommonUtils.toastShort
 import com.dongsu.timely.presentation.common.EnumColor
-import com.dongsu.timely.presentation.common.LOADING
 import com.dongsu.timely.presentation.common.OMG
 import com.dongsu.timely.presentation.common.SAVE_ERROR
 import com.dongsu.timely.presentation.common.SAVE_SUCCESS
+import com.dongsu.timely.presentation.common.SAVING
 import com.dongsu.timely.presentation.common.debouncedClickListener
 import com.dongsu.timely.presentation.viewmodel.group.GroupCreateViewModel
 import com.google.android.material.imageview.ShapeableImageView
@@ -53,7 +53,7 @@ class GroupCreateFragment: BaseFragment<FragmentGroupCreateBinding>(FragmentGrou
                     findNavController().popBackStack()
                 }
                 is TimelyResult.Loading -> {
-                    toastShort(requireContext(), LOADING)
+                    toastShort(requireContext(), SAVING)
                 }
                 is TimelyResult.NetworkError -> {
                     toastShort(requireContext(), SAVE_ERROR)

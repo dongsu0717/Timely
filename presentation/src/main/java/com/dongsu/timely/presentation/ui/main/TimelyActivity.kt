@@ -18,6 +18,7 @@ import com.dongsu.timely.common.GROUP_NAME
 import com.dongsu.timely.common.SCHEDULE_ID
 import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.presentation.common.CommonDialogFragment
+import com.dongsu.timely.presentation.common.INVITE_CODE
 import com.dongsu.timely.presentation.common.LOGIN_MESSAGE
 import com.dongsu.timely.presentation.common.LOGIN_NEGATIVE_BUTTON
 import com.dongsu.timely.presentation.common.LOGIN_POSITIVE_BUTTON
@@ -43,6 +44,7 @@ class TimelyActivity : AppCompatActivity() {
         setupBottomNavigation(navController)
         checkArgument(navController)
         setKaKaoLoginManager()
+        checkInviteCodeToIntent()
     }
     private fun setNavController(): NavController = (supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment).navController
 
@@ -97,6 +99,31 @@ class TimelyActivity : AppCompatActivity() {
         kakaoLoginManager.initiateKakaoLogin()
     }.show(supportFragmentManager, "LoginDialogFragment")
 
+    private fun showJoinGroupDialog(inviteCode:String)
+    = CommonDialogFragment("그룹에 초대되었습니다.", "그룹에 가입하시겠습니까?", "가입하기", "취소"){
+        lifecycleScope.launch {
+            timelyViewModel.joinGroup(inviteCode = inviteCode)
+        }
+    }.show(supportFragmentManager, "JoinDialogFragment")
+
+    private fun checkInviteCodeToIntent() {
+        if (Intent.ACTION_VIEW == intent.action) {
+            val uri = intent.data
+            if (uri != null) {
+                val inviteCode = uri.getQueryParameter(INVITE_CODE)
+                Log.e("카카오초대", uri.getQueryParameter(GROUP_ID).toString())
+                checkLoginStatus { isLoggedIn ->
+                    if (!isLoggedIn) {
+                        showLoginDialog()
+                    } else {
+                        if (inviteCode != null) {
+                            showJoinGroupDialog(inviteCode)
+                        }
+                    }
+                }
+            }
+        }
+    }
     private fun checkArgument(navController: NavController) {
         val groupId = intent.getIntExtra(GROUP_ID,-1)
         val groupName = intent.getStringExtra(GROUP_NAME)
