@@ -5,13 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <include layout="@layout/common_toolbar"
+        android:id="@+id/toolbar" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_start"
@@ -37,10 +32,13 @@
         android:layout_marginTop="@dimen/flow_margin"/>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_group_name"
         android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/guideline_start"
+        app:layout_constraintEnd_toStartOf="@id/guideline_end"
         app:layout_constraintTop_toBottomOf="@id/tv_group_name">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_group_name"
             android:layout_width="match_parent"
@@ -54,8 +52,63 @@
             app:layout_constraintTop_toBottomOf="@id/tv_group_name"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow_color"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/zero"
+        app:flow_maxElementsWrap="5"
+        app:flow_wrapMode="aligned"
+        android:layout_marginTop="@dimen/flow_margin"
+        app:constraint_referenced_ids="color_tangerine,color_peacock,color_blueberry,color_basil,color_tomato"
+        app:layout_constraintTop_toBottomOf="@+id/til_group_name"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end" />
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/color_tangerine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_circle_24"
+        style="@style/Tangerine"/>
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/color_peacock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_circle_24"
+        style="@style/Peacock"/>
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/color_blueberry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_circle_24"
+        style="@style/Blueberry"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/color_basil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_circle_24"
+        style="@style/Basil"/>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/color_tomato"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_circle_24"
+        style="@style/Tomato"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/show_group_design"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/group_schedule_title"
+        android:gravity="center"
+        android:background="@drawable/rounded_text_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/flow_color" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

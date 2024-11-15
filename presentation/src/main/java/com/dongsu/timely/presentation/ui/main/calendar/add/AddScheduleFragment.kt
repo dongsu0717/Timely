@@ -48,7 +48,6 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
 
     override fun initView() {
         setupArgument()
-        toolbarSetting()
         toolbarAction()
         getCurrentDataAndTime()
         setupSpinnerAdapter()
@@ -59,17 +58,16 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             longitude = args.longitude.toDouble()
             binding.tvAppointmentPlace.text = args.place
     }
-    private fun toolbarSetting() = binding.toolbar.inflateMenu(R.menu.toolbar_menu)
     private fun toolbarAction(){
-        binding.toolbar.setOnMenuItemClickListener {
+        binding.toolbar.toolbarCommon.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+        binding.toolbar.toolbarCommon.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_save -> {
                     saveSchedule()
                     findNavController().popBackStack()
                     true
-                }
-                R.id.action_back -> {
-                    findNavController().popBackStack()
                 }
                 else -> false
             }
@@ -120,6 +118,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             tvStartTime.debouncedClickListener(lifecycleScope) { chooseTime(tvStartTime) }
             tvEndTime.debouncedClickListener(lifecycleScope) { chooseTime(tvEndTime) }
             chooseRepeat()
+
             iconPlace.debouncedClickListener(lifecycleScope){ choosePlace() }
             // 알람 설정 스위치
             switchAppointmentAlarm.setOnCheckedChangeListener { _, isChecked ->
@@ -128,15 +127,13 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             //알람 시간 선택
             chooseAlarmTime()
             // 색상 선택
-            iconColor.setOnClickListener { chooseColor() }
+            chooseColor()
         }
     }
     private fun chooseDate(targetView: TextView) {
         with(binding.calendarView) {
-            visibility = View.VISIBLE
             setOnDateChangeListener { _, year, month, dayOfMonth ->
                 targetView.text = formatDate(year, month, dayOfMonth)
-                visibility = View.GONE
             }
         }
     }
@@ -227,7 +224,6 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
     //만약 다크모드, 라이트모드 할때는 이부분 어떻게 바꿔야할까
     private fun chooseColor() {
         with(binding){
-            flowColor.visibility = View.VISIBLE
             setColorClickListener(iconColorLavender, R.color.dark_lavender,EnumColor.LAVENDER.color)
             setColorClickListener(iconColorSage, R.color.dark_sage,EnumColor.SAGE.color)
             setColorClickListener(iconColorGrape, R.color.dark_grape,EnumColor.GRAPE.color)
@@ -238,10 +234,8 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
     private fun setColorClickListener(imageView: ShapeableImageView, colorResId: Int, saveColor: Int) {
         imageView.debouncedClickListener(lifecycleScope) {
             with(binding){
-                // icon_color의 tint 색상을 클릭된 아이콘의 색상으로 변경
                 iconColor.setColorFilter(ContextCompat.getColor(requireContext(), colorResId))
                 color = saveColor
-                flowColor.visibility = View.GONE
             }
         }
     }
