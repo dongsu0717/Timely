@@ -1,7 +1,9 @@
 package com.dongsu.timely.common
 
-const val LOADING_GET_LOCATION = "위치 정보를 가져오는 중입니다 "
-const val ERROR_GET_LOCATION = "위치 정보를 가져오는데 실패했습니다."
+//TMap 연결
+const val TMAP_PACKAGE_NAME = "com.skt.tmap.ku"
+const val TMAP_ROUTE_URL = "tmap://route?goalname=%s&goalx=%s&goaly=%s&startx=%s&starty=%s"
+const val TMAP_MARKET_URL = "market://details?id=%s"
 
 //기본 스케줄 채널
 const val PERSONAL_CHANNEL_ID = "기본"
@@ -13,10 +15,6 @@ const val PERSONAL_ROUTE_CHANNEL_DESCRIPTION = "현재 위치에서 약속시간
 //기본 스케줄 알람
 const val TIME_TO_SCHEDULE = "일정시간이 %d분 남았습니다"
 const val TIME_TO_ROUTE_SCHEDULE = "거리: %s, 자동차: %s, 도보: %s"
-
-const val TMAP_PACKAGE_NAME = "com.skt.tmap.ku"
-const val TMAP_ROUTE_URL = "tmap://route?goalname=%s&goalx=%s&goaly=%s&startx=%s&starty=%s"
-const val TMAP_MARKET_URL = "market://details?id=%s"
 
 //FCM 채널
 const val FCM_CREATE_SCHEDULE_CHANNEL_ID = "SCHEDULE_CREATE"
@@ -37,7 +35,7 @@ const val FOREGROUND_SERVICE_CHANNEL_NAME = "FOREGROUND_SERVICE"
 const val FOREGROUND_SERVICE_BODY = "'%s'스케줄의 위치 공유가 시작됩니다. "
 
 
-//알림 ID
+//전체 알림 ID
 const val NOTIFICATION_SCHEDULE_ID = 100
 const val NOTIFICATION_ROUTE_ID = 101
 const val NOTIFICATION_FCM_CREATE_SCHEDULE_ID = 200

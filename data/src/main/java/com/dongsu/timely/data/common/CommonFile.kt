@@ -25,9 +25,6 @@ const val TMAP_BASE_URL = "https://apis.openapi.sk.com/"
 const val TMAP_POI = "tmap/pois"
 const val TMAP_CAR_URL = "tmap/routes"
 const val TMAP_WALK_URL = "tmap/routes/pedestrian"
-const val TMAP_PACKAGE_NAME = "com.skt.tmap.ku"
-const val TMAP_ROUTE_URL = "tmap://route?goalname=%s&goalx=%s&goaly=%s&startx=%s&starty=%s"
-const val TMAP_MARKET_URL = "market://details?id=%s"
 
 //TIMELY_URL
 const val PROTOCOL = "http"
