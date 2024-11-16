@@ -46,9 +46,6 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
     private lateinit var shapeManager: ShapeManager
     private lateinit var shapeLayer: ShapeLayer
 
-    private var placeLatitude: Double? = null
-    private var placeLongitude: Double? = null
-
     override fun initView() {
         Log.e("위치프래그먼트", groupId.toString())
         checkStartMap()
@@ -134,10 +131,7 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
 
     private fun checkStartMap(){
         lifecycleScope.launch {
-            val locationInfo = getScheduleIdShowMap()
-            val scheduleId = locationInfo.scheduleId
-            placeLatitude = locationInfo.locationLatitude
-            placeLongitude = locationInfo.locationLongitude
+            val scheduleId = getScheduleIdShowMap()
             Log.e("GroupLocationFragment","가져올 scheduleId: $scheduleId")
             if (scheduleId != null && scheduleId != -1) {
                 Log.e("GroupLocationFragment","맵 열릴 scheduleId: $scheduleId")
