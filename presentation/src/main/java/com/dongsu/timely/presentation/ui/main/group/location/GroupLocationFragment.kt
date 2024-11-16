@@ -192,7 +192,7 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
     }
     private fun updateAppointPlaceOnMap(kakaoMap: KakaoMap, meetingInfo: TargetLocation) {
         val labelStyle = LabelStyles.from(
-            LabelStyle.from(R.drawable.green_marker).setTextStyles(22, Color.BLACK)
+            LabelStyle.from(R.drawable.blue_marker).setTextStyles(22, Color.BLACK)
         )
         val placeLocation = LatLng.from(meetingInfo.coordinate.latitude, meetingInfo.coordinate.longitude)
         val placeName = LabelTextBuilder().setTexts(meetingInfo.location)
