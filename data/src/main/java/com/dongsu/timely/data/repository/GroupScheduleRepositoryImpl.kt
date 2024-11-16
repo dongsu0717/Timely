@@ -4,8 +4,8 @@ import android.util.Log
 import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.data.datasource.remote.GroupScheduleRemoteDatasource
 import com.dongsu.timely.domain.model.GroupSchedule
-import com.dongsu.timely.domain.model.ParticipationMember
 import com.dongsu.timely.domain.model.TotalGroupScheduleInfo
+import com.dongsu.timely.domain.model.map.GroupMeetingInfo
 import com.dongsu.timely.domain.repository.GroupScheduleRepository
 import javax.inject.Inject
 
@@ -35,7 +35,7 @@ class GroupScheduleRepositoryImpl @Inject constructor(
     override suspend fun cancelParticipationSchedule(groupId: Int, scheduleId: Int)
     = groupScheduleRemoteDatasource.cancelParticipationSchedule(groupId, scheduleId)
 
-    override suspend fun getParticipationMemberLocation(scheduleId: Int): TimelyResult<List<ParticipationMember>>
+    override suspend fun getParticipationMemberLocation(scheduleId: Int): TimelyResult<GroupMeetingInfo>
     = groupScheduleRemoteDatasource.getParticipationMemberLocation(scheduleId)
 
 }

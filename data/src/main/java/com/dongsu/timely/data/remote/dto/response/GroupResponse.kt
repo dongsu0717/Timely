@@ -1,5 +1,6 @@
 package com.dongsu.timely.data.remote.dto.response
 
+import com.dongsu.timely.data.remote.dto.response.map.UserResponse
 import com.google.gson.annotations.SerializedName
 
 data class GroupResponse(

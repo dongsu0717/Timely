@@ -1,14 +1,14 @@
 package com.dongsu.timely.data.mapper
 
-import com.dongsu.timely.data.remote.dto.response.ParticipationMemberResponse
-import com.dongsu.timely.domain.model.ParticipationMember
+import com.dongsu.timely.data.remote.dto.response.map.GroupMeetingResponse
+import com.dongsu.timely.domain.model.map.GroupMeetingInfo
+import retrofit2.Response
 
 object ParticipationMemberMapper {
-    fun toDomain(participationMemberResponse: ParticipationMemberResponse): ParticipationMember {
-        return ParticipationMember(
-            user = UserMapper.toDomain(participationMemberResponse.user),
-            userLocation = LocationMapper.toDomain(participationMemberResponse.location)
+    fun toDomain(groupMeetingResponse: Response<GroupMeetingResponse>): GroupMeetingInfo {
+        return GroupMeetingInfo(
+            targetLocation = TargetLocationMapper.toDomain(groupMeetingResponse.body()!!.targetLocation),
+            userMeetingData = groupMeetingResponse.body()?.data?.map { UserMeetingMapper.toDomain(it) }?: listOf()
         )
-
     }
 }

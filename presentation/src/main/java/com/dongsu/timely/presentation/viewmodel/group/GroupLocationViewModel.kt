@@ -19,7 +19,7 @@ class GroupLocationViewModel @Inject constructor(
     private val getScheduleShowMapUseCase : GetScheduleShowMapUseCase
 ): ViewModel() {
 
-    private val _groupMembersLocation = MutableStateFlow<TimelyResult<List<ParticipationMember>>>(TimelyResult.Empty)
+    private val _groupMembersLocation = MutableStateFlow<TimelyResult<GroupMeetingInfo>>(TimelyResult.Empty)
     var groupMembersLocation =_groupMembersLocation.asStateFlow()
 
     fun getParticipationMemberLocation(scheduleId: Int) {

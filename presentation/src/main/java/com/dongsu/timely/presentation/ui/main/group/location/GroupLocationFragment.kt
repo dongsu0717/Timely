@@ -8,8 +8,8 @@ import androidx.lifecycle.lifecycleScope
 import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.FragmentGroupLocationBinding
 import com.dongsu.timely.common.TimelyResult
-import com.dongsu.timely.domain.model.ParticipationMember
-import com.dongsu.timely.domain.model.PlaceLocation
+import com.dongsu.timely.domain.model.map.TargetLocation
+import com.dongsu.timely.domain.model.map.UserMeeting
 import com.dongsu.timely.presentation.common.BaseTabFragment
 import com.dongsu.timely.presentation.common.CommonUtils.toastShort
 import com.dongsu.timely.presentation.common.GET_ERROR
@@ -21,18 +21,14 @@ import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
 import com.kakao.vectormap.MapViewInfo
-import com.kakao.vectormap.animation.Interpolation
+import com.kakao.vectormap.label.LabelManager
 import com.kakao.vectormap.label.LabelOptions
 import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.label.LabelTextBuilder
-import com.kakao.vectormap.shape.DotPoints
 import com.kakao.vectormap.shape.Polygon
-import com.kakao.vectormap.shape.PolygonOptions
 import com.kakao.vectormap.shape.ShapeLayer
 import com.kakao.vectormap.shape.ShapeManager
-import com.kakao.vectormap.shape.animation.CircleWave
-import com.kakao.vectormap.shape.animation.CircleWaves
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -69,8 +65,7 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
 //            val mapWidgetManager = kakaoMap.mapWidgetManager
 //            val trackingManager = kakaoMap.trackingManager
 //            getCircleWaveAnimator(kakaoMap)
-            getParticipationMember(kakaoMap)
-            getAppointmentPlace(kakaoMap)
+            getGroupMeetingInfoOnMap(kakaoMap)
 
             shapeManager = kakaoMap.shapeManager!!
             shapeLayer = shapeManager.layer
@@ -153,22 +148,25 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
             }
         }
     }
-    private suspend fun getScheduleIdShowMap():PlaceLocation = groupLocationViewModel.getScheduleIdShowMap(groupId)
+    private suspend fun getScheduleIdShowMap(): Int? = groupLocationViewModel.getScheduleIdShowMap(groupId)
 
-    private fun getParticipationMember(kakaoMap: KakaoMap){
+    private fun getGroupMeetingInfoOnMap(kakaoMap: KakaoMap){
         lifecycleScope.launch {
-            groupLocationViewModel.groupMembersLocation.collectLatest { members -> //멤버들 가져오기
-                when(members){
+            groupLocationViewModel.groupMembersLocation.collectLatest { meetingInfo -> //멤버들 가져오기
+                when(meetingInfo){
                     is TimelyResult.Success -> {
-                        Log.e("멤버들 가져오기", members.resultData.toString())
-                        updateMemberLocationsOnMap(kakaoMap,members.resultData)
+                        Log.e("약속장소 가져오기",meetingInfo.resultData.targetLocation.toString())
+                        Log.e("멤버들 가져오기", meetingInfo.resultData.userMeetingData.toString())
+
+                        updateAppointPlaceOnMap(kakaoMap,meetingInfo.resultData.targetLocation)
+                        updateMemberLocationsOnMap(kakaoMap,meetingInfo.resultData.userMeetingData)
                     }
                     is TimelyResult.Loading -> {
                         toastShort(requireContext(), GET_LOADING)
                     }
                     is TimelyResult.NetworkError -> {
                         toastShort(requireContext(), GET_ERROR)
-                        Log.e("멤버들 가져오기", members.exception.toString())
+                        Log.e("멤버들 가져오기", meetingInfo.exception.toString())
                     }
                     else -> {
                         toastShort(requireContext(),"참여자 위치 가져오는 곳 ")
@@ -177,49 +175,55 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
             }
         }
     }
-    private fun updateMemberLocationsOnMap(kakaoMap: KakaoMap, members: List<ParticipationMember>) {
+    private fun updateMemberLocationsOnMap(kakaoMap: KakaoMap, meetingInfo: List<UserMeeting>) {
         val labelManager = kakaoMap.labelManager
-        members.forEach { member ->
-            // 라벨 스타일 설정
-            val labelStyle = LabelStyles.from(
-                LabelStyle.from(R.drawable.current_location).setTextStyles(32, Color.BLACK)
-            )
-            val location = LatLng.from(member.userLocation.locationLatitude, member.userLocation.locationLongitude)
-            val labelTextBuilder = LabelTextBuilder().setTexts(member.user.nickname)
-            val labelOptions = LabelOptions.from(location)
-                .setStyles(labelStyle)
-                .setTexts(labelTextBuilder)
-            labelManager?.layer?.addLabel(labelOptions)
+        meetingInfo.forEach { member ->
+            makeUserLabel(member, labelManager)
+            makeUserStateMessage(member, labelManager)
         }
     }
-    private fun getAppointmentPlace(kakaoMap: KakaoMap) {
-        if (placeLatitude != null && placeLongitude != null) {
-            val placeLocation = LatLng.from(placeLatitude!!, placeLongitude!!)
-            val labelStyle = LabelStyles.from(
-                LabelStyle.from(R.drawable.green_marker)
-            )
-            val labelOptions = LabelOptions.from(placeLocation)
-                .setStyles(labelStyle)
-            kakaoMap.labelManager?.layer?.addLabel(labelOptions)
-        }
+    private fun makeUserLabel(member: UserMeeting, labelManager: LabelManager?) {
+        val labelStyle = LabelStyles.from(
+            LabelStyle.from(R.drawable.current_location).setTextStyles(32, Color.BLACK)
+        )
+        val location = LatLng.from(member.location.latitude, member.location.longitude)
+        val labelTextBuilder = LabelTextBuilder().setTexts(member.user.nickname)
+        val labelOptions = LabelOptions.from(location)
+            .setStyles(labelStyle)
+            .setTexts(labelTextBuilder)
+        labelManager?.layer?.addLabel(labelOptions)
+    }
+    private fun makeUserStateMessage(member: UserMeeting, labelManager: LabelManager?) {
+
+    }
+    private fun updateAppointPlaceOnMap(kakaoMap: KakaoMap, meetingInfo: TargetLocation) {
+        val labelStyle = LabelStyles.from(
+            LabelStyle.from(R.drawable.green_marker).setTextStyles(22, Color.BLACK)
+        )
+        val placeLocation = LatLng.from(meetingInfo.coordinate.latitude, meetingInfo.coordinate.longitude)
+        val placeName = LabelTextBuilder().setTexts(meetingInfo.location)
+        val labelOptions = LabelOptions.from(placeLocation)
+            .setStyles(labelStyle)
+            .setTexts(placeName)
+        kakaoMap.labelManager?.layer?.addLabel(labelOptions)
     }
     private fun createAnimator(){
-        val circleWaves = CircleWaves.from("animator1")
-            .setDuration(3000)
-            .setRepeatCount(1000)
-            .setInterpolation(Interpolation.CubicIn)
-            .addCircleWave(CircleWave.from(0.7f, 0.0f, 0.0f, 100.0f))
-        shapeManager.addAnimator(circleWaves)
-        if(placeLatitude != null && placeLongitude != null){
-            val circle: Polygon = shapeLayer.addPolygon(getCircleOptions(LatLng.from(placeLatitude!!, placeLongitude!!), 1))
-            shapeManager.getAnimator("animator1").addPolygons(circle)
-            shapeManager.getAnimator("animator1").start()
-        }
+//        val circleWaves = CircleWaves.from("animator1")
+//            .setDuration(3000)
+//            .setRepeatCount(1000)
+//            .setInterpolation(Interpolation.CubicIn)
+//            .addCircleWave(CircleWave.from(0.7f, 0.0f, 0.0f, 100.0f))
+//        shapeManager.addAnimator(circleWaves)
+//        if(placeLatitude != null && placeLongitude != null){
+//            val circle: Polygon = shapeLayer.addPolygon(getCircleOptions(LatLng.from(placeLatitude!!, placeLongitude!!), 1))
+//            shapeManager.getAnimator("animator1").addPolygons(circle)
+//            shapeManager.getAnimator("animator1").start()
+//        }
     }
-    private fun getCircleOptions(center: LatLng?, radius: Int): PolygonOptions {
-        return PolygonOptions.from(
-            DotPoints.fromCircle(center, radius.toFloat()),
-            Color.parseColor("#078c03")
-        )
-    }
+//    private fun getCircleOptions(center: LatLng?, radius: Int): PolygonOptions {
+//        return PolygonOptions.from(
+//            DotPoints.fromCircle(center, radius.toFloat()),
+//            Color.parseColor("#078c03")
+//        )
+//    }
 }
