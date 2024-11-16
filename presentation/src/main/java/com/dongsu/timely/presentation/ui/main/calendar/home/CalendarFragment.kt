@@ -239,7 +239,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
                 }
 
                 is TimelyResult.Loading -> {}
-                is TimelyResult.RoomDBError -> {
+                is TimelyResult.LocalError -> {
 //                    toastShort("일정을 불러오는데 실패했습니다.")
                 }
 
