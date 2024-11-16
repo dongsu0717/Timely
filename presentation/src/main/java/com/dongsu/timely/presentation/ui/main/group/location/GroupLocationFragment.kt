@@ -12,6 +12,7 @@ import com.dongsu.timely.domain.model.map.TargetLocation
 import com.dongsu.timely.domain.model.map.UserMeeting
 import com.dongsu.timely.presentation.common.BaseTabFragment
 import com.dongsu.timely.presentation.common.CommonUtils.toastShort
+import com.dongsu.timely.presentation.common.DialogUtils
 import com.dongsu.timely.presentation.common.GET_ERROR
 import com.dongsu.timely.presentation.common.GET_LOADING
 import com.dongsu.timely.presentation.viewmodel.group.GroupLocationViewModel
@@ -21,14 +22,25 @@ import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
 import com.kakao.vectormap.MapViewInfo
+import com.kakao.vectormap.animation.Interpolation
 import com.kakao.vectormap.label.LabelManager
 import com.kakao.vectormap.label.LabelOptions
 import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.label.LabelTextBuilder
+import com.kakao.vectormap.mapwidget.InfoWindowLayer
+import com.kakao.vectormap.mapwidget.InfoWindowOptions
+import com.kakao.vectormap.mapwidget.component.GuiImage
+import com.kakao.vectormap.mapwidget.component.GuiLayout
+import com.kakao.vectormap.mapwidget.component.GuiText
+import com.kakao.vectormap.mapwidget.component.Orientation
+import com.kakao.vectormap.shape.DotPoints
 import com.kakao.vectormap.shape.Polygon
+import com.kakao.vectormap.shape.PolygonOptions
 import com.kakao.vectormap.shape.ShapeLayer
 import com.kakao.vectormap.shape.ShapeManager
+import com.kakao.vectormap.shape.animation.CircleWave
+import com.kakao.vectormap.shape.animation.CircleWaves
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -45,6 +57,7 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
     private lateinit var circleWavePolygon: Polygon
     private lateinit var shapeManager: ShapeManager
     private lateinit var shapeLayer: ShapeLayer
+    private lateinit var infoWindowLayer: InfoWindowLayer
 
     override fun initView() {
         Log.e("위치프래그먼트", groupId.toString())
@@ -52,7 +65,6 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
     }
     private val readyCallback: KakaoMapReadyCallback = object : KakaoMapReadyCallback() {
         override fun onMapReady(kakaoMap: KakaoMap) {
-
             // 인증 후 API 가 정상적으로 실행될 때 호출됨
             Log.i("k3f", "startPosition: " + kakaoMap.cameraPosition!!.position.toString())
             Log.i("k3f", "startZoomLevel: " + kakaoMap.zoomLevel)
@@ -61,12 +73,18 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
 //            val routeLineManager = kakaoMap.routeLineManager
 //            val mapWidgetManager = kakaoMap.mapWidgetManager
 //            val trackingManager = kakaoMap.trackingManager
-//            getCircleWaveAnimator(kakaoMap)
-            getGroupMeetingInfoOnMap(kakaoMap)
 
             shapeManager = kakaoMap.shapeManager!!
             shapeLayer = shapeManager.layer
-            createAnimator()
+            infoWindowLayer = kakaoMap.mapWidgetManager!!.infoWindowLayer
+            getGroupMeetingInfoOnMap(kakaoMap)
+
+            kakaoMap.setOnInfoWindowClickListener { kakaoMap, infoWindow, guiId ->
+                DialogUtils.showInputDialog(context = requireContext()){ inputText ->
+//                    sendDataToServer(inputText)
+                    toastShort(requireContext(), "입력된 텍스트: $inputText")
+                }
+            }
             //라벨 스타일 생성
 //            val styles = labelManager?.addLabelStyles(
 //                LabelStyles.from(
@@ -84,32 +102,6 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
 //            // 4. LabelLayer 에 LabelOptions 을 넣어 Label 생성하기
 //            val label: Label = layer!!.addLabel(options)
 //
-
-            // circle wave 를 위한 반지름 1 짜리 Polygon 을 생성한다.
-//            circleWavePolygon = kakaoMap.shapeManager!!.layer.addPolygon(
-//                PolygonOptions.from("circlePolygon")
-//                    .setVisible(true)
-//                    .setDotPoints(DotPoints.fromCircle(LatLng.from(37.46819965686, 126.90119500146), 1.0f))
-//                    .setStylesSet(
-//                        PolygonStylesSet.from(
-//                            PolygonStyles.from(Color.RED)
-//                        )
-//                    )
-//            )
-//            val circleOptions =
-//                PolygonOptions.from(DotPoints.fromCircle(LatLng.from(37.46819965686, 126.90119500146), 200f))
-////                    .setVisible(false)
-//                    .setStylesSet(
-//                        PolygonStylesSet.from(
-//                            PolygonStyles.from(
-//                        R.color.green)))
-//            val circle = shapeManager!!.layer.addPolygon(circleOptions)
-//
-//            //Label 의 transform 에 따라 움직이도록 설정한
-////            label.addShareTransform(circle)
-//            getCircleWaveAnimator(kakaoMap,shapeManager).stop()
-//            getCircleWaveAnimator(kakaoMap,shapeManager).addPolygons(circleWavePolygon)
-//            getCircleWaveAnimator(kakaoMap,shapeManager).start()
 
         }
         override fun getPosition(): LatLng = startPosition // 지도 시작 시 위치 좌표를 설정
@@ -186,6 +178,14 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
             .setStyles(labelStyle)
             .setTexts(labelTextBuilder)
         labelManager?.layer?.addLabel(labelOptions)
+        createAnimator(location,member.user.userId.toString())
+
+        val id = member.user.userId.toString()
+        infoWindowLayer.addInfoWindow(getStateMessageLayout(
+            messageId = id,
+            stateMessage = member.stateMessage,
+            location = location))
+        infoWindowLayer.getInfoWindow(id).show()
     }
     private fun makeUserStateMessage(member: UserMeeting, labelManager: LabelManager?) {
 
@@ -200,24 +200,54 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
             .setStyles(labelStyle)
             .setTexts(placeName)
         kakaoMap.labelManager?.layer?.addLabel(labelOptions)
+
+        val id = meetingInfo.location
+        createAnimator(placeLocation, animatorId = id)
     }
-    private fun createAnimator(){
-//        val circleWaves = CircleWaves.from("animator1")
-//            .setDuration(3000)
-//            .setRepeatCount(1000)
-//            .setInterpolation(Interpolation.CubicIn)
-//            .addCircleWave(CircleWave.from(0.7f, 0.0f, 0.0f, 100.0f))
-//        shapeManager.addAnimator(circleWaves)
-//        if(placeLatitude != null && placeLongitude != null){
-//            val circle: Polygon = shapeLayer.addPolygon(getCircleOptions(LatLng.from(placeLatitude!!, placeLongitude!!), 1))
-//            shapeManager.getAnimator("animator1").addPolygons(circle)
-//            shapeManager.getAnimator("animator1").start()
-//        }
+    private fun createAnimator(location: LatLng?, animatorId: String) {
+        val circleWaves = CircleWaves.from(animatorId)
+            .setDuration(3000)
+            .setRepeatCount(1000)
+            .setInterpolation(Interpolation.CubicIn)
+            .addCircleWave(CircleWave.from(0.7f, 0.0f, 0.0f, 100.0f))
+        shapeManager.addAnimator(circleWaves)
+        val circle: Polygon = shapeLayer.addPolygon(
+            getCircleAnimationOptions(
+                location,
+                1
+            )
+        )
+        shapeManager.getAnimator(animatorId).addPolygons(circle)
+        shapeManager.getAnimator(animatorId).start()
     }
-//    private fun getCircleOptions(center: LatLng?, radius: Int): PolygonOptions {
-//        return PolygonOptions.from(
-//            DotPoints.fromCircle(center, radius.toFloat()),
-//            Color.parseColor("#078c03")
-//        )
-//    }
+    private fun getCircleAnimationOptions(center: LatLng?, radius: Int): PolygonOptions {
+        return PolygonOptions.from(
+            DotPoints.fromCircle(center, radius.toFloat()),
+            Color.parseColor("#078c03")
+        )
+    }
+    private fun getStateMessageLayout(messageId:String, stateMessage: String? = "가는중", location: LatLng): InfoWindowOptions {
+        val body = GuiLayout(Orientation.Horizontal)
+        body.setPadding(20, 20, 20, 18)
+
+        val image = GuiImage(R.drawable.window_body, true)
+        image.setFixedArea(7, 7, 7, 7)
+        body.setBackground(image)
+
+        val text = GuiText("가는중") //테스트용
+//        val text = GuiText(stateMessage) //실제로 들어갈 값
+        text.setTextSize(30)
+        body.addView(text)
+
+        val options = InfoWindowOptions.from(
+            messageId,
+            location
+        )
+        options.setBody(body)
+        options.setBodyOffset(0f, -4f)
+        options.setTail(GuiImage(R.drawable.window_tail, false))
+        options.setTailOffset(0f,-50f)
+        options.setVisible(false)
+        return options
+    }
 }
