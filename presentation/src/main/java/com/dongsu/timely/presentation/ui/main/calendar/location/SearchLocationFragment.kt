@@ -86,7 +86,7 @@ class SearchLocationFragment :
             args.groupId
         )
         val navOptions = NavOptions.Builder()
-            .setPopUpTo(R.id.searchLocationFragment, inclusive = true)
+            .setPopUpTo(R.id.groupAddScheduleFragment, inclusive = true)
             .build()
         findNavController().navigate(action,navOptions)
     }
@@ -97,8 +97,8 @@ class SearchLocationFragment :
             poiItem.name
         )
         val navOptions = NavOptions.Builder()
-            .setPopUpTo(R.id.searchLocationFragment, inclusive = true)
+            .setPopUpTo(R.id.addScheduleFragment, inclusive = true) // Ensure old instance is removed
             .build()
-        findNavController().navigate(action,navOptions)
+        findNavController().navigate(action, navOptions)
     }
 }
