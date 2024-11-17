@@ -2,12 +2,14 @@ package com.dongsu.timely.presentation.ui.main.calendar.add
 
 import PermissionUtils
 import android.Manifest
+import android.os.Build
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -168,7 +170,14 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
     }
     private val requestPermissionLauncher = PermissionUtils.registerLocationPermissions(
         this,
-        onPermissionsGranted = { findNavController().navigate(R.id.action_addScheduleFragment_to_searchLocationFragment) },
+        onPermissionsGranted = {
+            // ACCESS_FINE_LOCATION 및 ACCESS_COARSE_LOCATION 권한이 승인된 후 호출됨
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // Android 10(API 29) 이상일 때만
+                requestBackgroundLocationPermission()
+            } else {
+                goSearchLocationFragment() // BACKGROUND 권한 없이도 다음 화면으로 이동
+            }
+        },
         onPermissionsDenied = {
             if (PermissionUtils.shouldShowRequestPermissionRationaleForLocation(this)) {
                 PermissionUtils.showExplanationDialog(requireContext()) { requestLocationPermissions() }
@@ -177,16 +186,45 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             }
         }
     )
+
     private fun choosePlace() {
         if (PermissionUtils.isLocationServiceEnabled(requireContext())) {
             if (PermissionUtils.areLocationPermissionsGranted(requireContext())) {
-                findNavController().navigate(R.id.action_addScheduleFragment_to_searchLocationFragment)
+                // FINE 및 COARSE 권한이 승인되었으면 BACKGROUND 권한도 요청 (Android 10 이상)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    requestBackgroundLocationPermission()
+                } else {
+                    goSearchLocationFragment()
+                }
             } else {
                 requestLocationPermissions()
             }
         } else {
             PermissionUtils.showLocationServiceDialog(requireContext())
         }
+    }
+
+    private fun requestLocationPermissions() {
+        requestPermissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
+    }
+
+    private fun requestBackgroundLocationPermission() {
+        val requestBackgroundLocationLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                goSearchLocationFragment() // 모든 권한이 승인된 경우 다음 화면으로 이동
+            } else {
+                PermissionUtils.showPermissionsDeniedDialog(requireContext())
+            }
+        }
+        requestBackgroundLocationLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+    }
+    private fun goSearchLocationFragment(){
+        findNavController().navigate(R.id.action_addScheduleFragment_to_searchLocationFragment)
 //        {
 //            //밑에 데이터 저장하는거 나중에 실험
 //            popUpTo(R.id.addSchedulerFragment){
@@ -195,14 +233,6 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
 //            launchSingleTop = true
 //            restoreState = true
 //        }
-    }
-    private fun requestLocationPermissions() {
-        requestPermissionLauncher.launch(
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            )
-        )
     }
     private fun chooseAlarmTime(){
         binding.spinnerAlarm.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
