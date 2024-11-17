@@ -7,7 +7,10 @@
     <dimen name="small_margin">10dp</dimen>
     <dimen name="login_margin">100dp</dimen>
 
+    <dimen name="margin_15">15dp</dimen>
     <dimen name="margin_20">20dp</dimen>
+    <dimen name="margin_30">30dp</dimen>
+
 
     <dimen name="text_size_login">50sp</dimen>
     <dimen name="text_size_header_25sp">25sp</dimen>
@@ -17,7 +20,10 @@
     <!--view 선-->
     <dimen name="view_height">1dp</dimen>
 
-    <dimen name="searchview_height">70dp</dimen>
+    <!-- searchVeiw -->
+    <dimen name="searchview_height">60dp</dimen>
+    <dimen name="searchview_bottom_sheet_height">300dp</dimen>
+
 
     <dimen name="group_list_margin">10dp</dimen>
 
