@@ -4,6 +4,7 @@ import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.data.datasource.local.UserLocalDatasource
 import com.dongsu.timely.data.datasource.remote.UserRemoteDatasource
 import com.dongsu.timely.domain.model.Token
+import com.dongsu.timely.domain.model.map.User
 import com.dongsu.timely.domain.repository.UserRepository
 import javax.inject.Inject
 
@@ -25,6 +26,13 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun isLoggedIn():TimelyResult<Boolean>
             = userLocalDatasource.isLoggedIn()
+
+    override suspend fun getMyInfo(): TimelyResult<User>
+    = userRemoteDatasource.getMyInfo()
+
+    override suspend fun countLateness()
+    = userRemoteDatasource.countLateness()
+
 
     override suspend fun getUserProfile() {
     }
