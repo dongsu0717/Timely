@@ -53,7 +53,9 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
 
 
     private val startZoomLevel = 15
-    private val startPosition = LatLng.from(37.46819965686225, 126.90119500104446)
+    private val startPosition = LatLng.from(37.46819965686225, 126.90119500104446) //우리집임 ㅋㅋ
+    private var locationScheduleId: Int? = null
+
     private lateinit var circleWavePolygon: Polygon
     private lateinit var shapeManager: ShapeManager
     private lateinit var shapeLayer: ShapeLayer
@@ -81,7 +83,7 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
 
             kakaoMap.setOnInfoWindowClickListener { kakaoMap, infoWindow, guiId ->
                 DialogUtils.showInputDialog(context = requireContext()){ inputText ->
-//                    sendDataToServer(inputText)
+                    updateStateMessage(inputText)
                     toastShort(requireContext(), "입력된 텍스트: $inputText")
                 }
             }
@@ -124,6 +126,7 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
     private fun checkStartMap(){
         lifecycleScope.launch {
             val scheduleId = getScheduleIdShowMap()
+            locationScheduleId = scheduleId
             Log.e("GroupLocationFragment","가져올 scheduleId: $scheduleId")
             if (scheduleId != null && scheduleId != -1) {
                 Log.e("GroupLocationFragment","맵 열릴 scheduleId: $scheduleId")
@@ -161,6 +164,7 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
             }
         }
     }
+
     private fun updateMemberLocationsOnMap(kakaoMap: KakaoMap, meetingInfo: List<UserMeeting>) {
         val labelManager = kakaoMap.labelManager
         meetingInfo.forEach { member ->
@@ -168,6 +172,12 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
             makeUserStateMessage(member, labelManager)
         }
     }
+    private fun updateStateMessage(stateMessage: String) {
+        lifecycleScope.launch {
+            locationScheduleId?.let { groupLocationViewModel.updateStateMessage(it, stateMessage) }
+        }
+    }
+
     private fun makeUserLabel(member: UserMeeting, labelManager: LabelManager?) {
         val labelStyle = LabelStyles.from(
             LabelStyle.from(R.drawable.current_location).setTextStyles(32, Color.BLACK)
@@ -234,8 +244,8 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
         image.setFixedArea(7, 7, 7, 7)
         body.setBackground(image)
 
-        val text = GuiText("가는중") //테스트용
-//        val text = GuiText(stateMessage) //실제로 들어갈 값
+//        val text = GuiText("가는중") //테스트용
+        val text = GuiText(stateMessage) //실제로 들어갈 값
         text.setTextSize(30)
         body.addView(text)
 

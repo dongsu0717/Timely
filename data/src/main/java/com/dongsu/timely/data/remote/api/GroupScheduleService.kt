@@ -3,9 +3,11 @@ package com.dongsu.timely.data.remote.api
 import com.dongsu.timely.data.common.GROUP_SCHEDULE
 import com.dongsu.timely.data.common.GROUP_SCHEDULE_PARTICIPATION
 import com.dongsu.timely.data.common.LOCATION
+import com.dongsu.timely.data.common.STATE_MESSAGE
 import com.dongsu.timely.data.remote.dto.request.GroupScheduleRequest
 import com.dongsu.timely.data.remote.dto.request.LocationRequest
 import com.dongsu.timely.data.remote.dto.response.CommonResponse
+import com.dongsu.timely.data.remote.dto.response.StateMessageResponse
 import com.dongsu.timely.data.remote.dto.response.TotalGroupScheduleInfoResponse
 import com.dongsu.timely.data.remote.dto.response.map.GroupMeetingResponse
 import retrofit2.Response
@@ -51,4 +53,10 @@ interface GroupScheduleService {
     suspend fun getGroupLocation(
         @Path("scheduleId") scheduleId: Int
     ): Response<GroupMeetingResponse>
+
+    @PUT(STATE_MESSAGE)
+    suspend fun updateStateMessage(
+        @Path("scheduleId") scheduleId: Int,
+        @Body stateMessageResponse: StateMessageResponse
+    )
 }

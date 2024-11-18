@@ -38,4 +38,7 @@ class GroupScheduleRepositoryImpl @Inject constructor(
     override suspend fun getParticipationMemberLocation(scheduleId: Int): TimelyResult<GroupMeetingInfo>
     = groupScheduleRemoteDatasource.getParticipationMemberLocation(scheduleId)
 
+    override suspend fun updateStateMessage(scheduleId: Int, stateMessage: String)
+    = groupScheduleRemoteDatasource.updateStateMessage(scheduleId, stateMessage)
+
 }

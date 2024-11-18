@@ -11,4 +11,5 @@ interface GroupScheduleRemoteDatasource {
     suspend fun participationSchedule(groupId: Int, scheduleId: Int)
     suspend fun cancelParticipationSchedule(groupId: Int, scheduleId: Int)
     suspend fun getParticipationMemberLocation(scheduleId: Int): TimelyResult<GroupMeetingInfo>
+    suspend fun updateStateMessage(scheduleId: Int, stateMessage: String)
 }
