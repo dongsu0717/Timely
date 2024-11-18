@@ -40,11 +40,11 @@ class TimelyFirebaseMessagingService : FirebaseMessagingService() {
                 }
                 FCM_APPOINTMENT_CHANNEL_ID -> {
                     Log.e("FCM일정 시간 됨","FCM일정 시간 됐음")
-//                    setWorkManager(message)
+                    setWorkManager(message)
                     AppointmentAlarmPushMessage(groupName, scheduleTitle)
                 }
             }
-            setWorkManager(message) //바로 울리기 테스트용
+//            setWorkManager(message) //바로 울리기 테스트용
         }
     }
 

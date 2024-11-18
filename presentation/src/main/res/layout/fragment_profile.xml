@@ -5,74 +5,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/siv_my_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_name"
+        android:id="@+id/tv_setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="29dp"
-        android:layout_marginBottom="71dp"
-        android:text="@string/nickname"
+        android:text="@string/setting"
         app:layout_constraintBottom_toTopOf="@+id/tv_invite_message_box"
-        app:layout_constraintEnd_toEndOf="@+id/tv_invite_message_box" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_lateness"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="173dp"
-        android:layout_marginEnd="77dp"
-        android:text="@string/lateness"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_lateness_percent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/percent_lateness"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_lateness"
-        app:layout_constraintStart_toEndOf="@+id/tv_lateness"
-        app:layout_constraintTop_toTopOf="@+id/tv_lateness" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_invite_message_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="335dp"
         android:text="@string/invite_message_box"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="114dp"
-        android:layout_marginBottom="128dp"
-        android:text="@string/logout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_withdraw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="95dp"
         android:text="@string/withdraw"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tv_logout"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_invite_message_box" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

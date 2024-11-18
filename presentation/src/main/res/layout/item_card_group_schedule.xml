@@ -4,7 +4,10 @@
     android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="30dp"
+    android:layout_marginStart="@dimen/margin_30"
+    android:layout_marginEnd="@dimen/margin_30"
+    android:layout_marginTop="@dimen/margin_15"
+    android:layout_marginBottom="@dimen/margin_15"
     app1:cardCornerRadius="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
