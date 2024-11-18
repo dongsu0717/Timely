@@ -5,8 +5,8 @@ import com.dongsu.timely.data.mapper.GroupScheduleMapper
 import com.dongsu.timely.data.mapper.ParticipationMemberMapper
 import com.dongsu.timely.data.remote.api.GroupScheduleService
 import com.dongsu.timely.domain.model.GroupSchedule
-import com.dongsu.timely.domain.model.ParticipationMember
 import com.dongsu.timely.domain.model.TotalGroupScheduleInfo
+import com.dongsu.timely.domain.model.map.GroupMeetingInfo
 import javax.inject.Inject
 
 class GroupScheduleRemoteDatasourceImpl @Inject constructor(
@@ -31,10 +31,10 @@ class GroupScheduleRemoteDatasourceImpl @Inject constructor(
         groupScheduleService.cancelParticipationSchedule(groupId, scheduleId)
     }
 
-    override suspend fun getParticipationMemberLocation(scheduleId: Int): TimelyResult<List<ParticipationMember>> {
+    override suspend fun getParticipationMemberLocation(scheduleId: Int): TimelyResult<GroupMeetingInfo> {
         val response = groupScheduleService.getGroupLocation(scheduleId)
-        val participationMemberList = response.body()?.map { ParticipationMemberMapper.toDomain(it) } ?: listOf()
-        return TimelyResult.Success(participationMemberList)
+        val groupMeetingInfo = ParticipationMemberMapper.toDomain(response)
+        return TimelyResult.Success(groupMeetingInfo)
     }
 }
 

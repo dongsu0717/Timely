@@ -38,6 +38,14 @@ class LocationService : Service() {
             startForegroundService(groupId,groupName,scheduleId,scheduleTitle)
         } else Log.e("서비스 실행x", "groupId: $groupId scheduleId: $scheduleId")
 
+        //왜 밑에 작동을 안할까..?
+//        val currentTime = LocalDateTime.now()
+//        val scheduleTime = LocalDateTime.parse(scheduleStartTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+//        if (scheduleTime.isBefore(currentTime) || scheduleTime.isEqual(currentTime)) {
+//            Log.e("서비스 종료", "The scheduled time has passed. Stopping the service.")
+//            stopSelf()
+//            return START_NOT_STICKY
+//        }
         return START_STICKY
     }
 

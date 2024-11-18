@@ -4,7 +4,7 @@ import com.dongsu.timely.data.remote.api.FCMService
 import com.dongsu.timely.data.remote.api.GroupScheduleService
 import com.dongsu.timely.data.remote.api.GroupService
 import com.dongsu.timely.data.remote.api.LoginService
-import com.dongsu.timely.data.remote.api.TmapService
+import com.dongsu.timely.data.remote.api.TMapService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,7 +20,7 @@ object ServiceModule {
     @Singleton
     fun provideTMapRepository(
         @TMap retrofit: Retrofit,
-    ): TmapService = retrofit.create(TmapService::class.java)
+    ): TMapService = retrofit.create(TMapService::class.java)
 
     @Provides
     @Singleton

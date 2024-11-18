@@ -1,13 +1,13 @@
 package com.dongsu.timely.data.mapper
 
-import com.dongsu.timely.data.remote.dto.response.LocationResponse
-import com.dongsu.timely.domain.model.UserLocation
+import com.dongsu.timely.data.remote.dto.response.map.LocationResponse
+import com.dongsu.timely.domain.model.map.LocationInfo
 
 object LocationMapper {
-    fun toDomain(locationResponse: LocationResponse): UserLocation {
-        return UserLocation(
-            locationLatitude = locationResponse.locationLatitude,
-            locationLongitude = locationResponse.locationLongitude
+    fun toDomain(locationResponse: LocationResponse): LocationInfo {
+        return LocationInfo(
+            latitude = locationResponse.latitude,
+            longitude = locationResponse.longitude
         )
     }
 }

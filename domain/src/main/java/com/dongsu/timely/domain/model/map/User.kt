@@ -1,4 +1,4 @@
-package com.dongsu.timely.domain.model
+package com.dongsu.timely.domain.model.map
 
 data class User(
     val userId: Int,
