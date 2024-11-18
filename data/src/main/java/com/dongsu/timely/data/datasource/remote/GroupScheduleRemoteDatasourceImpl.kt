@@ -4,6 +4,7 @@ import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.data.mapper.GroupScheduleMapper
 import com.dongsu.timely.data.mapper.ParticipationMemberMapper
 import com.dongsu.timely.data.remote.api.GroupScheduleService
+import com.dongsu.timely.data.remote.dto.response.StateMessageResponse
 import com.dongsu.timely.domain.model.GroupSchedule
 import com.dongsu.timely.domain.model.TotalGroupScheduleInfo
 import com.dongsu.timely.domain.model.map.GroupMeetingInfo
@@ -35,6 +36,11 @@ class GroupScheduleRemoteDatasourceImpl @Inject constructor(
         val response = groupScheduleService.getGroupLocation(scheduleId)
         val groupMeetingInfo = ParticipationMemberMapper.toDomain(response)
         return TimelyResult.Success(groupMeetingInfo)
+    }
+
+    override suspend fun updateStateMessage(scheduleId: Int, stateMessage: String) {
+        val stateMessageResponse = StateMessageResponse(stateMessage)
+        groupScheduleService.updateStateMessage(scheduleId, stateMessageResponse)
     }
 }
 
