@@ -5,6 +5,7 @@ import com.dongsu.timely.data.remote.api.GroupScheduleService
 import com.dongsu.timely.data.remote.api.GroupService
 import com.dongsu.timely.data.remote.api.LoginService
 import com.dongsu.timely.data.remote.api.TMapService
+import com.dongsu.timely.data.remote.api.UserService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,6 +28,12 @@ object ServiceModule {
     fun provideUserRepository(
         @Timely retrofit: Retrofit,
     ): LoginService = retrofit.create(LoginService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUserInfoRepository(
+        @TimelyAuth retrofit: Retrofit,
+    ): UserService = retrofit.create(UserService::class.java)
 
     @Provides
     @Singleton

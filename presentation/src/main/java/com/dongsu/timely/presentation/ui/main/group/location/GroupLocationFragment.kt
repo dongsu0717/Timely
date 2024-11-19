@@ -11,6 +11,7 @@ import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.map.TargetLocation
 import com.dongsu.timely.domain.model.map.UserMeeting
 import com.dongsu.timely.presentation.common.BaseTabFragment
+import com.dongsu.timely.presentation.common.CommonUtils.calculateDistance
 import com.dongsu.timely.presentation.common.CommonUtils.toastShort
 import com.dongsu.timely.presentation.common.DialogUtils
 import com.dongsu.timely.presentation.common.GET_ERROR
@@ -46,15 +47,18 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(FragmentGroupLocationBinding::inflate)  {
+class GroupLocationFragment :
+    BaseTabFragment<FragmentGroupLocationBinding>(FragmentGroupLocationBinding::inflate) {
 
     private val groupLocationViewModel: GroupLocationViewModel by viewModels()
     private lateinit var mapView: MapView
+    private lateinit var kakaoMap: KakaoMap
 
 
     private val startZoomLevel = 15
     private val startPosition = LatLng.from(37.46819965686225, 126.90119500104446) //우리집임 ㅋㅋ
     private var locationScheduleId: Int? = null
+    private var myId: Int? = null
 
     private lateinit var circleWavePolygon: Polygon
     private lateinit var shapeManager: ShapeManager
@@ -65,6 +69,7 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
         Log.e("위치프래그먼트", groupId.toString())
         checkStartMap()
     }
+
     private val readyCallback: KakaoMapReadyCallback = object : KakaoMapReadyCallback() {
         override fun onMapReady(kakaoMap: KakaoMap) {
             // 인증 후 API 가 정상적으로 실행될 때 호출됨
@@ -79,10 +84,13 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
             shapeManager = kakaoMap.shapeManager!!
             shapeLayer = shapeManager.layer
             infoWindowLayer = kakaoMap.mapWidgetManager!!.infoWindowLayer
-            getGroupMeetingInfoOnMap(kakaoMap)
+            lifecycleScope.launch {
+                getGroupMeetingInfoOnMap(kakaoMap)
+            }
+
 
             kakaoMap.setOnInfoWindowClickListener { kakaoMap, infoWindow, guiId ->
-                DialogUtils.showInputDialog(context = requireContext()){ inputText ->
+                DialogUtils.showInputDialog(context = requireContext()) { inputText ->
                     updateStateMessage(inputText)
                     toastShort(requireContext(), "입력된 텍스트: $inputText")
                 }
@@ -106,30 +114,36 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
 //
 
         }
+
         override fun getPosition(): LatLng = startPosition // 지도 시작 시 위치 좌표를 설정
         override fun getZoomLevel(): Int = startZoomLevel // 지도 시작 시 확대/축소 줌 레벨 설정
-        override fun getMapViewInfo(): MapViewInfo =  super.getMapViewInfo() // 지도 타입
-        override fun getViewName(): String ="MyFirstMap" // KakaoMap 의 고유한 이름을 설정
+        override fun getMapViewInfo(): MapViewInfo = super.getMapViewInfo() // 지도 타입
+        override fun getViewName(): String = "MyFirstMap" // KakaoMap 의 고유한 이름을 설정
         override fun isVisible(): Boolean = true // 지도 시작 시 visible 여부를 설정
         override fun getTag(): String = "FirstMapTag" // KakaoMap 의 tag 을 설정
-        override fun isDev(): Boolean =  super.isDev()
+        override fun isDev(): Boolean = super.isDev()
         override fun getTimeout(): Int = super.getTimeout()
     }
+
     // MapLifeCycleCallback 을 통해 지도의 LifeCycle 관련 이벤트를 수신할 수 있다.
     private val lifeCycleCallback: MapLifeCycleCallback = object : MapLifeCycleCallback() {
         override fun onMapResumed() = super.onMapResumed()
-        override fun onMapPaused() =  super.onMapPaused()
-        override fun onMapDestroy() = toastShort(requireContext(),"onMapDestroy") // 지도 API 가 정상적으로 종료될 때 호출됨
-        override fun onMapError(error: java.lang.Exception) = toastShort(requireContext(),"onMapError")  // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
+        override fun onMapPaused() = super.onMapPaused()
+        override fun onMapDestroy() =
+            toastShort(requireContext(), "onMapDestroy") // 지도 API 가 정상적으로 종료될 때 호출됨
+
+        override fun onMapError(error: java.lang.Exception) =
+            toastShort(requireContext(), "onMapError")  // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
     }
 
-    private fun checkStartMap(){
+    private fun checkStartMap() {
         lifecycleScope.launch {
             val scheduleId = getScheduleIdShowMap()
             locationScheduleId = scheduleId
-            Log.e("GroupLocationFragment","가져올 scheduleId: $scheduleId")
+            myId = getMyId()
+            Log.e("GroupLocationFragment", "가져올 scheduleId: $scheduleId")
             if (scheduleId != null && scheduleId != -1) {
-                Log.e("GroupLocationFragment","맵 열릴 scheduleId: $scheduleId")
+                Log.e("GroupLocationFragment", "맵 열릴 scheduleId: $scheduleId")
                 binding.tvNothingScheduleTime.visibility = View.GONE
                 mapView = binding.mapView
                 mapView.start(lifeCycleCallback, readyCallback)
@@ -137,32 +151,78 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
             }
         }
     }
-    private suspend fun getScheduleIdShowMap(): Int? = groupLocationViewModel.getScheduleIdShowMap(groupId)
 
-    private fun getGroupMeetingInfoOnMap(kakaoMap: KakaoMap){
-        lifecycleScope.launch {
+    private suspend fun getScheduleIdShowMap(): Int? =
+        groupLocationViewModel.getScheduleIdShowMap(groupId)
+
+    private suspend fun getMyId(): Int? {
+        val result = groupLocationViewModel.getMyInfo()
+        return when (result) {
+            is TimelyResult.Success -> {
+                result.resultData.userId
+            }
+
+            is TimelyResult.NetworkError -> {
+                null
+            }
+
+            is TimelyResult.Loading -> {
+                null
+            }
+
+            else -> {
+                null
+            }
+        }
+    }
+
+    private suspend fun getGroupMeetingInfoOnMap(kakaoMap: KakaoMap) {
             groupLocationViewModel.groupMembersLocation.collectLatest { meetingInfo -> //멤버들 가져오기
-                when(meetingInfo){
+                when (meetingInfo) {
                     is TimelyResult.Success -> {
-                        Log.e("약속장소 가져오기",meetingInfo.resultData.targetLocation.toString())
+                        val targetLocation = meetingInfo.resultData.targetLocation
+                        val myLocation = meetingInfo.resultData.userMeetingData.find { it.user.userId == myId }?.location
+                        Log.e("약속장소 가져오기", meetingInfo.resultData.targetLocation.toString())
                         Log.e("멤버들 가져오기", meetingInfo.resultData.userMeetingData.toString())
+                        Log.e("내위치 가져오기", myLocation.toString())
 
-                        updateAppointPlaceOnMap(kakaoMap,meetingInfo.resultData.targetLocation)
-                        updateMemberLocationsOnMap(kakaoMap,meetingInfo.resultData.userMeetingData)
+                        if (myLocation != null) {
+                            val distance = calculateDistance(
+                                myLocation.latitude,
+                                myLocation.longitude,
+                                targetLocation.coordinate.latitude,
+                                targetLocation.coordinate.longitude
+                            )
+
+                            Log.d("DistanceCheck", "Distance to target: $distance meters")
+
+                            if (distance <= 100) {
+                                arrivedPlace()
+                                // 100미터 안에 들어온 경우 지도 닫기
+                                closeKakaoMap()
+                                return@collectLatest
+                            }
+                        }
+                        updateAppointPlaceOnMap(kakaoMap, meetingInfo.resultData.targetLocation)
+                        updateMemberLocationsOnMap(kakaoMap, meetingInfo.resultData.userMeetingData)
+
                     }
+
                     is TimelyResult.Loading -> {
                         toastShort(requireContext(), GET_LOADING)
                     }
+
                     is TimelyResult.NetworkError -> {
                         toastShort(requireContext(), GET_ERROR)
                         Log.e("멤버들 가져오기", meetingInfo.exception.toString())
                     }
+
                     else -> {
-                        toastShort(requireContext(),"참여자 위치 가져오는 곳 ")
+                        toastShort(requireContext(), "참여자 위치 가져오는 곳 ")
                     }
                 }
             }
-        }
+
     }
 
     private fun updateMemberLocationsOnMap(kakaoMap: KakaoMap, meetingInfo: List<UserMeeting>) {
@@ -172,6 +232,7 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
             makeUserStateMessage(member, labelManager)
         }
     }
+
     private fun updateStateMessage(stateMessage: String) {
         lifecycleScope.launch {
             locationScheduleId?.let { groupLocationViewModel.updateStateMessage(it, stateMessage) }
@@ -188,23 +249,29 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
             .setStyles(labelStyle)
             .setTexts(labelTextBuilder)
         labelManager?.layer?.addLabel(labelOptions)
-        createAnimator(location,member.user.userId.toString())
+        createAnimator(location, member.user.userId.toString())
 
         val id = member.user.userId.toString()
-        infoWindowLayer.addInfoWindow(getStateMessageLayout(
-            messageId = id,
-            stateMessage = member.stateMessage,
-            location = location))
+        infoWindowLayer.addInfoWindow(
+            getStateMessageLayout(
+                messageId = id,
+                stateMessage = member.stateMessage,
+                location = location
+            )
+        )
         infoWindowLayer.getInfoWindow(id).show()
     }
+
     private fun makeUserStateMessage(member: UserMeeting, labelManager: LabelManager?) {
 
     }
+
     private fun updateAppointPlaceOnMap(kakaoMap: KakaoMap, meetingInfo: TargetLocation) {
         val labelStyle = LabelStyles.from(
             LabelStyle.from(R.drawable.blue_marker).setTextStyles(22, Color.BLACK)
         )
-        val placeLocation = LatLng.from(meetingInfo.coordinate.latitude, meetingInfo.coordinate.longitude)
+        val placeLocation =
+            LatLng.from(meetingInfo.coordinate.latitude, meetingInfo.coordinate.longitude)
         val placeName = LabelTextBuilder().setTexts(meetingInfo.location)
         val labelOptions = LabelOptions.from(placeLocation)
             .setStyles(labelStyle)
@@ -214,6 +281,7 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
         val id = meetingInfo.location
         createAnimator(placeLocation, animatorId = id)
     }
+
     private fun createAnimator(location: LatLng?, animatorId: String) {
         val circleWaves = CircleWaves.from(animatorId)
             .setDuration(3000)
@@ -230,13 +298,19 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
         shapeManager.getAnimator(animatorId).addPolygons(circle)
         shapeManager.getAnimator(animatorId).start()
     }
+
     private fun getCircleAnimationOptions(center: LatLng?, radius: Int): PolygonOptions {
         return PolygonOptions.from(
             DotPoints.fromCircle(center, radius.toFloat()),
             Color.parseColor("#078c03")
         )
     }
-    private fun getStateMessageLayout(messageId:String, stateMessage: String? = "가는중", location: LatLng): InfoWindowOptions {
+
+    private fun getStateMessageLayout(
+        messageId: String,
+        stateMessage: String? = "가는중",
+        location: LatLng,
+    ): InfoWindowOptions {
         val body = GuiLayout(Orientation.Horizontal)
         body.setPadding(20, 20, 20, 18)
 
@@ -256,8 +330,17 @@ class GroupLocationFragment: BaseTabFragment<FragmentGroupLocationBinding>(Fragm
         options.setBody(body)
         options.setBodyOffset(0f, -4f)
         options.setTail(GuiImage(R.drawable.window_tail, false))
-        options.setTailOffset(0f,-50f)
+        options.setTailOffset(0f, -50f)
         options.setVisible(false)
         return options
+    }
+    private fun arrivedPlace(){
+
+    }
+
+    private fun closeKakaoMap(){
+        toastShort(requireContext(), "약속 장소에 도착했습니다. 지도를 닫습니다.")
+        binding.mapView.visibility = View.GONE // 지도를 숨김
+        mapView.finish()
     }
 }
