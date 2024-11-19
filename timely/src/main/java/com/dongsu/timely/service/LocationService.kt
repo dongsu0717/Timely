@@ -18,6 +18,8 @@ import com.dongsu.timely.common.SCHEDULE_TITLE
 import com.dongsu.timely.data.local.fusedlocation.LocationReceiver
 import com.dongsu.timely.presentation.ui.main.TimelyActivity
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 import javax.inject.Inject
 
@@ -39,13 +41,15 @@ class LocationService : Service() {
         } else Log.e("서비스 실행x", "groupId: $groupId scheduleId: $scheduleId")
 
         //왜 밑에 작동을 안할까..?
-//        val currentTime = LocalDateTime.now()
-//        val scheduleTime = LocalDateTime.parse(scheduleStartTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-//        if (scheduleTime.isBefore(currentTime) || scheduleTime.isEqual(currentTime)) {
-//            Log.e("서비스 종료", "The scheduled time has passed. Stopping the service.")
-//            stopSelf()
-//            return START_NOT_STICKY
-//        }
+        val currentTime = LocalDateTime.now()
+        val scheduleTime = LocalDateTime.parse(scheduleStartTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+
+        if (scheduleTime.isBefore(currentTime) || scheduleTime.isEqual(currentTime)) {
+            Log.e("서비스 종료", "The scheduled time has passed. Stopping the service.")
+            stopSelf()
+            return START_NOT_STICKY
+        }
+
         return START_STICKY
     }
 

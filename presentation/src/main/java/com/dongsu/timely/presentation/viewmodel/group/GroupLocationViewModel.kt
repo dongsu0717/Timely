@@ -39,4 +39,8 @@ class GroupLocationViewModel @Inject constructor(
 
     suspend fun getMyInfo()
     = userRepository.getMyInfo()
+
+    suspend fun countLateness() {
+        return userRepository.countLateness()
+    }
 }
