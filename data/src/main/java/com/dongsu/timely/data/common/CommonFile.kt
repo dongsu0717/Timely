@@ -37,6 +37,7 @@ const val TIMELY_BASE_URL = "$PROTOCOL://$ADDRESS_PORT/"
 //account
 const val LOGIN_TOKEN = "auth/mobile/kakao"
 const val USER_INFO = "$API_VERSION/users/me"
+const val USER_LATE = "$API_VERSION/users/late"
 const val REISSUED_ACCESS_TOKEN = "auth/token"
 const val REISSUED_ALL_TOKEN = "auth/token/refresh"
 
