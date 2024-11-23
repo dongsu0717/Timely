@@ -1,6 +1,5 @@
 package com.dongsu.timely.data.datasource.local
 
-import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.data.local.room.dao.ScheduleDAO
 import com.dongsu.timely.data.mapper.ScheduleMapper
 import com.dongsu.timely.domain.model.Schedule
@@ -14,8 +13,6 @@ class ScheduleLocalDatasourceImpl @Inject constructor (
         scheduleDAO.insertSchedule(scheduleEntity)
     }
 
-    override suspend fun getAllSchedule(): TimelyResult<MutableList<Schedule>> {
-        val scheduleListDomain = scheduleDAO.getAllSchedule().map { ScheduleMapper.toDomain(it) }
-        return TimelyResult.Success(scheduleListDomain.toMutableList())
-    }
+    override suspend fun getAllSchedule(): List<Schedule>
+    = scheduleDAO.getAllSchedule().map { ScheduleMapper.toDomain(it) }
 }

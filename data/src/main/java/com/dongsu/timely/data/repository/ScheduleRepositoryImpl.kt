@@ -12,6 +12,11 @@ class ScheduleRepositoryImpl @Inject constructor(
     override suspend fun insertSchedule(schedule: Schedule)
     = scheduleLocalDatasource.insertSchedule(schedule)
 
-    override suspend fun getAllSchedule(): TimelyResult<MutableList<Schedule>>
-    = scheduleLocalDatasource.getAllSchedule()
+    override suspend fun getAllSchedule(): TimelyResult<List<Schedule>> {
+        return try {
+            TimelyResult.Success(scheduleLocalDatasource.getAllSchedule())
+        } catch (e: Exception) {
+            TimelyResult.LocalError(e)
+        }
+    }
 }

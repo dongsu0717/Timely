@@ -15,11 +15,12 @@ import javax.inject.Inject
 class CalendarViewModel @Inject constructor(
     private val scheduleRepository: ScheduleRepository
 ) : ViewModel() {
-    private var _scheduleList = MutableStateFlow<TimelyResult<MutableList<Schedule>>>(TimelyResult.Empty)
+    private var _scheduleList = MutableStateFlow<TimelyResult<List<Schedule>>>(TimelyResult.Empty)
     val scheduleList = _scheduleList.asStateFlow()
 
-    fun findAllSchedule(){
+    fun findAllSchedule() {
         viewModelScope.launch {
+            _scheduleList.value = TimelyResult.Loading
             _scheduleList.value = scheduleRepository.getAllSchedule()
         }
     }
