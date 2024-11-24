@@ -5,7 +5,9 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -45,7 +47,7 @@ class SearchLocationFragment :
     lateinit var behavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var mapView: MapView
     private lateinit var kakaoMap: KakaoMap
-    private lateinit var placeStartPosition : LatLng
+    private lateinit var placeStartPosition: LatLng
     private lateinit var infoWindowLayer: InfoWindowLayer
     private val startZoomLevel = 15
     private val startPosition = LatLng.from(37.46819965686225, 126.90119500104446)
@@ -56,6 +58,7 @@ class SearchLocationFragment :
         setAdapter()
         search()
     }
+
     private fun persistentBottomSheetEvent() {
         behavior = BottomSheetBehavior.from(binding.persistentBottomSheet)
         behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
@@ -64,30 +67,36 @@ class SearchLocationFragment :
                 // called continuously while dragging
                 Log.d(TAG, "onStateChanged: 드래그 중")
             }
+
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when(newState) {
-                    BottomSheetBehavior.STATE_COLLAPSED-> {
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
                         Log.d(TAG, "onStateChanged: 접음")
                     }
-                    BottomSheetBehavior.STATE_DRAGGING-> {
+
+                    BottomSheetBehavior.STATE_DRAGGING -> {
                         Log.d(TAG, "onStateChanged: 드래그")
                     }
-                    BottomSheetBehavior.STATE_EXPANDED-> {
+
+                    BottomSheetBehavior.STATE_EXPANDED -> {
                         Log.d(TAG, "onStateChanged: 펼침")
 //                        val intent = Intent(this@PersistentExample1Activity, PlaceInfoActivity::class.java)
 //                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
 //                        startActivity(intent)
                     }
-                    BottomSheetBehavior.STATE_HIDDEN-> {
+
+                    BottomSheetBehavior.STATE_HIDDEN -> {
                         Log.d(TAG, "onStateChanged: 숨기기")
                     }
-                    BottomSheetBehavior.STATE_SETTLING-> {
+
+                    BottomSheetBehavior.STATE_SETTLING -> {
                         Log.d(TAG, "onStateChanged: 고정됨")
                     }
                 }
             }
         })
     }
+
     private val TAG = "PersistentActivity"
     private fun setLayoutManager() {
         binding.recyclerViewPoi.layoutManager = LinearLayoutManager(requireContext())
@@ -97,14 +106,16 @@ class SearchLocationFragment :
         searchAdapter = SearchAdapter { setNaviGraph(it) }
         binding.recyclerViewPoi.adapter = searchAdapter
     }
+
     private fun setNaviGraph(poiItem: PoiItem) {
         if (args.groupId != 0) {
             goGroupAddSchedule(poiItem)
-        } else{
+        } else {
             goAddSchedule(poiItem)
         }
     }
-    private fun search(){
+
+    private fun search() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 mapView = binding.mapView
@@ -112,32 +123,40 @@ class SearchLocationFragment :
                 query?.let { searchViewModel.searchLocation(it) }
                 return false
             }
+
             override fun onQueryTextChange(newText: String?): Boolean {
                 return true
             }
         })
     }
+
     private fun getSearchLocationList(kakaoMap: KakaoMap) {
-        lifecycleScope.launch {
-            searchViewModel.locationsList.collectLatest { results ->
-                when (results) {
-                    is TimelyResult.Success -> {
-                        Log.d("SearchLocationFragment", "result: ${results.resultData}")
-                        setStartMapPoint(kakaoMap, results.resultData)
-                        setPoiListOnMap(kakaoMap, results.resultData)
-                        searchAdapter.submitList(results.resultData)
-                    }
-                    is TimelyResult.Loading -> {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                searchViewModel.locationsList.collectLatest { results ->
+                    when (results) {
+                        is TimelyResult.Success -> {
+                            Log.d("SearchLocationFragment", "result: ${results.resultData}")
+                            setStartMapPoint(kakaoMap, results.resultData)
+                            setPoiListOnMap(kakaoMap, results.resultData)
+                            searchAdapter.submitList(results.resultData)
+                        }
 
-                    }
-                    is TimelyResult.NetworkError -> {
+                        is TimelyResult.Loading -> {
 
+                        }
+
+                        is TimelyResult.NetworkError -> {
+
+                        }
+
+                        else -> {}
                     }
-                    else -> {}
                 }
             }
         }
     }
+
     private val readyCallback: KakaoMapReadyCallback = object : KakaoMapReadyCallback() {
         override fun onMapReady(kakaoMap: KakaoMap) {
             // 인증 후 API 가 정상적으로 실행될 때 호출됨
@@ -160,27 +179,32 @@ class SearchLocationFragment :
 //                }
 //            }
         }
+
         override fun getPosition(): LatLng = startPosition // 지도 시작 시 위치 좌표를 설정
         override fun getZoomLevel(): Int = startZoomLevel // 지도 시작 시 확대/축소 줌 레벨 설정
-        override fun getMapViewInfo(): MapViewInfo =  super.getMapViewInfo() // 지도 타입
-        override fun getViewName(): String ="MyFirstMap" // KakaoMap 의 고유한 이름을 설정
+        override fun getMapViewInfo(): MapViewInfo = super.getMapViewInfo() // 지도 타입
+        override fun getViewName(): String = "MyFirstMap" // KakaoMap 의 고유한 이름을 설정
         override fun isVisible(): Boolean = true // 지도 시작 시 visible 여부를 설정
         override fun getTag(): String = "FirstMapTag" // KakaoMap 의 tag 을 설정
-        override fun isDev(): Boolean =  super.isDev()
+        override fun isDev(): Boolean = super.isDev()
         override fun getTimeout(): Int = super.getTimeout()
     }
+
     // MapLifeCycleCallback 을 통해 지도의 LifeCycle 관련 이벤트를 수신할 수 있다.
     private val lifeCycleCallback: MapLifeCycleCallback = object : MapLifeCycleCallback() {
         override fun onMapResumed() = super.onMapResumed()
-        override fun onMapPaused() =  super.onMapPaused()
-        override fun onMapDestroy() = toastShort(requireContext(),"onMapDestroy") // 지도 API 가 정상적으로 종료될 때 호출됨
-        override fun onMapError(error: java.lang.Exception) = toastShort(requireContext(),"onMapError")  // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
+        override fun onMapPaused() = super.onMapPaused()
+        override fun onMapDestroy() =
+            toastShort(requireContext(), "onMapDestroy") // 지도 API 가 정상적으로 종료될 때 호출됨
+
+        override fun onMapError(error: java.lang.Exception) =
+            toastShort(requireContext(), "onMapError")  // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
     }
 
     private fun setStartMapPoint(kakaoMap: KakaoMap, poiList: List<PoiItem>) {
         poiList.first().apply {
             placeStartPosition = LatLng.from(noorLat.toDouble(), noorLon.toDouble())
-            val cameraUpdate =  CameraUpdateFactory.newCenterPosition(placeStartPosition)
+            val cameraUpdate = CameraUpdateFactory.newCenterPosition(placeStartPosition)
             kakaoMap.moveCamera(cameraUpdate)
         }
     }
@@ -225,28 +249,35 @@ class SearchLocationFragment :
 //    }
 
     private fun goGroupAddSchedule(poiItem: PoiItem) {
-        val action = SearchLocationFragmentDirections.actionSearchLocationFragmentToGroupAddScheduleFragment(
-            poiItem.noorLat,
-            poiItem.noorLon,
-            poiItem.name,
-            args.groupId
-        )
+        val action =
+            SearchLocationFragmentDirections.actionSearchLocationFragmentToGroupAddScheduleFragment(
+                poiItem.noorLat,
+                poiItem.noorLon,
+                poiItem.name,
+                args.groupId
+            )
         val navOptions = NavOptions.Builder()
             .setPopUpTo(R.id.groupAddScheduleFragment, inclusive = true)
             .build()
-        findNavController().navigate(action,navOptions)
+        findNavController().navigate(action, navOptions)
     }
+
     private fun goAddSchedule(poiItem: PoiItem) {
-        val action = SearchLocationFragmentDirections.actionSearchLocationFragmentToAddScheduleFragment(
-            poiItem.noorLat,
-            poiItem.noorLon,
-            poiItem.name
-        )
+        val action =
+            SearchLocationFragmentDirections.actionSearchLocationFragmentToAddScheduleFragment(
+                poiItem.noorLat,
+                poiItem.noorLon,
+                poiItem.name
+            )
         val navOptions = NavOptions.Builder()
-            .setPopUpTo(R.id.addScheduleFragment, inclusive = true) // Ensure old instance is removed
+            .setPopUpTo(
+                R.id.addScheduleFragment,
+                inclusive = true
+            ) // Ensure old instance is removed
             .build()
         findNavController().navigate(action, navOptions)
     }
+
     override fun onResume() {
         super.onResume()
         behavior.state = BottomSheetBehavior.STATE_COLLAPSED
