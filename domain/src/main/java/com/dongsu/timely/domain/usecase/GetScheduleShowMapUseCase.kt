@@ -11,7 +11,7 @@ class GetScheduleShowMapUseCase @Inject constructor(
 ){
     suspend operator fun invoke(groupId: Int): Int? {
         var scheduleId: Int? = null
-            val result = groupScheduleRepository.getAllSchedule(groupId)
+            val result = groupScheduleRepository.getAllGroupSchedule(groupId)
             when (result) {
                 is TimelyResult.Success -> {
                     val now = LocalDateTime.now()

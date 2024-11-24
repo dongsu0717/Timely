@@ -11,18 +11,16 @@ import com.dongsu.timely.domain.model.map.GroupMeetingInfo
 import javax.inject.Inject
 
 class GroupScheduleRemoteDatasourceImpl @Inject constructor(
-    private val groupScheduleService: GroupScheduleService
+    private val groupScheduleService: GroupScheduleService,
 ) : GroupScheduleRemoteDatasource {
 
     override suspend fun insertSchedule(groupId: Int, groupSchedule: GroupSchedule) {
         groupScheduleService.insertSchedule(groupId, GroupScheduleMapper.toDto(groupSchedule))
     }
 
-    override suspend fun getAllSchedule(groupId: Int): TimelyResult<List<TotalGroupScheduleInfo>> {
-        val response = groupScheduleService.getAllScheduleList(groupId)
-        val scheduleList = response.body()?.map { GroupScheduleMapper.toDomainTotal(it) } ?: listOf()
-        return TimelyResult.Success(scheduleList)
-    }
+    override suspend fun getAllGroupSchedule(groupId: Int): List<TotalGroupScheduleInfo> =
+        groupScheduleService.getAllScheduleList(groupId).body()
+            ?.map { GroupScheduleMapper.toDomainTotal(it) } ?: emptyList()
 
     override suspend fun participationSchedule(groupId: Int, scheduleId: Int) {
         groupScheduleService.participationSchedule(groupId, scheduleId)

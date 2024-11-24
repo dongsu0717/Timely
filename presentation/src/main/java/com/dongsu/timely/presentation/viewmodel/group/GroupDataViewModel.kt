@@ -23,7 +23,8 @@ class GroupDataViewModel @Inject constructor(
 
     fun getGroupSchedule(groupId: Int) {
         viewModelScope.launch {
-            _groupScheduleList.value = groupScheduleRepository.getAllSchedule(groupId)
+            _groupScheduleList.value = TimelyResult.Loading
+            _groupScheduleList.value = groupScheduleRepository.getAllGroupSchedule(groupId)
         }
     }
 

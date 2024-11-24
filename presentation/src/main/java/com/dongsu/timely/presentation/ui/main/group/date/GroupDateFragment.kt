@@ -2,7 +2,9 @@ package com.dongsu.timely.presentation.ui.main.group.date
 
 import android.util.Log
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dongsu.presentation.databinding.FragmentGroupDateBinding
@@ -46,20 +48,24 @@ class GroupDateFragment : BaseTabFragment<FragmentGroupDateBinding>(FragmentGrou
         binding.recyclerView.adapter= groupScheduleListAdapter
     }
     private fun getGroupScheduleList() {
-        lifecycleScope.launch {
-            groupDateViewModel.getGroupSchedule(groupId)
-            groupDateViewModel.groupScheduleList.collectLatest { result ->
-                when(result){
-                    is TimelyResult.Success -> {
-                        groupScheduleListAdapter.submitList(result.resultData)
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                groupDateViewModel.groupScheduleList.collectLatest { result ->
+                    when (result) {
+                        is TimelyResult.Success -> {
+                            groupScheduleListAdapter.submitList(result.resultData)
+                        }
+
+                        is TimelyResult.Loading -> {
+                            toastShort(requireContext(), GET_LOADING)
+                        }
+
+                        is TimelyResult.NetworkError -> {
+                            toastShort(requireContext(), GET_ERROR)
+                        }
+
+                        else -> {}
                     }
-                    is TimelyResult.Loading -> {
-                        toastShort(requireContext(), GET_LOADING)
-                    }
-                    is TimelyResult.NetworkError -> {
-                        toastShort(requireContext(), GET_ERROR)
-                    }
-                    else -> {}
                 }
             }
         }
