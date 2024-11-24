@@ -291,7 +291,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
         spinner.adapter = adapter
     }
     private fun checkUIState(){
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 addScheduleViewModel.addScheduleState.collectLatest { result ->
                     when (result) {
