@@ -7,10 +7,16 @@ import com.dongsu.timely.domain.repository.ScheduleRepository
 import javax.inject.Inject
 
 class ScheduleRepositoryImpl @Inject constructor(
-    private val scheduleLocalDatasource: ScheduleLocalDatasource
-): ScheduleRepository {
-    override suspend fun insertSchedule(schedule: Schedule)
-    = scheduleLocalDatasource.insertSchedule(schedule)
+    private val scheduleLocalDatasource: ScheduleLocalDatasource,
+) : ScheduleRepository {
+    override suspend fun insertSchedule(schedule: Schedule): TimelyResult<Unit>
+    = try {
+        scheduleLocalDatasource.insertSchedule(schedule)
+        TimelyResult.Success(Unit)
+    } catch (e: Exception) {
+        TimelyResult.LocalError(e)
+    }
+
 
     override suspend fun getAllSchedule(): TimelyResult<List<Schedule>> {
         return try {
