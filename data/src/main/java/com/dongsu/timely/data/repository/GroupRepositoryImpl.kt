@@ -18,7 +18,16 @@ class GroupRepositoryImpl @Inject constructor(
             TimelyResult.NetworkError(e)
         }
 
-    override suspend fun getMyGroupList(): List<Group> = groupRemoteDatasource.getGroup()
+    override suspend fun fetchMyGroupList(): TimelyResult<List<Group>> =
+        try {
+            val myGroupList = groupRemoteDatasource.fetchMyGroupList()
+            when {
+                myGroupList.isEmpty() -> TimelyResult.Empty
+                else -> TimelyResult.Success(myGroupList)
+            }
+        } catch (e: Exception) {
+            TimelyResult.NetworkError(e)
+        }
 
     override suspend fun createInviteCode(groupId: Int): TimelyResult<InviteCode> =
         groupRemoteDatasource.createInviteCode(groupId)

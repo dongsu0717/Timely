@@ -10,6 +10,7 @@ import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.Group
 import com.dongsu.timely.presentation.common.BaseFragment
 import com.dongsu.timely.presentation.common.CommonUtils.toastShort
+import com.dongsu.timely.presentation.common.GET_EMPTY
 import com.dongsu.timely.presentation.common.GET_ERROR
 import com.dongsu.timely.presentation.common.GET_LOADING
 import com.dongsu.timely.presentation.common.debouncedClickListener
@@ -19,7 +20,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class GroupListFragment: BaseFragment<FragmentGroupListBinding>(FragmentGroupListBinding::inflate)  {
+class GroupListFragment :
+    BaseFragment<FragmentGroupListBinding>(FragmentGroupListBinding::inflate) {
 
     private val groupListViewModel: GroupListViewModel by viewModels()
     private lateinit var groupListAdapter: GroupListAdapter
@@ -27,44 +29,60 @@ class GroupListFragment: BaseFragment<FragmentGroupListBinding>(FragmentGroupLis
     override fun initView() {
         setLayoutManager()
         setAdapter()
-        getGroupList()
+        fetchGroupList()
         goToCreateGroup()
     }
-    private fun setLayoutManager(){
+
+    private fun setLayoutManager() {
         binding.rvGroupList.layoutManager = LinearLayoutManager(requireContext())
     }
-    private fun setAdapter(){
-        groupListAdapter = GroupListAdapter{ actionGroupClick(it) }
+
+    private fun setAdapter() {
+        groupListAdapter = GroupListAdapter { actionGroupClick(it) }
         binding.rvGroupList.adapter = groupListAdapter
     }
-    private fun actionGroupClick(group: Group){
-        val action = GroupListFragmentDirections.actionGroupListFragmentToGroupPageFragment(group.groupId,group.groupName)
+
+    private fun actionGroupClick(group: Group) {
+        val action = GroupListFragmentDirections.actionGroupListFragmentToGroupPageFragment(
+            group.groupId,
+            group.groupName
+        )
         findNavController().navigate(action)
     }
-    private fun getGroupList(){
+
+    private fun fetchGroupList() {
         lifecycleScope.launch {
-            groupListViewModel.getGroupList()
+            groupListViewModel.fetchMyGroupList()
             setGroupList()
         }
     }
-    private suspend fun setGroupList(){
-        groupListViewModel.groupList.collectLatest{ result ->
-            when(result){
-                is TimelyResult.Success -> {
-                    groupListAdapter.submitList(result.resultData)
-                }
+
+    private suspend fun setGroupList() {
+        groupListViewModel.groupList.collectLatest { result ->
+            when (result) {
                 is TimelyResult.Loading -> {
                     toastShort(requireContext(), GET_LOADING)
                 }
+
+                is TimelyResult.Success -> {
+                    groupListAdapter.submitList(result.resultData)
+                }
+
+                is TimelyResult.Empty -> {
+                    toastShort(requireContext(), GET_EMPTY)
+                }
+
                 is TimelyResult.NetworkError -> {
                     toastShort(requireContext(), GET_ERROR)
                 }
+
                 else -> {}
             }
         }
     }
-    private fun goToCreateGroup(){
-        binding.fabAddGroup.debouncedClickListener(lifecycleScope){
+
+    private fun goToCreateGroup() {
+        binding.fabAddGroup.debouncedClickListener(lifecycleScope) {
             findNavController().navigate(R.id.action_groupListFragment_to_groupCreateFragment)
         }
     }

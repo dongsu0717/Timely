@@ -10,15 +10,15 @@ import com.dongsu.timely.domain.model.InviteCode
 import javax.inject.Inject
 
 class GroupRemoteDatasourceImpl @Inject constructor(
-    private val groupService: GroupService
-): GroupRemoteDatasource {
+    private val groupService: GroupService,
+) : GroupRemoteDatasource {
     override suspend fun createGroup(groupName: String) {
         val response = groupService.createGroup(GroupMapper.toDto(groupName))
         Log.e("만들어진 그룹", "${response.body()}")
     }
 
-    override suspend fun getGroup(): List<Group>
-    = GroupMapper.toDomain((groupService.getMyGroupList()).body() ?: listOf())
+    override suspend fun fetchMyGroupList(): List<Group> =
+        GroupMapper.toDomainGroupList((groupService.fetchMyGroupList()).body() ?: emptyList())
 
     override suspend fun createInviteCode(groupId: Int): TimelyResult<InviteCode> {
         val response = groupService.createInviteCode(groupId)
@@ -31,6 +31,7 @@ class GroupRemoteDatasourceImpl @Inject constructor(
                     TimelyResult.NetworkError(Exception("Response body is null"))
                 }
             }
+
             else -> {
                 TimelyResult.NetworkError(Exception("Request failed: ${response.code()} - ${response.message()}"))
             }

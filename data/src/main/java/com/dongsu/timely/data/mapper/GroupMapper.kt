@@ -8,7 +8,7 @@ object GroupMapper {
     fun toDto(newGroupName: String): GroupRequest {
         return GroupRequest(groupName = newGroupName)
     }
-    fun toDomain(groupResponseList: List<GroupResponse>): List<Group> {
+    fun toDomainGroupList(groupResponseList: List<GroupResponse>): List<Group> {
         return groupResponseList.map { groupResponse ->
             Group(
                 groupId = groupResponse.groupId,

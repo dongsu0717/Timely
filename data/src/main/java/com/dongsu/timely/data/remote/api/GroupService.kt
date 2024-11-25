@@ -20,7 +20,7 @@ interface GroupService {
     ):Response<GroupResponse>
 
     @GET(GROUP)
-    suspend fun getMyGroupList() : Response<List<GroupResponse>>
+    suspend fun fetchMyGroupList(): Response<List<GroupResponse>>
 
     @POST(INVITE_GROUP)
     suspend fun createInviteCode(

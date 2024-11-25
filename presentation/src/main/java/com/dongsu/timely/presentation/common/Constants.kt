@@ -19,7 +19,8 @@ const val SHORT_DELAY = 500L
 
 //가져오기
 const val GET_ERROR = "데이터를 가져오는데 실패하였습니다."
-const val GET_LOADING = "가져오는중...."
+const val GET_LOADING = "가져오는중..."
+const val GET_EMPTY = "아무것도 없군요!"
 
 //bundle
 
