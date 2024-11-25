@@ -11,14 +11,22 @@ import javax.inject.Inject
 class GroupScheduleRepositoryImpl @Inject constructor(
     private val groupScheduleRemoteDatasource: GroupScheduleRemoteDatasource,
 ) : GroupScheduleRepository {
-    override suspend fun insertSchedule(groupId: Int, groupSchedule: GroupSchedule) =
-        groupScheduleRemoteDatasource.insertSchedule(groupId, groupSchedule)
+    override suspend fun insertSchedule(
+        groupId: Int,
+        groupSchedule: GroupSchedule
+    ): TimelyResult<Unit> =
+        try {
+            groupScheduleRemoteDatasource.insertSchedule(groupId, groupSchedule)
+            TimelyResult.Success(Unit)
+        } catch (e: Exception) {
+            TimelyResult.NetworkError(e)
+        }
 
 
     override suspend fun getAllGroupSchedule(groupId: Int): TimelyResult<List<TotalGroupScheduleInfo>> =
         try {
             val response = groupScheduleRemoteDatasource.getAllGroupSchedule(groupId)
-            if(response.isEmpty()) TimelyResult.Empty
+            if (response.isEmpty()) TimelyResult.Empty
             TimelyResult.Success(response)
         } catch (e: Exception) {
             TimelyResult.NetworkError(e)
