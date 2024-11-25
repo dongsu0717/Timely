@@ -10,7 +10,7 @@ interface UserRepository {
     suspend fun sendFCMToken(token: String)
     suspend fun saveLoginStatus(accessToken: String, refreshToken: String)
     suspend fun isLoggedIn(): TimelyResult<Boolean>
-    suspend fun getMyInfo(): TimelyResult<User>
+    suspend fun fetchMyInfo(): TimelyResult<User>
     suspend fun countLateness()
     suspend fun getUserProfile()
     suspend fun updateUserProfile()

@@ -155,23 +155,23 @@ class GroupLocationFragment :
     private suspend fun getScheduleIdShowMap(): Int? =
         groupLocationViewModel.getScheduleIdShowMap(groupId)
 
-    private suspend fun getMyId(): Int? {
-        val result = groupLocationViewModel.getMyInfo()
-        return when (result) {
-            is TimelyResult.Success -> {
-                result.resultData.userId
-            }
+    private suspend fun getMyId() {
+        groupLocationViewModel.fetchMyUserId()
+        groupLocationViewModel.myUserId.collectLatest { result ->
+            when (result) {
+                is TimelyResult.Loading -> {
 
-            is TimelyResult.NetworkError -> {
-                null
-            }
+                }
+                is TimelyResult.Success -> {
+                    myId = result.resultData
+                }
+                is TimelyResult.Empty -> {
 
-            is TimelyResult.Loading -> {
-                null
-            }
+                }
+                is TimelyResult.NetworkError -> {
 
-            else -> {
-                null
+                }
+                else -> {}
             }
         }
     }

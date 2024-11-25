@@ -1,7 +1,6 @@
 package com.dongsu.timely.data.datasource.remote
 
 import android.util.Log
-import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.data.mapper.UserMapper
 import com.dongsu.timely.data.remote.api.FCMService
 import com.dongsu.timely.data.remote.api.LoginService
@@ -28,10 +27,13 @@ class UserRemoteDatasourceImpl @Inject constructor(
         Log.e("서버에 FCM토큰 저장 성공","$token")
     }
 
-    override suspend fun getMyInfo(): TimelyResult<User> {
-        val response = userService.getMyInfo()
-        return TimelyResult.Success(UserMapper.toDomain(response.body() ?: return TimelyResult.Empty))
+    override suspend fun fetchMyInfo(): User {
+        return when (val user = userService.fetchMyInfo().body()) {
+            null -> User.EMPTY
+            else -> UserMapper.toDomainUser(user)
+        }
     }
+
 
     override suspend fun countLateness()
     = userService.countLateness()

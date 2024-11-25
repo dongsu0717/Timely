@@ -6,7 +6,7 @@ import com.dongsu.timely.domain.model.map.UserMeeting
 object UserMeetingMapper {
     fun toDomain(userMeetingResponse: UserMeetingResponse): UserMeeting {
         return UserMeeting(
-            user = UserMapper.toDomain(userMeetingResponse.user),
+            user = UserMapper.toDomainUser(userMeetingResponse.user),
             location = LocationMapper.toDomain(userMeetingResponse.location),
             stateMessage = userMeetingResponse.stateMessage
         )
