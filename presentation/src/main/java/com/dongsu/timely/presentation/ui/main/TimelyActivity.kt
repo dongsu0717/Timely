@@ -26,6 +26,7 @@ import com.dongsu.timely.presentation.common.LOGIN_TITLE
 import com.dongsu.timely.presentation.kakao.KaKaoLoginManager
 import com.dongsu.timely.presentation.viewmodel.TimelyViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -88,9 +89,50 @@ class TimelyActivity : AppCompatActivity() {
         }
 
     private fun setKaKaoLoginManager() {
-        kakaoLoginManager = KaKaoLoginManager(this){ token ->
+        kakaoLoginManager = KaKaoLoginManager(this) { token ->
             lifecycleScope.launch {
-                timelyViewModel.sendKaKaoToken(token.accessToken)
+                timelyViewModel.sendKaKaoTokenAndGetToken(token.accessToken)
+                timelyViewModel.fetchToken.collectLatest { result ->
+                    when (result) {
+                        is TimelyResult.Loading -> {
+
+                        }
+
+                        is TimelyResult.Success -> {
+                            val token = result.resultData
+                            sendFCMToken()
+                        }
+
+                        is TimelyResult.Empty -> {
+
+                        }
+
+                        is TimelyResult.NetworkError -> {
+
+                        }
+                        else -> {}
+                    }
+                }
+            }
+        }
+    }
+    private suspend fun sendFCMToken(){
+        timelyViewModel.sendFCMToken()
+        timelyViewModel.sendFCMTokenState.collectLatest { result ->
+            when (result) {
+                is TimelyResult.Loading -> {
+
+                }
+                is TimelyResult.Success -> {
+                    Log.e("fcm보내기","성공")
+                }
+                is TimelyResult.Empty -> {
+
+                }
+                is TimelyResult.NetworkError -> {
+
+                }
+                else -> {}
             }
         }
     }

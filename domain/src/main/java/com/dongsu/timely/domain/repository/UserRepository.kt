@@ -7,7 +7,7 @@ import com.dongsu.timely.domain.model.map.User
 interface UserRepository {
     suspend fun sendKaKaoTokenAndGetToken(token: String): TimelyResult<Token>
     suspend fun saveTokenLocal(accessToken: String, refreshToken: String)
-    suspend fun sendFCMToken(token: String)
+    suspend fun sendFCMToken(token: String): TimelyResult<Unit>
     suspend fun saveLoginStatus(accessToken: String, refreshToken: String)
     suspend fun isLoggedIn(): TimelyResult<Boolean>
     suspend fun fetchMyInfo(): TimelyResult<User>

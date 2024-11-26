@@ -23,7 +23,13 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun saveTokenLocal(accessToken: String, refreshToken: String) =
         userLocalDatasource.saveLoginStatus(accessToken, refreshToken)
 
-    override suspend fun sendFCMToken(token: String) = userRemoteDatasource.sendFCMToken(token)
+    override suspend fun sendFCMToken(token: String): TimelyResult<Unit> =
+        try {
+            userRemoteDatasource.sendFCMToken(token)
+            TimelyResult.Success(Unit)
+        } catch (e: Exception) {
+            TimelyResult.NetworkError(e)
+        }
 
     override suspend fun saveLoginStatus(accessToken: String, refreshToken: String) =
         userLocalDatasource.saveLoginStatus(accessToken, refreshToken)
