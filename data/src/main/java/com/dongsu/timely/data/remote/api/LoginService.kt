@@ -10,7 +10,7 @@ import retrofit2.http.POST
 interface LoginService {
 
     @POST(LOGIN_TOKEN)
-    suspend fun sendToken(
+    suspend fun sendKaKaoTokenAndGetToken(
         @Body sendTokenRequest: SendTokenRequest
     ): Response<SendTokenResponse>
 

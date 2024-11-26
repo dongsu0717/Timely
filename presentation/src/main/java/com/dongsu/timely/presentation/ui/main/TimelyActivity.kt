@@ -90,7 +90,7 @@ class TimelyActivity : AppCompatActivity() {
     private fun setKaKaoLoginManager() {
         kakaoLoginManager = KaKaoLoginManager(this){ token ->
             lifecycleScope.launch {
-                timelyViewModel.sendToken(token.accessToken)
+                timelyViewModel.sendKaKaoToken(token.accessToken)
             }
         }
     }

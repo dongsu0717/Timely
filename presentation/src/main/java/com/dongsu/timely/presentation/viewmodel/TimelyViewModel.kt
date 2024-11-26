@@ -17,14 +17,20 @@ import javax.inject.Inject
 class TimelyViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val groupRepository: GroupRepository,
-    private val userTokenUseCase: UserTokenUseCase
-): ViewModel() {
+    private val userTokenUseCase: UserTokenUseCase,
+) : ViewModel() {
+
+    private val _sendKaKaoToken = MutableStateFlow<TimelyResult<Unit>>(TimelyResult.Empty)
+    val sendKaKaoToken = _sendKaKaoToken.asStateFlow()
 
     private var _loginStatus = MutableStateFlow<TimelyResult<Boolean>>(TimelyResult.Empty)
     val loginStatus = _loginStatus.asStateFlow()
 
-    suspend fun sendToken(token: String) {
-       userTokenUseCase(token)
+    fun sendKaKaoToken(token: String) {
+        viewModelScope.launch {
+            _sendKaKaoToken.value = TimelyResult.Loading
+            _sendKaKaoToken.value = userTokenUseCase(token)
+        }
     }
 
     fun isLoggedIn() {
@@ -33,7 +39,7 @@ class TimelyViewModel @Inject constructor(
             Log.e("loginStatus", _loginStatus.toString())
         }
     }
-    suspend fun joinGroup(inviteCode: String)
-    = groupRepository.joinGroup(inviteCode)
+
+    suspend fun joinGroup(inviteCode: String) = groupRepository.joinGroup(inviteCode)
 
 }

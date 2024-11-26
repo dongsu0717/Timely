@@ -12,7 +12,13 @@ class UserRepositoryImpl @Inject constructor(
     private val userLocalDatasource: UserLocalDatasource,
     private val userRemoteDatasource: UserRemoteDatasource,
 ) : UserRepository {
-    override suspend fun sendToken(token: String): Token = userRemoteDatasource.sendToken(token)
+    override suspend fun sendKaKaoTokenAndGetToken(token: String): TimelyResult<Token> =
+        try {
+            val response = userRemoteDatasource.sendKaKaoTokenAndGetToken(token)
+            TimelyResult.Success(response)
+        } catch (e: Exception) {
+            TimelyResult.NetworkError(e)
+        }
 
     override suspend fun saveTokenLocal(accessToken: String, refreshToken: String) =
         userLocalDatasource.saveLoginStatus(accessToken, refreshToken)
