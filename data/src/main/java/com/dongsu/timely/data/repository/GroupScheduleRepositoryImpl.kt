@@ -23,11 +23,13 @@ class GroupScheduleRepositoryImpl @Inject constructor(
         }
 
 
-    override suspend fun getAllGroupSchedule(groupId: Int): TimelyResult<List<TotalGroupScheduleInfo>> =
+    override suspend fun fetchGroupScheduleList(groupId: Int): TimelyResult<List<TotalGroupScheduleInfo>> =
         try {
-            val response = groupScheduleRemoteDatasource.getAllGroupSchedule(groupId)
-            if (response.isEmpty()) TimelyResult.Empty
-            TimelyResult.Success(response)
+            val response = groupScheduleRemoteDatasource.fetchGroupScheduleList(groupId)
+            when {
+                response.isEmpty() -> TimelyResult.Empty
+                else -> TimelyResult.Success(response)
+            }
         } catch (e: Exception) {
             TimelyResult.NetworkError(e)
         }

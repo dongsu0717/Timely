@@ -7,7 +7,7 @@ import com.dongsu.timely.domain.model.map.GroupMeetingInfo
 
 interface GroupScheduleRepository {
     suspend fun insertSchedule(groupId: Int,groupSchedule: GroupSchedule): TimelyResult<Unit>
-    suspend fun getAllGroupSchedule(groupId: Int): TimelyResult<List<TotalGroupScheduleInfo>>
+    suspend fun fetchGroupScheduleList(groupId: Int): TimelyResult<List<TotalGroupScheduleInfo>>
     suspend fun getSchedule()
     suspend fun participationSchedule(groupId: Int, scheduleId: Int)
     suspend fun cancelParticipationSchedule(groupId: Int, scheduleId: Int)

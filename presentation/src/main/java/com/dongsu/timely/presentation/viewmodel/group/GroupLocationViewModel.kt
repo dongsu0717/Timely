@@ -3,11 +3,12 @@ package com.dongsu.timely.presentation.viewmodel.group
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dongsu.timely.common.TimelyResult
+import com.dongsu.timely.domain.model.GroupScheduleInfo
 import com.dongsu.timely.domain.model.map.GroupMeetingInfo
 import com.dongsu.timely.domain.repository.GroupScheduleRepository
 import com.dongsu.timely.domain.repository.UserRepository
+import com.dongsu.timely.domain.usecase.FetchGroupScheduleToShowMapUseCase
 import com.dongsu.timely.domain.usecase.FetchMyUserIdUseCase
-import com.dongsu.timely.domain.usecase.FetchScheduleIdToShowMapUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,13 +18,16 @@ import javax.inject.Inject
 @HiltViewModel
 class GroupLocationViewModel @Inject constructor(
     private val groupScheduleRepository: GroupScheduleRepository,
-    private val fetchScheduleIdToShowMapUseCase : FetchScheduleIdToShowMapUseCase,
+    private val fetchGroupScheduleToShowMapUseCase : FetchGroupScheduleToShowMapUseCase,
     private val fetchMyUserIdUseCase: FetchMyUserIdUseCase,
     private val userRepository: UserRepository
 ): ViewModel() {
 
     private val _myUserId = MutableStateFlow<TimelyResult<Int>>(TimelyResult.Empty)
-    var myUserId = _myUserId.asStateFlow()
+    val myUserId = _myUserId.asStateFlow()
+
+    private val _groupScheduleToShowMap = MutableStateFlow<TimelyResult<GroupScheduleInfo>>(TimelyResult.Empty)
+    val groupScheduleToShowMap = _groupScheduleToShowMap.asStateFlow()
 
     private val _groupMembersLocation = MutableStateFlow<TimelyResult<GroupMeetingInfo>>(TimelyResult.Empty)
     var groupMembersLocation =_groupMembersLocation.asStateFlow()
@@ -35,8 +39,11 @@ class GroupLocationViewModel @Inject constructor(
         }
     }
 
-    suspend fun getScheduleIdShowMap(groupId: Int): Int? { // return값 Int는 scheduleId
-        return fetchScheduleIdToShowMapUseCase(groupId)
+    fun fetchGroupScheduleShowMap(groupId: Int) {
+        viewModelScope.launch {
+            _groupScheduleToShowMap.value = TimelyResult.Loading
+            _groupScheduleToShowMap.value = fetchGroupScheduleToShowMapUseCase(groupId)
+        }
     }
 
     suspend fun updateStateMessage(scheduleId: Int, stateMessage: String)

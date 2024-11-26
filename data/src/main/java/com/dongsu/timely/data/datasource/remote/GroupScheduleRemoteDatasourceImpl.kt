@@ -18,8 +18,8 @@ class GroupScheduleRemoteDatasourceImpl @Inject constructor(
         groupScheduleService.insertSchedule(groupId, GroupScheduleMapper.toDto(groupSchedule))
     }
 
-    override suspend fun getAllGroupSchedule(groupId: Int): List<TotalGroupScheduleInfo> =
-        groupScheduleService.getAllScheduleList(groupId).body()
+    override suspend fun fetchGroupScheduleList(groupId: Int): List<TotalGroupScheduleInfo> =
+        groupScheduleService.fetchGroupScheduleList(groupId).body()
             ?.map { GroupScheduleMapper.toDomainTotal(it) } ?: emptyList()
 
     override suspend fun participationSchedule(groupId: Int, scheduleId: Int) {

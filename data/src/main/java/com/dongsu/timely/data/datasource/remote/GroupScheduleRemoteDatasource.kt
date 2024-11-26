@@ -7,7 +7,7 @@ import com.dongsu.timely.domain.model.map.GroupMeetingInfo
 
 interface GroupScheduleRemoteDatasource {
     suspend fun insertSchedule(groupId: Int, groupSchedule: GroupSchedule)
-    suspend fun getAllGroupSchedule(groupId: Int): List<TotalGroupScheduleInfo>
+    suspend fun fetchGroupScheduleList(groupId: Int): List<TotalGroupScheduleInfo>
     suspend fun participationSchedule(groupId: Int, scheduleId: Int)
     suspend fun cancelParticipationSchedule(groupId: Int, scheduleId: Int)
     suspend fun getParticipationMemberLocation(scheduleId: Int): TimelyResult<GroupMeetingInfo>

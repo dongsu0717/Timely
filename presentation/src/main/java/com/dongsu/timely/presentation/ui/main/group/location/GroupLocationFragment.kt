@@ -152,6 +152,35 @@ class GroupLocationFragment :
         }
     }
 
+    private suspend fun getScheduleIdShowMap() {
+        groupLocationViewModel.fetchGroupScheduleShowMap(groupId)
+        groupLocationViewModel.groupScheduleToShowMap.collectLatest { result ->
+            when (result) {
+                is TimelyResult.Loading -> {
+
+                }
+
+                is TimelyResult.Success -> {
+                    toastShort(requireContext(),"${result.resultData.title} 참여자 위치를 가져옵니다")
+                    binding.tvNothingScheduleTime.visibility = View.GONE
+                    locationScheduleId = result.resultData.scheduleId
+                }
+
+                is TimelyResult.Empty -> {
+
+                }
+
+                is TimelyResult.NetworkError -> {
+
+                }
+
+                else -> {
+
+                }
+            }
+        }
+    }
+
     private suspend fun getScheduleIdShowMap(): Int? =
         groupLocationViewModel.getScheduleIdShowMap(groupId)
 
