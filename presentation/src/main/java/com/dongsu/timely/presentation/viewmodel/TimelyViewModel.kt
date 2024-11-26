@@ -32,11 +32,9 @@ class TimelyViewModel @Inject constructor(
     private var _loginStatus = MutableStateFlow<TimelyResult<Boolean>>(TimelyResult.Empty)
     val loginStatus = _loginStatus.asStateFlow()
 
-    fun sendKaKaoTokenAndGetToken(token: String) {
-        viewModelScope.launch {
-            _fetchToken.value = TimelyResult.Loading
-            _fetchToken.value = userRepository.sendKaKaoTokenAndGetToken(token)
-        }
+    suspend fun sendKaKaoTokenAndGetToken(token: String) {
+        _fetchToken.value = TimelyResult.Loading
+        _fetchToken.value = userRepository.sendKaKaoTokenAndGetToken(token)
     }
 
     fun sendFCMToken() {

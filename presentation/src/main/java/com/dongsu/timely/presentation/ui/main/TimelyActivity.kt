@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.onNavDestinationSelected
@@ -75,7 +77,7 @@ class TimelyActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.groupListFragment -> {
-                    checkLoginStatus { isLoggedIn ->
+                    checkIsLoggedIn { isLoggedIn ->
                         if (!isLoggedIn) {
                             showLoginDialog()
                         } else {
@@ -88,11 +90,6 @@ class TimelyActivity : AppCompatActivity() {
             }
             it.onNavDestinationSelected(navController)
         }
-    }
-
-    private fun checkLoginStatus(callback: (Boolean) -> Unit) = lifecycleScope.launch {
-        timelyViewModel.isLoggedIn()
-        callback(timelyViewModel.loginStatus.value is TimelyResult.Success)
     }
 
     private fun setKaKaoLoginManager() {
@@ -180,31 +177,35 @@ class TimelyActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun checkIsLoggedIn() {
-        timelyViewModel.isLoggedIn()
-        timelyViewModel.loginStatus.collectLatest { result ->
-            when (result) {
-                is TimelyResult.Loading -> {
-                    Log.e("TimelyActivity로그인확인", "로그인상태 로딩중임")
+    private fun checkIsLoggedIn(isLoggedIn: (Boolean) -> Unit) {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                timelyViewModel.loginStatus.collectLatest { result ->
+                    when (result) {
+                        is TimelyResult.Loading -> {
+                            Log.e("TimelyActivity로그인확인", "로그인상태 로딩중임")
 
-                }
+                        }
 
-                is TimelyResult.Success -> {
-                    Log.e("TimelyActivity로그인확인", "로그인상태 success임")
-                }
+                        is TimelyResult.Success -> {
+                            Log.e("TimelyActivity로그인확인", "로그인상태 success임")
+                            isLoggedIn(result.resultData)
+                        }
 
-                is TimelyResult.Empty -> {
-                    Log.e("TimelyActivity로그인확인", "로그인상태 empty임")
+                        is TimelyResult.Empty -> {
+                            Log.e("TimelyActivity로그인확인", "로그인상태 empty임")
 
-                }
+                        }
 
-                is TimelyResult.LocalError -> {
-                    Log.e("TimelyActivity로그인확인", "로그인상태 localError뜸")
+                        is TimelyResult.LocalError -> {
+                            Log.e("TimelyActivity로그인확인", "로그인상태 localError뜸")
 
-                }
+                        }
 
-                else -> {
-                    Log.e("TimelyActivity로그인확인", "로그인상태 니가 왜떠")
+                        else -> {
+                            Log.e("TimelyActivity로그인확인", "로그인상태 니가 왜떠")
+                        }
+                    }
                 }
             }
         }
@@ -232,7 +233,7 @@ class TimelyActivity : AppCompatActivity() {
             if (uri != null) {
                 val inviteCode = uri.getQueryParameter(INVITE_CODE)
                 Log.e("카카오초대", uri.getQueryParameter(GROUP_ID).toString())
-                checkLoginStatus { isLoggedIn ->
+                checkIsLoggedIn { isLoggedIn ->
                     if (!isLoggedIn) {
                         showLoginDialog()
                     } else {
@@ -281,5 +282,10 @@ class TimelyActivity : AppCompatActivity() {
                 goGroupDetail(navController, groupId, groupName, scheduleId)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        timelyViewModel.isLoggedIn()
     }
 }
