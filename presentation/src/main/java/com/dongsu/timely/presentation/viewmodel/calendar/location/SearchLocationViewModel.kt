@@ -16,11 +16,12 @@ class SearchLocationViewModel @Inject constructor(
     private val tMapRepository: TMapRepository
 ) : ViewModel() {
 
-    private val _locationList = MutableStateFlow<TimelyResult<MutableList<PoiItem>>>(TimelyResult.Empty)
+    private val _locationList = MutableStateFlow<TimelyResult<List<PoiItem>>>(TimelyResult.Empty)
     val locationsList = _locationList.asStateFlow()
 
     fun searchLocation(query: String) {
         viewModelScope.launch {
+            _locationList.value = TimelyResult.Loading
             _locationList.value = tMapRepository.searchPlaces(query)
         }
     }

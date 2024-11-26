@@ -10,7 +10,7 @@ import retrofit2.http.POST
 interface UserService {
 
     @GET(USER_INFO)
-    suspend fun getMyInfo(): Response<UserResponse>
+    suspend fun fetchMyInfo(): Response<UserResponse>
 
     @POST(USER_LATE)
     suspend fun countLateness()

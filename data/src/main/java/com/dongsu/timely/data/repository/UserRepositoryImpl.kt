@@ -10,28 +10,51 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userLocalDatasource: UserLocalDatasource,
-    private val userRemoteDatasource: UserRemoteDatasource
-): UserRepository {
-    override suspend fun sendToken(token: String): Token
-    = userRemoteDatasource.sendToken(token)
+    private val userRemoteDatasource: UserRemoteDatasource,
+) : UserRepository {
+    override suspend fun sendKaKaoTokenAndGetToken(token: String): TimelyResult<Token> =
+        try {
+            val response = userRemoteDatasource.sendKaKaoTokenAndGetToken(token)
+            TimelyResult.Success(response)
+        } catch (e: Exception) {
+            TimelyResult.NetworkError(e)
+        }
 
-    override suspend fun saveTokenLocal(accessToken: String, refreshToken: String)
-    = userLocalDatasource.saveLoginStatus(accessToken, refreshToken)
+    override suspend fun saveTokenLocal(accessToken: String, refreshToken: String): TimelyResult<Unit> =
+        try {
+            userLocalDatasource.saveTokenLocal(accessToken, refreshToken)
+            TimelyResult.Success(Unit)
+        } catch (e: Exception) {
+            TimelyResult.LocalError(e)
+        }
 
-    override suspend fun sendFCMToken(token: String)
-    = userRemoteDatasource.sendFCMToken(token)
+    override suspend fun sendFCMToken(token: String): TimelyResult<Unit> =
+        try {
+            userRemoteDatasource.sendFCMToken(token)
+            TimelyResult.Success(Unit)
+        } catch (e: Exception) {
+            TimelyResult.NetworkError(e)
+        }
 
-    override suspend fun saveLoginStatus(accessToken: String, refreshToken: String)
-            = userLocalDatasource.saveLoginStatus(accessToken,refreshToken)
+    override suspend fun isLoggedIn(): TimelyResult<Boolean> =
+        try {
+            val isLoggedIn = userLocalDatasource.isLoggedIn()
+            TimelyResult.Success(isLoggedIn)
+        } catch (e: Exception) {
+            TimelyResult.LocalError(e)
+        }
 
-    override suspend fun isLoggedIn():TimelyResult<Boolean>
-            = userLocalDatasource.isLoggedIn()
+    override suspend fun fetchMyInfo(): TimelyResult<User> =
+        try {
+            when (val myInfo = userRemoteDatasource.fetchMyInfo()) {
+                User.EMPTY -> TimelyResult.Empty
+                else -> TimelyResult.Success(myInfo)
+            }
+        } catch (e: Exception) {
+            TimelyResult.NetworkError(e)
+        }
 
-    override suspend fun getMyInfo(): TimelyResult<User>
-    = userRemoteDatasource.getMyInfo()
-
-    override suspend fun countLateness()
-    = userRemoteDatasource.countLateness()
+    override suspend fun countLateness() = userRemoteDatasource.countLateness()
 
 
     override suspend fun getUserProfile() {

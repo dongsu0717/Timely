@@ -18,9 +18,10 @@ class GroupListViewModel @Inject constructor(
     private var _groupList = MutableStateFlow<TimelyResult<List<Group>>>(TimelyResult.Empty)
     val groupList = _groupList.asStateFlow()
 
-    fun getGroupList(){
+    fun fetchMyGroupList(){
         viewModelScope.launch {
-            _groupList.value = TimelyResult.Success(groupRepository.getMyGroupList())
+            _groupList.value = TimelyResult.Loading
+            _groupList.value = groupRepository.fetchMyGroupList()
         }
     }
 }

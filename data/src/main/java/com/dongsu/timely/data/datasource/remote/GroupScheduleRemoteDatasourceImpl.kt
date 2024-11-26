@@ -1,8 +1,8 @@
 package com.dongsu.timely.data.datasource.remote
 
-import com.dongsu.timely.common.TimelyResult
+import android.util.Log
+import com.dongsu.timely.data.mapper.GroupMeetingInfoMapper
 import com.dongsu.timely.data.mapper.GroupScheduleMapper
-import com.dongsu.timely.data.mapper.ParticipationMemberMapper
 import com.dongsu.timely.data.remote.api.GroupScheduleService
 import com.dongsu.timely.data.remote.dto.response.StateMessageResponse
 import com.dongsu.timely.domain.model.GroupSchedule
@@ -11,18 +11,16 @@ import com.dongsu.timely.domain.model.map.GroupMeetingInfo
 import javax.inject.Inject
 
 class GroupScheduleRemoteDatasourceImpl @Inject constructor(
-    private val groupScheduleService: GroupScheduleService
+    private val groupScheduleService: GroupScheduleService,
 ) : GroupScheduleRemoteDatasource {
 
     override suspend fun insertSchedule(groupId: Int, groupSchedule: GroupSchedule) {
         groupScheduleService.insertSchedule(groupId, GroupScheduleMapper.toDto(groupSchedule))
     }
 
-    override suspend fun getAllSchedule(groupId: Int): TimelyResult<List<TotalGroupScheduleInfo>> {
-        val response = groupScheduleService.getAllScheduleList(groupId)
-        val scheduleList = response.body()?.map { GroupScheduleMapper.toDomainTotal(it) } ?: listOf()
-        return TimelyResult.Success(scheduleList)
-    }
+    override suspend fun fetchGroupScheduleList(groupId: Int): List<TotalGroupScheduleInfo> =
+        groupScheduleService.fetchGroupScheduleList(groupId).body()
+            ?.map { GroupScheduleMapper.toDomainTotal(it) } ?: emptyList()
 
     override suspend fun participationSchedule(groupId: Int, scheduleId: Int) {
         groupScheduleService.participationSchedule(groupId, scheduleId)
@@ -32,16 +30,19 @@ class GroupScheduleRemoteDatasourceImpl @Inject constructor(
         groupScheduleService.cancelParticipationSchedule(groupId, scheduleId)
     }
 
-    override suspend fun getParticipationMemberLocation(scheduleId: Int): TimelyResult<GroupMeetingInfo> {
-        val response = groupScheduleService.getGroupLocation(scheduleId)
-        val groupMeetingInfo = ParticipationMemberMapper.toDomain(response)
-        return TimelyResult.Success(groupMeetingInfo)
-    }
+    override suspend fun fetchGroupMeetingInfo(scheduleId: Int): GroupMeetingInfo =
+        when (val meetingInfo = groupScheduleService.fetchGroupMeetingInfo(scheduleId).body()) {
+            null -> {
+                Log.e("그룹 미팅 정보 가져오기 (datasource부분)", "null뜬거임 $meetingInfo")
+                throw Exception()
+            }
 
-    override suspend fun updateStateMessage(scheduleId: Int, stateMessage: String) {
-        val stateMessageResponse = StateMessageResponse(stateMessage)
-        groupScheduleService.updateStateMessage(scheduleId, stateMessageResponse)
-    }
+            else -> GroupMeetingInfoMapper.toDomain(meetingInfo)
+        }
+
+
+    override suspend fun updateStateMessage(scheduleId: Int, stateMessage: String) =
+        groupScheduleService.updateStateMessage(scheduleId, StateMessageResponse(stateMessage))
 }
 
 

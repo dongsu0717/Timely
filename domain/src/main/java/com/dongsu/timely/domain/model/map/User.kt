@@ -1,7 +1,11 @@
 package com.dongsu.timely.domain.model.map
 
 data class User(
-    val userId: Int,
-    val email: String?,
-    val nickname: String
-)
+    val userId: Int = 0,
+    val email: String? = "",
+    val nickname: String = "",
+) {
+    companion object {
+        val EMPTY = User()
+    }
+}

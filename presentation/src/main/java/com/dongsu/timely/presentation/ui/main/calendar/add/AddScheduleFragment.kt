@@ -12,33 +12,38 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.FragmentAddScheduleBinding
+import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.Schedule
 import com.dongsu.timely.presentation.common.BaseFragment
 import com.dongsu.timely.presentation.common.CommonUtils
 import com.dongsu.timely.presentation.common.EnumAlarmTime
 import com.dongsu.timely.presentation.common.EnumColor
 import com.dongsu.timely.presentation.common.EnumRepeat
+import com.dongsu.timely.presentation.common.SAVE_ERROR
+import com.dongsu.timely.presentation.common.SAVE_LOADING
+import com.dongsu.timely.presentation.common.SAVE_SUCCESS
 import com.dongsu.timely.presentation.common.debouncedClickListener
 import com.dongsu.timely.presentation.common.formatDate
 import com.dongsu.timely.presentation.common.formatTimeToString
 import com.dongsu.timely.presentation.viewmodel.calendar.add.AddScheduleViewModel
-import com.dongsu.timely.presentation.viewmodel.calendar.add.CurrentTimeViewModel
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAddScheduleBinding::inflate) {
 
     private val addScheduleViewModel: AddScheduleViewModel by viewModels()
-    private val currentViewModel: CurrentTimeViewModel by viewModels()
 
     private var repeatDays = EnumRepeat.NO.repeat
     private var appointmentAlarmTime = EnumAlarmTime.BEFORE_1_HOUR.time
@@ -54,6 +59,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
         getCurrentDataAndTime()
         setupSpinnerAdapter()
         choiceSchedule()
+        checkUIState()
     }
     private fun setupArgument(){
             latitude = args.latitude.toDouble()
@@ -101,12 +107,12 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
     }
     private fun getCurrentDataAndTime() {
         with(binding){
-            currentViewModel.currentDate.observe(viewLifecycleOwner) { date ->
+            addScheduleViewModel.currentDate.observe(viewLifecycleOwner) { date ->
                 tvStartDate.text = date
                 tvLastDate.text = date
             }
             lifecycleScope.launch {
-                currentViewModel.currentTimeFlow.collect { time ->
+                addScheduleViewModel.currentTimeFlow.collect { time ->
                     tvStartTime.text = time
                     tvEndTime.text = time
                 }
@@ -221,7 +227,9 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
                 PermissionUtils.showPermissionsDeniedDialog(requireContext())
             }
         }
-        requestBackgroundLocationLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            requestBackgroundLocationLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+        }
     }
     private fun goSearchLocationFragment(){
         findNavController().navigate(R.id.action_addScheduleFragment_to_searchLocationFragment)
@@ -281,6 +289,31 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
+    }
+    private fun checkUIState(){
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                addScheduleViewModel.addScheduleState.collectLatest { result ->
+                    when (result) {
+                        is TimelyResult.Loading -> {
+                            CommonUtils.toastShort(requireContext(), SAVE_LOADING)
+                        }
+
+                        is TimelyResult.Success -> {
+                            CommonUtils.toastShort(requireContext(), SAVE_SUCCESS)
+                        }
+
+                        is TimelyResult.LocalError -> {
+                            CommonUtils.toastShort(requireContext(), SAVE_ERROR)
+                        }
+
+                        else -> {
+
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onResume() {

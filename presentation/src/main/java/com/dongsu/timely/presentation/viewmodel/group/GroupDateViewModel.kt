@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GroupDataViewModel @Inject constructor(
+class GroupDateViewModel @Inject constructor(
     private val groupScheduleRepository: GroupScheduleRepository,
     private val participationScheduleUseCase: ParticipationScheduleUseCase
 ): ViewModel() {
@@ -23,7 +23,8 @@ class GroupDataViewModel @Inject constructor(
 
     fun getGroupSchedule(groupId: Int) {
         viewModelScope.launch {
-            _groupScheduleList.value = groupScheduleRepository.getAllSchedule(groupId)
+            _groupScheduleList.value = TimelyResult.Loading
+            _groupScheduleList.value = groupScheduleRepository.fetchGroupScheduleList(groupId)
         }
     }
 

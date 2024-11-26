@@ -9,16 +9,18 @@ const val LOGIN_NEGATIVE_BUTTON = "취소"
 //LOG 확인 TAG
 const val KAKAO_TAG = "KakaoLoginManager"
 
-//저장
+//스케줄 저장
 const val SAVE_SUCCESS = "저장였습니다."
 const val SAVE_ERROR = "저장에 실패하였습니다."
-const val SAVING = "저장중..."
+const val SAVE_LOADING = "저장중..."
 const val LOADING = "로딩중..."
 const val OMG = "니가왜떠???"
+const val SHORT_DELAY = 500L
 
 //가져오기
 const val GET_ERROR = "데이터를 가져오는데 실패하였습니다."
-const val GET_LOADING = "가져오는중...."
+const val GET_LOADING = "가져오는중..."
+const val GET_EMPTY = "아무것도 없군요!"
 
 //bundle
 
@@ -29,6 +31,12 @@ const val GROUP_MANAGEMENT = "관리"
 
 //groupSchedule
 const val DEFAULT_ALARM_TIME = 1
+
+//GroupMeeting
+const val DISTANCE_TO_ARRIVE_POINT = 100
+const val DEFAULT_START_ZOOM_LEVEL = 15
+const val SUCCESS_SEND_STATE_MESSAGE = "모두에게 상태메세지 전송 완료!"
+const val FAIL_SEND_STATE_MESSAGE = "상태메세지 전송 실패"
 
 //inviteGroup
 const val INVITE_GROUP_MESSAGE = """Timely로 초대합니다. 

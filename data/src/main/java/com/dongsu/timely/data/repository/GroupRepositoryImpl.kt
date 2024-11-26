@@ -9,13 +9,36 @@ import javax.inject.Inject
 
 class GroupRepositoryImpl @Inject constructor(
     private val groupRemoteDatasource: GroupRemoteDatasource,
-): GroupRepository {
-    override suspend fun createGroup(groupName: String) = groupRemoteDatasource.createGroup(groupName)
+) : GroupRepository {
+    override suspend fun createGroup(groupName: String): TimelyResult<Unit> =
+        try {
+            groupRemoteDatasource.createGroup(groupName)
+            TimelyResult.Success(Unit)
+        } catch (e: Exception) {
+            TimelyResult.NetworkError(e)
+        }
 
-    override suspend fun getMyGroupList(): List<Group> = groupRemoteDatasource.getGroup()
+    override suspend fun fetchMyGroupList(): TimelyResult<List<Group>> =
+        try {
+            val myGroupList = groupRemoteDatasource.fetchMyGroupList()
+            when {
+                myGroupList.isEmpty() -> TimelyResult.Empty
+                else -> TimelyResult.Success(myGroupList)
+            }
+        } catch (e: Exception) {
+            TimelyResult.NetworkError(e)
+        }
 
-    override suspend fun createInviteCode(groupId: Int): TimelyResult<InviteCode>
-    = groupRemoteDatasource.createInviteCode(groupId)
+    override suspend fun createInviteCode(groupId: Int): TimelyResult<InviteCode> =
+        try {
+            val inviteCode = groupRemoteDatasource.createInviteCode(groupId)
+            when {
+                inviteCode == InviteCode.EMPTY -> TimelyResult.Empty
+                else -> TimelyResult.Success(inviteCode)
+            }
+        } catch (e: Exception) {
+            TimelyResult.NetworkError(e)
+        }
 
     override suspend fun joinGroup(inviteCode: String) = groupRemoteDatasource.joinGroup(inviteCode)
 

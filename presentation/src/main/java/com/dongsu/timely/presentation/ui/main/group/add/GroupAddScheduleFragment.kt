@@ -8,14 +8,21 @@ import android.view.View
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.FragmentGroupAddScheduleBinding
+import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.GroupSchedule
 import com.dongsu.timely.presentation.common.BaseFragment
+import com.dongsu.timely.presentation.common.CommonUtils
 import com.dongsu.timely.presentation.common.DEFAULT_ALARM_TIME
+import com.dongsu.timely.presentation.common.SAVE_ERROR
+import com.dongsu.timely.presentation.common.SAVE_LOADING
+import com.dongsu.timely.presentation.common.SAVE_SUCCESS
 import com.dongsu.timely.presentation.common.combineDateTime
 import com.dongsu.timely.presentation.common.debouncedClickListener
 import com.dongsu.timely.presentation.common.formatDate
@@ -24,6 +31,7 @@ import com.dongsu.timely.presentation.viewmodel.group.GroupAddScheduleViewModel
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -38,6 +46,7 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
         setupArgs()
         getCurrentDataAndTime()
         choiceSchedule()
+        checkUIState()
     }
     private fun setupToolbar(){
         binding.toolbar.toolbarCommon.apply {
@@ -174,6 +183,26 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
                 groupAddScheduleViewModel.currentTimeFlow.collect { time ->
                     tvStartTime.text = time
                     tvEndTime.text = time
+                }
+            }
+        }
+    }
+    private fun checkUIState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                groupAddScheduleViewModel.addScheduleState.collectLatest {result ->
+                    when (result) {
+                        is TimelyResult.Loading -> {
+                            CommonUtils.toastShort(requireContext(), SAVE_LOADING)
+                        }
+                        is TimelyResult.Success -> {
+                            CommonUtils.toastShort(requireContext(), SAVE_SUCCESS)
+                        }
+                        is TimelyResult.NetworkError -> {
+                            CommonUtils.toastShort(requireContext(), SAVE_ERROR)
+                        }
+                        else -> {}
+                    }
                 }
             }
         }

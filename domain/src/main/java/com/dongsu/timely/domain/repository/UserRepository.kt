@@ -5,12 +5,11 @@ import com.dongsu.timely.domain.model.Token
 import com.dongsu.timely.domain.model.map.User
 
 interface UserRepository {
-    suspend fun sendToken(token: String): Token
-    suspend fun saveTokenLocal(accessToken: String, refreshToken: String)
-    suspend fun sendFCMToken(token: String)
-    suspend fun saveLoginStatus(accessToken: String, refreshToken: String)
+    suspend fun sendKaKaoTokenAndGetToken(token: String): TimelyResult<Token>
+    suspend fun saveTokenLocal(accessToken: String, refreshToken: String): TimelyResult<Unit>
+    suspend fun sendFCMToken(token: String): TimelyResult<Unit>
     suspend fun isLoggedIn(): TimelyResult<Boolean>
-    suspend fun getMyInfo(): TimelyResult<User>
+    suspend fun fetchMyInfo(): TimelyResult<User>
     suspend fun countLateness()
     suspend fun getUserProfile()
     suspend fun updateUserProfile()
