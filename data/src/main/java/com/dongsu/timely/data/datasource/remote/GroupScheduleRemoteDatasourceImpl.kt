@@ -41,10 +41,8 @@ class GroupScheduleRemoteDatasourceImpl @Inject constructor(
         }
 
 
-    override suspend fun updateStateMessage(scheduleId: Int, stateMessage: String) {
-        val stateMessageResponse = StateMessageResponse(stateMessage)
-        groupScheduleService.updateStateMessage(scheduleId, stateMessageResponse)
-    }
+    override suspend fun updateStateMessage(scheduleId: Int, stateMessage: String) =
+        groupScheduleService.updateStateMessage(scheduleId, StateMessageResponse(stateMessage))
 }
 
 

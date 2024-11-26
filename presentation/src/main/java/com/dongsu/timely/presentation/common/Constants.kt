@@ -32,6 +32,12 @@ const val GROUP_MANAGEMENT = "관리"
 //groupSchedule
 const val DEFAULT_ALARM_TIME = 1
 
+//GroupMeeting
+const val DISTANCE_TO_ARRIVE_POINT = 100
+const val DEFAULT_START_ZOOM_LEVEL = 15
+const val SUCCESS_SEND_STATE_MESSAGE = "모두에게 상태메세지 전송 완료!"
+const val FAIL_SEND_STATE_MESSAGE = "상태메세지 전송 실패"
+
 //inviteGroup
 const val INVITE_GROUP_MESSAGE = """Timely로 초대합니다. 
     개인 및 일정 관리의 최고의 어플!!. """

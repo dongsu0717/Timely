@@ -12,5 +12,5 @@ interface GroupScheduleRepository {
     suspend fun participationSchedule(groupId: Int, scheduleId: Int)
     suspend fun cancelParticipationSchedule(groupId: Int, scheduleId: Int)
     suspend fun fetchGroupMeetingInfo(scheduleId: Int): TimelyResult<GroupMeetingInfo>
-    suspend fun updateStateMessage(scheduleId: Int, stateMessage: String)
+    suspend fun updateStateMessage(scheduleId: Int, stateMessage: String): TimelyResult<Unit>
 }

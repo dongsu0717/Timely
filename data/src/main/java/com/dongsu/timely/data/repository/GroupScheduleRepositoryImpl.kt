@@ -13,7 +13,7 @@ class GroupScheduleRepositoryImpl @Inject constructor(
 ) : GroupScheduleRepository {
     override suspend fun insertSchedule(
         groupId: Int,
-        groupSchedule: GroupSchedule
+        groupSchedule: GroupSchedule,
     ): TimelyResult<Unit> =
         try {
             groupScheduleRemoteDatasource.insertSchedule(groupId, groupSchedule)
@@ -50,7 +50,14 @@ class GroupScheduleRepositoryImpl @Inject constructor(
             TimelyResult.NetworkError(e)
         }
 
-    override suspend fun updateStateMessage(scheduleId: Int, stateMessage: String) =
-        groupScheduleRemoteDatasource.updateStateMessage(scheduleId, stateMessage)
-
+    override suspend fun updateStateMessage(
+        scheduleId: Int,
+        stateMessage: String,
+    ): TimelyResult<Unit> =
+        try {
+            groupScheduleRemoteDatasource.updateStateMessage(scheduleId, stateMessage)
+            TimelyResult.Success(Unit)
+        } catch (e: Exception) {
+            TimelyResult.NetworkError(e)
+        }
 }

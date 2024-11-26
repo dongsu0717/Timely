@@ -259,8 +259,27 @@ class GroupLocationFragment :
     }
 
     private fun updateStateMessage(stateMessage: String) {
-        lifecycleScope.launch {
-            locationScheduleId?.let { groupLocationViewModel.updateStateMessage(it, stateMessage) }
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                locationScheduleId?.let { groupLocationViewModel.updateStateMessage(it, stateMessage) }
+                groupLocationViewModel.stateMessage.collectLatest { result ->
+                    when (result) {
+                        is TimelyResult.Loading -> {
+
+                        }
+                        is TimelyResult.Success -> {
+                            toastShort(requireContext(), SUCCESS_SEND_STATE_MESSAGE)
+                        }
+                        is TimelyResult.Empty -> {
+
+                        }
+                        is TimelyResult.NetworkError -> {
+                            toastShort(requireContext(), FAIL_SEND_STATE_MESSAGE)
+                        }
+                        else -> {}
+                    }
+                }
+            }
         }
     }
 
