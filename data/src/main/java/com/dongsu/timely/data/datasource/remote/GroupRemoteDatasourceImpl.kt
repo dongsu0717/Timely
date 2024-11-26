@@ -1,7 +1,6 @@
 package com.dongsu.timely.data.datasource.remote
 
 import android.util.Log
-import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.data.mapper.GroupMapper
 import com.dongsu.timely.data.mapper.InviteCodeMapper
 import com.dongsu.timely.data.remote.api.GroupService
@@ -20,23 +19,15 @@ class GroupRemoteDatasourceImpl @Inject constructor(
     override suspend fun fetchMyGroupList(): List<Group> =
         GroupMapper.toDomainGroupList((groupService.fetchMyGroupList()).body() ?: emptyList())
 
-    override suspend fun createInviteCode(groupId: Int): TimelyResult<InviteCode> {
-        val response = groupService.createInviteCode(groupId)
-        return when {
-            response.isSuccessful -> {
-                val body = response.body()
-                if (body != null) {
-                    TimelyResult.Success(InviteCodeMapper.toDomain(body))
-                } else {
-                    TimelyResult.NetworkError(Exception("Response body is null"))
-                }
+    override suspend fun createInviteCode(groupId: Int): InviteCode =
+        try {
+            when (val response = groupService.createInviteCode(groupId).body()) {
+                null -> InviteCode.EMPTY
+                else -> InviteCodeMapper.toDomain(response)
             }
-
-            else -> {
-                TimelyResult.NetworkError(Exception("Request failed: ${response.code()} - ${response.message()}"))
-            }
+        } catch (e: Exception) {
+            throw e
         }
-    }
 
     override suspend fun joinGroup(inviteCode: String) {
         groupService.joinGroup(inviteCode)

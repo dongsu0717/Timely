@@ -30,7 +30,15 @@ class GroupRepositoryImpl @Inject constructor(
         }
 
     override suspend fun createInviteCode(groupId: Int): TimelyResult<InviteCode> =
-        groupRemoteDatasource.createInviteCode(groupId)
+        try {
+            val inviteCode = groupRemoteDatasource.createInviteCode(groupId)
+            when {
+                inviteCode == InviteCode.EMPTY -> TimelyResult.Empty
+                else -> TimelyResult.Success(inviteCode)
+            }
+        } catch (e: Exception) {
+            TimelyResult.NetworkError(e)
+        }
 
     override suspend fun joinGroup(inviteCode: String) = groupRemoteDatasource.joinGroup(inviteCode)
 
