@@ -41,21 +41,26 @@ class TimelyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTimelyBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        navController = setNavController()
-        setupBottomNavigation(navController)
+        initView()
+    }
+
+    private fun initView() {
+        setNavController()
         checkArgument(navController)
         setKaKaoLoginManager()
         checkInviteCodeToIntent()
     }
 
-    private fun setNavController(): NavController =
-        (supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment).navController
-
-    private fun setupBottomNavigation(navController: NavController) {
-        binding.bottomNavigation.setupWithNavController(navController)
+    private fun setNavController() {
+        navController =
+            (supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment).navController
+        setupBottomNavigation(navController)
         setBottomNavigationVisibility(navController)
         setupNavigation(navController)
     }
+
+    private fun setupBottomNavigation(navController: NavController) =
+        binding.bottomNavigation.setupWithNavController(navController)
 
     private fun setBottomNavigationVisibility(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
