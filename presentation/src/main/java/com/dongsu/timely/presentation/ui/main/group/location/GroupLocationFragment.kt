@@ -205,41 +205,37 @@ class GroupLocationFragment :
         }
     }
 
-    private suspend fun getGroupMeetingInfoOnMap(kakaoMap: KakaoMap) {
-            groupLocationViewModel.groupMembersLocation.collectLatest { meetingInfo -> //멤버들 가져오기
-                when (meetingInfo) {
-                    is TimelyResult.Success -> {
-                        val targetLocation = meetingInfo.resultData.targetLocation
-                        val myLocation = meetingInfo.resultData.userMeetingData.find { it.user.userId == myId }?.location
-                        Log.e("약속장소 가져오기", meetingInfo.resultData.targetLocation.toString())
-                        Log.e("멤버들 가져오기", meetingInfo.resultData.userMeetingData.toString())
-                        Log.e("내위치 가져오기", myLocation.toString())
+    private fun getGroupMemberLocation(scheduleId: Int) =
+        groupLocationViewModel.getParticipationMemberLocation(scheduleId)
 
-                        if (myLocation != null) {
-                            val distance = calculateDistance(
-                                myLocation.latitude,
-                                myLocation.longitude,
-                                targetLocation.coordinate.latitude,
-                                targetLocation.coordinate.longitude
-                            )
 
-                            Log.d("DistanceCheck", "Distance to target: $distance meters")
-
-                            if (distance <= 100) {
-                                arrivedPlace()
-                                // 100미터 안에 들어온 경우 지도 닫기
-                                closeKakaoMap()
-                                return@collectLatest
-                            }
+    private fun getGroupMeetingInfoOnMap(kakaoMap: KakaoMap) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                groupLocationViewModel.groupMeetingInfo.collectLatest { meetingInfo ->
+                    when (meetingInfo) {
+                        is TimelyResult.Loading -> {
+                            toastShort(requireContext(), GET_LOADING)
                         }
-                        updateAppointPlaceOnMap(kakaoMap, meetingInfo.resultData.targetLocation)
-                        updateMemberLocationsOnMap(kakaoMap, meetingInfo.resultData.userMeetingData)
 
-                    }
+                        is TimelyResult.Success -> {
+                            val targetLocation = meetingInfo.resultData.targetLocation
+                            Log.e("약속장소 가져오기", targetLocation.toString())
 
-                    is TimelyResult.Loading -> {
-                        toastShort(requireContext(), GET_LOADING)
-                    }
+                            val usersLocation = meetingInfo.resultData.userMeetingData
+                            Log.e("멤버들 가져오기",usersLocation.toString())
+
+                            val myLocation = getMyLocation(usersLocation)
+                            Log.e("내위치 가져오기", myLocation.toString())
+
+                            updateAppointPlaceOnMap(kakaoMap, targetLocation)
+                            updateMemberLocationsOnMap(kakaoMap, meetingInfo.resultData.userMeetingData)
+                            checkArrive(myLocation, targetLocation)
+                        }
+
+                        is TimelyResult.Empty -> {
+                            toastShort(requireContext(), GET_EMPTY)
+                        }
 
                     is TimelyResult.NetworkError -> {
                         toastShort(requireContext(), GET_ERROR)

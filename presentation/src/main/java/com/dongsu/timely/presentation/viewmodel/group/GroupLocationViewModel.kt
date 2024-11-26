@@ -23,21 +23,14 @@ class GroupLocationViewModel @Inject constructor(
     private val userRepository: UserRepository
 ): ViewModel() {
 
-    private val _myUserId = MutableStateFlow<TimelyResult<Int>>(TimelyResult.Empty)
-    val myUserId = _myUserId.asStateFlow()
-
     private val _groupScheduleToShowMap = MutableStateFlow<TimelyResult<GroupScheduleInfo>>(TimelyResult.Empty)
     val groupScheduleToShowMap = _groupScheduleToShowMap.asStateFlow()
 
-    private val _groupMembersLocation = MutableStateFlow<TimelyResult<GroupMeetingInfo>>(TimelyResult.Empty)
-    var groupMembersLocation =_groupMembersLocation.asStateFlow()
+    private val _myUserId = MutableStateFlow<TimelyResult<Int>>(TimelyResult.Empty)
+    val myUserId = _myUserId.asStateFlow()
 
-    fun getParticipationMemberLocation(scheduleId: Int) {
-        viewModelScope.launch {
-            _groupMembersLocation.value =
-                groupScheduleRepository.getParticipationMemberLocation(scheduleId)
-        }
-    }
+    private val _groupMeetingInfo = MutableStateFlow<TimelyResult<GroupMeetingInfo>>(TimelyResult.Empty)
+    val groupMeetingInfo =_groupMeetingInfo.asStateFlow()
 
     fun fetchGroupScheduleShowMap(groupId: Int) {
         viewModelScope.launch {
@@ -46,15 +39,22 @@ class GroupLocationViewModel @Inject constructor(
         }
     }
 
-    suspend fun updateStateMessage(scheduleId: Int, stateMessage: String)
-    = groupScheduleRepository.updateStateMessage(scheduleId, stateMessage)
-
     fun fetchMyUserId() {
         viewModelScope.launch {
             _myUserId.value = TimelyResult.Loading
             _myUserId.value = fetchMyUserIdUseCase()
         }
     }
+
+    fun getParticipationMemberLocation(scheduleId: Int) {
+        viewModelScope.launch {
+            _groupMeetingInfo.value = TimelyResult.Loading
+            _groupMeetingInfo.value = groupScheduleRepository.fetchGroupMeetingInfo(scheduleId)
+        }
+    }
+
+    suspend fun updateStateMessage(scheduleId: Int, stateMessage: String)
+    = groupScheduleRepository.updateStateMessage(scheduleId, stateMessage)
 
     suspend fun countLateness() {
         return userRepository.countLateness()

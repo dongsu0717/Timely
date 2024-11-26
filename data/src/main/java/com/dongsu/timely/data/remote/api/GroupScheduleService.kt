@@ -50,7 +50,7 @@ interface GroupScheduleService {
     ): Response<CommonResponse>
 
     @GET(LOCATION)
-    suspend fun getGroupLocation(
+    suspend fun fetchGroupMeetingInfo(
         @Path("scheduleId") scheduleId: Int
     ): Response<GroupMeetingResponse>
 
