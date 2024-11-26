@@ -15,7 +15,7 @@ import com.dongsu.timely.presentation.common.GET_ERROR
 import com.dongsu.timely.presentation.common.GET_LOADING
 import com.dongsu.timely.presentation.common.debouncedClickListener
 import com.dongsu.timely.presentation.ui.main.group.GroupPageFragmentDirections
-import com.dongsu.timely.presentation.viewmodel.group.GroupDataViewModel
+import com.dongsu.timely.presentation.viewmodel.group.GroupDateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class GroupDateFragment : BaseTabFragment<FragmentGroupDateBinding>(FragmentGroupDateBinding::inflate) {
 
-    private val groupDateViewModel: GroupDataViewModel by viewModels()
+    private val groupDateViewModel: GroupDateViewModel by viewModels()
     private lateinit var groupScheduleListAdapter: GroupScheduleListAdapter
 
     override fun initView() {
