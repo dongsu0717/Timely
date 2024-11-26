@@ -36,7 +36,13 @@ class UserRepositoryImpl @Inject constructor(
             TimelyResult.NetworkError(e)
         }
 
-    override suspend fun isLoggedIn(): TimelyResult<Boolean> = userLocalDatasource.isLoggedIn()
+    override suspend fun isLoggedIn(): TimelyResult<Boolean> =
+        try {
+            val isLoggedIn = userLocalDatasource.isLoggedIn()
+            TimelyResult.Success(isLoggedIn)
+        } catch (e: Exception) {
+            TimelyResult.LocalError(e)
+        }
 
     override suspend fun fetchMyInfo(): TimelyResult<User> =
         try {

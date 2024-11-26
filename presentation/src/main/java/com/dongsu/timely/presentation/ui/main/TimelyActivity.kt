@@ -156,17 +156,51 @@ class TimelyActivity : AppCompatActivity() {
                 is TimelyResult.Loading -> {
 
                 }
+
                 is TimelyResult.Success -> {
                     Log.e("TimelyActivitiy토큰저장", "성공")
                 }
+
                 is TimelyResult.Empty -> {
 
                 }
+
                 is TimelyResult.LocalError -> {
                     Log.e("TimelyActivitiy토큰저장", "localError")
 
                 }
+
                 else -> {}
+            }
+        }
+    }
+
+    private suspend fun checkIsLoggedIn() {
+        timelyViewModel.isLoggedIn()
+        timelyViewModel.loginStatus.collectLatest { result ->
+            when (result) {
+                is TimelyResult.Loading -> {
+                    Log.e("TimelyActivity로그인확인", "로그인상태 로딩중임")
+
+                }
+
+                is TimelyResult.Success -> {
+                    Log.e("TimelyActivity로그인확인", "로그인상태 success임")
+                }
+
+                is TimelyResult.Empty -> {
+                    Log.e("TimelyActivity로그인확인", "로그인상태 empty임")
+
+                }
+
+                is TimelyResult.LocalError -> {
+                    Log.e("TimelyActivity로그인확인", "로그인상태 localError뜸")
+
+                }
+
+                else -> {
+                    Log.e("TimelyActivity로그인확인", "로그인상태 니가 왜떠")
+                }
             }
         }
     }
