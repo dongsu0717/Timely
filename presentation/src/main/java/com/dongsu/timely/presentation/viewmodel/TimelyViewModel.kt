@@ -29,6 +29,9 @@ class TimelyViewModel @Inject constructor(
     private val _sendFCMTokenState = MutableStateFlow<TimelyResult<Unit>>(TimelyResult.Empty)
     val sendFCMTokenState = _sendFCMTokenState.asStateFlow()
 
+    private val _saveTokenLocalState = MutableStateFlow<TimelyResult<Unit>>(TimelyResult.Empty)
+    val saveTokenLocalState = _saveTokenLocalState.asStateFlow()
+
     private var _loginStatus = MutableStateFlow<TimelyResult<Boolean>>(TimelyResult.Empty)
     val loginStatus = _loginStatus.asStateFlow()
 
@@ -44,6 +47,12 @@ class TimelyViewModel @Inject constructor(
             val fcmToken = fcmRepository.getFCMToken()
             _sendFCMTokenState.value = TimelyResult.Loading
             _sendFCMTokenState.value = userRepository.sendFCMToken(fcmToken)
+        }
+    }
+    fun saveTokenLocal(accessToken: String, refreshToken: String) {
+        viewModelScope.launch {
+            _saveTokenLocalState.value = TimelyResult.Loading
+            _saveTokenLocalState.value = userRepository.saveTokenLocal(accessToken, refreshToken)
         }
     }
 

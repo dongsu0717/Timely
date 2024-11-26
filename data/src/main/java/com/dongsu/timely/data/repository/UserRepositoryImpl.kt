@@ -20,8 +20,13 @@ class UserRepositoryImpl @Inject constructor(
             TimelyResult.NetworkError(e)
         }
 
-    override suspend fun saveTokenLocal(accessToken: String, refreshToken: String) =
-        userLocalDatasource.saveLoginStatus(accessToken, refreshToken)
+    override suspend fun saveTokenLocal(accessToken: String, refreshToken: String): TimelyResult<Unit> =
+        try {
+            userLocalDatasource.saveTokenLocal(accessToken, refreshToken)
+            TimelyResult.Success(Unit)
+        } catch (e: Exception) {
+            TimelyResult.LocalError(e)
+        }
 
     override suspend fun sendFCMToken(token: String): TimelyResult<Unit> =
         try {
@@ -30,9 +35,6 @@ class UserRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             TimelyResult.NetworkError(e)
         }
-
-    override suspend fun saveLoginStatus(accessToken: String, refreshToken: String) =
-        userLocalDatasource.saveLoginStatus(accessToken, refreshToken)
 
     override suspend fun isLoggedIn(): TimelyResult<Boolean> = userLocalDatasource.isLoggedIn()
 

@@ -47,7 +47,9 @@ class TimelyActivity : AppCompatActivity() {
         setKaKaoLoginManager()
         checkInviteCodeToIntent()
     }
-    private fun setNavController(): NavController = (supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment).navController
+
+    private fun setNavController(): NavController =
+        (supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment).navController
 
     private fun setupBottomNavigation(navController: NavController) {
         binding.bottomNavigation.setupWithNavController(navController)
@@ -58,7 +60,7 @@ class TimelyActivity : AppCompatActivity() {
     private fun setBottomNavigationVisibility(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.bottomNavigation.visibility = when (destination.id) {
-                R.id.calendarFragment, R.id.groupListFragment, R.id.profileFragment, R.id.groupDateFragment, R.id.groupLocationFragment, R.id.groupManagementFragment, R.id.groupPageFragment-> View.VISIBLE
+                R.id.calendarFragment, R.id.groupListFragment, R.id.profileFragment, R.id.groupDateFragment, R.id.groupLocationFragment, R.id.groupManagementFragment, R.id.groupPageFragment -> View.VISIBLE
                 else -> View.GONE
             }
         }
@@ -84,9 +86,9 @@ class TimelyActivity : AppCompatActivity() {
     }
 
     private fun checkLoginStatus(callback: (Boolean) -> Unit) = lifecycleScope.launch {
-            timelyViewModel.isLoggedIn()
-            callback(timelyViewModel.loginStatus.value is TimelyResult.Success)
-        }
+        timelyViewModel.isLoggedIn()
+        callback(timelyViewModel.loginStatus.value is TimelyResult.Success)
+    }
 
     private fun setKaKaoLoginManager() {
         kakaoLoginManager = KaKaoLoginManager(this) { token ->
@@ -99,7 +101,10 @@ class TimelyActivity : AppCompatActivity() {
                         }
 
                         is TimelyResult.Success -> {
-                            val token = result.resultData
+                            saveTokenLocal(
+                                result.resultData.accessToken,
+                                result.resultData.refreshToken
+                            )
                             sendFCMToken()
                         }
 
@@ -110,26 +115,55 @@ class TimelyActivity : AppCompatActivity() {
                         is TimelyResult.NetworkError -> {
 
                         }
+
                         else -> {}
                     }
                 }
             }
         }
     }
-    private suspend fun sendFCMToken(){
+
+    private suspend fun sendFCMToken() {
         timelyViewModel.sendFCMToken()
         timelyViewModel.sendFCMTokenState.collectLatest { result ->
             when (result) {
                 is TimelyResult.Loading -> {
 
                 }
+
                 is TimelyResult.Success -> {
-                    Log.e("fcm보내기","성공")
+                    Log.e("fcm보내기", "성공")
+                }
+
+                is TimelyResult.Empty -> {
+
+                }
+
+                is TimelyResult.NetworkError -> {
+
+                }
+
+                else -> {}
+            }
+        }
+    }
+
+    private suspend fun saveTokenLocal(accessToken: String?, refreshToken: String?) {
+        if (accessToken != null && refreshToken != null)
+            timelyViewModel.saveTokenLocal(accessToken, refreshToken)
+        timelyViewModel.saveTokenLocalState.collectLatest { result ->
+            when (result) {
+                is TimelyResult.Loading -> {
+
+                }
+                is TimelyResult.Success -> {
+                    Log.e("TimelyActivitiy토큰저장", "성공")
                 }
                 is TimelyResult.Empty -> {
 
                 }
-                is TimelyResult.NetworkError -> {
+                is TimelyResult.LocalError -> {
+                    Log.e("TimelyActivitiy토큰저장", "localError")
 
                 }
                 else -> {}
@@ -137,16 +171,21 @@ class TimelyActivity : AppCompatActivity() {
         }
     }
 
-    private fun showLoginDialog() = CommonDialogFragment(LOGIN_TITLE, LOGIN_MESSAGE, LOGIN_POSITIVE_BUTTON, LOGIN_NEGATIVE_BUTTON){
+    private fun showLoginDialog() = CommonDialogFragment(
+        LOGIN_TITLE,
+        LOGIN_MESSAGE,
+        LOGIN_POSITIVE_BUTTON,
+        LOGIN_NEGATIVE_BUTTON
+    ) {
         kakaoLoginManager.initiateKakaoLogin()
     }.show(supportFragmentManager, "LoginDialogFragment")
 
-    private fun showJoinGroupDialog(inviteCode:String)
-    = CommonDialogFragment("그룹에 초대되었습니다.", "그룹에 가입하시겠습니까?", "가입하기", "취소"){
-        lifecycleScope.launch {
-            timelyViewModel.joinGroup(inviteCode = inviteCode)
-        }
-    }.show(supportFragmentManager, "JoinDialogFragment")
+    private fun showJoinGroupDialog(inviteCode: String) =
+        CommonDialogFragment("그룹에 초대되었습니다.", "그룹에 가입하시겠습니까?", "가입하기", "취소") {
+            lifecycleScope.launch {
+                timelyViewModel.joinGroup(inviteCode = inviteCode)
+            }
+        }.show(supportFragmentManager, "JoinDialogFragment")
 
     private fun checkInviteCodeToIntent() {
         if (Intent.ACTION_VIEW == intent.action) {
@@ -166,17 +205,24 @@ class TimelyActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun checkArgument(navController: NavController) {
-        val groupId = intent.getIntExtra(GROUP_ID,-1)
+        val groupId = intent.getIntExtra(GROUP_ID, -1)
         val groupName = intent.getStringExtra(GROUP_NAME)
         val scheduleId = intent.getIntExtra(SCHEDULE_ID, -1)
 
-        Log.e("timly",groupId.toString())
+        Log.e("timly", groupId.toString())
         if (groupId != -1) {
             goGroupDetail(navController, groupId, groupName, scheduleId)
         }
     }
-    private fun goGroupDetail(navController: NavController, groupId: Int,groupName: String?, scheduleId: Int) {
+
+    private fun goGroupDetail(
+        navController: NavController,
+        groupId: Int,
+        groupName: String?,
+        scheduleId: Int,
+    ) {
         val bundle = Bundle().apply {
             putInt(GROUP_ID, groupId)
             groupName?.let { putString(GROUP_NAME, it) }
@@ -184,6 +230,7 @@ class TimelyActivity : AppCompatActivity() {
         }
         navController.navigate(R.id.groupPageFragment, bundle)
     }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         intent.let { nonNullIntent ->
