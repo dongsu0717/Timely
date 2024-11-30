@@ -6,15 +6,20 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.children
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.FragmentCalendarBinding
 import com.dongsu.presentation.databinding.ScheduleBoxBinding
 import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.presentation.common.BaseFragment
+import com.dongsu.timely.presentation.common.CommonUtils.toastShort
 import com.dongsu.timely.presentation.common.EnumColor
-import com.dongsu.timely.presentation.common.collectWhenStarted
+import com.dongsu.timely.presentation.common.LOAD_SCHEDULE_EMPTY
+import com.dongsu.timely.presentation.common.LOAD_SCHEDULE_ERROR
+import com.dongsu.timely.presentation.common.LOAD_SCHEDULE_LOADING
 import com.dongsu.timely.presentation.common.debouncedClickListener
 import com.dongsu.timely.presentation.ui.main.calendar.home.container.DayViewContainer
 import com.dongsu.timely.presentation.ui.main.calendar.home.container.MonthViewContainer
@@ -27,8 +32,10 @@ import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import reactivecircus.flowbinding.android.view.clicks
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -212,38 +219,49 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
 
     // 일정 데이터 불러와서 표시
     private fun showSchedule(data: CalendarDay, container: DayViewContainer) {
-        collectWhenStarted(calendarViewModel.scheduleList) { result ->
-            when (result) {
-                is TimelyResult.Success -> {
-                    result.resultData.filter { data.date == LocalDate.parse(it.startDate) }
-                        .also { filteredList ->
-                            if (filteredList.isNotEmpty()) {
-                                container.scheduleBox.removeAllViews()
-                                filteredList.forEach { schedule ->
-                                    val scheduleView =
-                                        ScheduleBoxBinding.inflate(
-                                            layoutInflater
-                                        )
-                                    scheduleView.textViewScheduleTitle.text =
-                                        schedule.title
-                                    scheduleView.textViewScheduleTitle.setBackgroundColor(
-                                        resources.getColor(
-                                            getScheduleColorResource(schedule.color),
-                                            null
-                                        )
-                                    )
-                                    container.scheduleBox.addView(scheduleView.root)
-                                }
-                            }
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                calendarViewModel.scheduleList.collectLatest { result ->
+                    when (result) {
+                        is TimelyResult.Loading -> {
+                            toastShort(requireContext(), LOAD_SCHEDULE_LOADING)
                         }
-                }
 
-                is TimelyResult.Loading -> {}
-                is TimelyResult.LocalError -> {
-//                    toastShort("일정을 불러오는데 실패했습니다.")
-                }
+                        is TimelyResult.Success -> {
+                            result.resultData.filter { data.date == LocalDate.parse(it.startDate) }
+                                .also { filteredList ->
+                                    if (filteredList.isNotEmpty()) {
+                                        container.scheduleBox.removeAllViews()
+                                        filteredList.forEach { schedule ->
+                                            val scheduleView =
+                                                ScheduleBoxBinding.inflate(
+                                                    layoutInflater
+                                                )
+                                            scheduleView.textViewScheduleTitle.text =
+                                                schedule.title
+                                            scheduleView.textViewScheduleTitle.setBackgroundColor(
+                                                resources.getColor(
+                                                    getScheduleColorResource(schedule.color),
+                                                    null
+                                                )
+                                            )
+                                            container.scheduleBox.addView(scheduleView.root)
+                                        }
+                                    }
+                                }
+                        }
 
-                else -> {}
+                        is TimelyResult.Empty -> {
+                            toastShort(requireContext(), LOAD_SCHEDULE_EMPTY)
+                        }
+
+                        is TimelyResult.LocalError -> {
+                            toastShort(requireContext(), LOAD_SCHEDULE_ERROR)
+                        }
+
+                        else -> {}
+                    }
+                }
             }
         }
     }
@@ -262,6 +280,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
 
     override fun onResume() {
         super.onResume()
-        calendarViewModel.findAllSchedule()
+        calendarViewModel.loadAllSchedule()
     }
 }

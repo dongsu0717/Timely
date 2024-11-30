@@ -11,6 +11,6 @@ class ScheduleLocalDatasourceImpl @Inject constructor(
     override suspend fun insertSchedule(schedule: Schedule) =
         scheduleDAO.insertSchedule(ScheduleMapper.toEntity(schedule))
 
-    override suspend fun getAllSchedule(): List<Schedule> =
-        scheduleDAO.getAllSchedule().map { ScheduleMapper.toDomain(it) }
+    override suspend fun loadAllSchedule(): List<Schedule> =
+        scheduleDAO.loadAllSchedule().map { ScheduleMapper.toDomain(it) }
 }
