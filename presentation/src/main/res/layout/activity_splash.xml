@@ -8,9 +8,18 @@
     android:layout_height="match_parent"
     tools:context=".presentation.ui.sub.splash.SplashActivity">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/timely_icon"/>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lotti"
+        android:layout_width="@dimen/splash_width"
+        android:layout_height="@dimen/splash_height"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/splash_animation"
+        app:lottie_repeatCount="2" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

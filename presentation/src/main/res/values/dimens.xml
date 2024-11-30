@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--스플래쉬-->
+    <dimen name="splash_width">200dp</dimen>
+    <dimen name="splash_height">200dp</dimen>
+
+
     <dimen name="zero">0dp</dimen>
     <dimen name="guideline_margin">25dp</dimen>
     <dimen name="text_margin">20dp</dimen>
