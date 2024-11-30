@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.Schedule
 import com.dongsu.timely.domain.usecase.AddScheduleUseCase
-import com.dongsu.timely.presentation.common.SHORT_DELAY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +39,6 @@ class AddScheduleViewModel @Inject constructor(
     fun insertSchedule(newSchedule: Schedule) {
         viewModelScope.launch {
             _addScheduleState.value = TimelyResult.Loading
-            delay(SHORT_DELAY)
             _addScheduleState.value = addScheduleUseCase(newSchedule)
         }
     }

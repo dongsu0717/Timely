@@ -74,7 +74,6 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             when (it.itemId) {
                 R.id.action_save -> {
                     saveSchedule()
-                    findNavController().popBackStack()
                     true
                 }
                 else -> false
@@ -97,7 +96,6 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
                 appointmentAlarm, appointmentAlarmTime, color
             )
             addScheduleViewModel.insertSchedule(schedule)
-            CommonUtils.toastShort(requireContext(), "일정이 추가되었습니다.")
 //            if (scheduleId != NO_SCHEDULE_ID) {
 //                viewModel.updateSchedule(schedule)
 //            } else {
@@ -301,6 +299,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
 
                         is TimelyResult.Success -> {
                             CommonUtils.toastShort(requireContext(), SAVE_SUCCESS)
+                            findNavController().popBackStack()
                         }
 
                         is TimelyResult.LocalError -> {
