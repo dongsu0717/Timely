@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
-import androidx.room.Update
 import com.dongsu.timely.data.local.room.entity.ScheduleInfo
 
 @Dao
@@ -15,7 +14,7 @@ interface ScheduleDAO {
     suspend fun insertSchedule(schedule: ScheduleInfo)
 
     @Query("SELECT * FROM schedule")
-    suspend fun getAllSchedule(): MutableList<ScheduleInfo>
+    suspend fun loadAllSchedule(): List<ScheduleInfo>
 //
 //    @Update
 //    fun updateSchedule(schedule: ScheduleInfo)

@@ -78,4 +78,7 @@ dependencies {
 
     //kakao map
     implementation ("com.kakao.maps.open:android:2.12.8")
+
+    //lottie
+    implementation ("com.airbnb.android:lottie:6.6.0")
 }

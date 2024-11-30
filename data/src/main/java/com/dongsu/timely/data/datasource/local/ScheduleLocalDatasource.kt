@@ -4,5 +4,5 @@ import com.dongsu.timely.domain.model.Schedule
 
 interface ScheduleLocalDatasource {
     suspend fun insertSchedule(schedule:Schedule)
-    suspend fun getAllSchedule() : List<Schedule>
+    suspend fun loadAllSchedule() : List<Schedule>
 }

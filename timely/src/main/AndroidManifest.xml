@@ -66,21 +66,17 @@
             android:name=".receiver.AlarmReceiver"
             android:enabled="true"
             android:exported="true"></receiver>
-
+<!--
         <activity
             android:name=".presentation.ui.sub.tutorial.TutorialActivity"
             android:exported="false" />
+-->
         <activity
             android:name=".presentation.ui.main.TimelyActivity"
             android:enabled="true"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -94,8 +90,13 @@
         </activity>
         <activity
             android:name=".presentation.ui.sub.splash.SplashActivity"
+            android:enabled="true"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
