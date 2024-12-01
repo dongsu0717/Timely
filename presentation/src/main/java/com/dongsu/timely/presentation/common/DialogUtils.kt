@@ -61,7 +61,7 @@ object DialogUtils {
             .show()
     }
 
-    fun showLocationServiceDialog(context: Context, manager: FragmentManager) = CommonDialogFragment(
+    fun showLocationServiceActivationDialog(context: Context, manager: FragmentManager) = CommonDialogFragment(
         LOCATION_SERVICE_ACTIVATION_TITLE,
         LOCATION_SERVICE_ACTIVATION_MESSAGE,
         LOCATION_SERVICE_ACTIVATION_POSITIVE_BUTTON
