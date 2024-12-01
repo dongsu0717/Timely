@@ -5,6 +5,10 @@
     <dimen name="splash_width">200dp</dimen>
     <dimen name="splash_height">200dp</dimen>
 
+    <!--프로필-->
+    <dimen name="profile_image_width">150dp</dimen>
+    <dimen name="profile_image_height">150dp</dimen>
+    <dimen name="profile_image_margin">100dp</dimen>
 
     <dimen name="zero">0dp</dimen>
     <dimen name="guideline_margin">25dp</dimen>

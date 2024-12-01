@@ -81,4 +81,11 @@ dependencies {
 
     //lottie
     implementation ("com.airbnb.android:lottie:6.6.0")
+
+    //glide
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    kapt ("com.github.bumptech.glide:compiler:4.16.0")
+}
+kapt {
+    correctErrorTypes = true
 }
