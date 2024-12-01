@@ -85,6 +85,9 @@ dependencies {
     //glide
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     kapt ("com.github.bumptech.glide:compiler:4.16.0")
+
+    //ted permission
+    implementation("io.github.ParkSangGwon:tedpermission-normal:3.4.2")
 }
 kapt {
     correctErrorTypes = true

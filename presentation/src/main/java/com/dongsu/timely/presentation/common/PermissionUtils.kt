@@ -5,6 +5,8 @@ import android.location.LocationManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.normal.TedPermission
 
 object PermissionUtils {
 
@@ -47,5 +49,28 @@ object PermissionUtils {
 
     fun shouldShowRequestPermissionRationale(fragment: Fragment, permissions: Array<String>): Boolean {
         return permissions.any { fragment.shouldShowRequestPermissionRationale(it) }
+    }
+
+    //POST_NOTIFICATIONS만 TedPermission으로 했음. 그래도 공통함수로..
+    fun requestTedPermissions(
+        rationaleMessage: String? = null,
+        deniedMessage: String? = null,
+        permissions: Array<String>,
+        onGranted: () -> Unit,
+        onDenied: () -> Unit
+    ) {
+        TedPermission.create()
+            .setPermissionListener(object : PermissionListener {
+                override fun onPermissionGranted() {
+                    onGranted()
+                }
+                override fun onPermissionDenied(deniedPermissions: List<String>) {
+                    onDenied()
+                }
+            })
+            .setRationaleMessage(rationaleMessage)
+            .setDeniedMessage(deniedMessage)
+            .setPermissions(*permissions)
+            .check()
     }
 }
