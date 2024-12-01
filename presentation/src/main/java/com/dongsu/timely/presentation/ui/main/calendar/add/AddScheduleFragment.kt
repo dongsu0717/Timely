@@ -1,6 +1,5 @@
 package com.dongsu.timely.presentation.ui.main.calendar.add
 
-import PermissionUtils
 import android.Manifest
 import android.os.Build
 import android.util.Log
@@ -9,7 +8,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -23,9 +22,11 @@ import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.Schedule
 import com.dongsu.timely.presentation.common.BaseFragment
 import com.dongsu.timely.presentation.common.CommonUtils
+import com.dongsu.timely.presentation.common.DialogUtils
 import com.dongsu.timely.presentation.common.EnumAlarmTime
 import com.dongsu.timely.presentation.common.EnumColor
 import com.dongsu.timely.presentation.common.EnumRepeat
+import com.dongsu.timely.presentation.common.PermissionUtils
 import com.dongsu.timely.presentation.common.SAVE_ERROR
 import com.dongsu.timely.presentation.common.SAVE_LOADING
 import com.dongsu.timely.presentation.common.SAVE_SUCCESS
@@ -172,63 +173,77 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             }
         }
     }
-    private val requestPermissionLauncher = PermissionUtils.registerLocationPermissions(
-        this,
-        onPermissionsGranted = {
-            // ACCESS_FINE_LOCATION 및 ACCESS_COARSE_LOCATION 권한이 승인된 후 호출됨
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // Android 10(API 29) 이상일 때만
-                requestBackgroundLocationPermission()
-            } else {
-                goSearchLocationFragment() // BACKGROUND 권한 없이도 다음 화면으로 이동
-            }
-        },
-        onPermissionsDenied = {
-            if (PermissionUtils.shouldShowRequestPermissionRationaleForLocation(this)) {
-                PermissionUtils.showExplanationDialog(requireContext()) { requestLocationPermissions() }
-            } else {
-                PermissionUtils.showPermissionsDeniedDialog(requireContext())
-            }
-        }
+
+    private val locationPermissions = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
-    private fun choosePlace() {
-        if (PermissionUtils.isLocationServiceEnabled(requireContext())) {
-            if (PermissionUtils.areLocationPermissionsGranted(requireContext())) {
-                // FINE 및 COARSE 권한이 승인되었으면 BACKGROUND 권한도 요청 (Android 10 이상)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    requestBackgroundLocationPermission()
-                } else {
-                    goSearchLocationFragment()
-                }
-            } else {
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private val backgroundLocationPermission =
+        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+
+    private val requestPermissionLauncher = PermissionUtils.requestMultiplePermissions(
+        fragment = this,
+        permissions = locationPermissions,
+        onGranted = { checkBackgroundLocationNeeded() },
+        onDenied = { reRequestLocationPermissions() }
+    )
+
+    private val requestBackgroundLocationLauncher = PermissionUtils.requestSinglePermission(
+        fragment = this,
+        onGranted = { goSearchLocationFragment() },
+        onDenied = { DialogUtils.showLocationPermissionsDeniedDialog(requireContext(),parentFragmentManager) }
+    )
+
+    private fun choosePlace() =
+        checkLocationServiceEnabled()
+
+    private fun checkLocationServiceEnabled(){
+        val isServiceEnabled = PermissionUtils.isLocationServiceEnabled(requireContext())
+        if(isServiceEnabled){
+            checkPermissionsGranted()
+        } else {
+            DialogUtils.showLocationServiceActivationDialog(requireContext(),parentFragmentManager)
+        }
+    }
+
+    private fun checkPermissionsGranted(){
+        val isPermissionGranted = PermissionUtils.arePermissionsGranted(requireContext(), locationPermissions)
+        if(isPermissionGranted){
+            checkBackgroundLocationNeeded()
+        } else {
+            requestLocationPermissions()
+        }
+    }
+
+    private fun checkBackgroundLocationNeeded(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            requestBackgroundLocationPermission()
+        } else {
+            goSearchLocationFragment()
+        }
+    }
+
+    private fun reRequestLocationPermissions(){
+        val isNotCheckedDoNotAskAgain = PermissionUtils.shouldShowRequestPermissionRationale(this, locationPermissions)
+        if (isNotCheckedDoNotAskAgain) {
+            DialogUtils.showLocationPermissionsNeededDialog(parentFragmentManager){
                 requestLocationPermissions()
             }
         } else {
-            PermissionUtils.showLocationServiceDialog(requireContext())
+            DialogUtils.showLocationPermissionsDeniedDialog(requireContext(),parentFragmentManager)
         }
     }
+    
+    private fun requestLocationPermissions() =
+        requestPermissionLauncher.launch(locationPermissions)
 
-    private fun requestLocationPermissions() {
-        requestPermissionLauncher.launch(
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            )
-        )
-    }
 
-    private fun requestBackgroundLocationPermission() {
-        val requestBackgroundLocationLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            if (granted) {
-                goSearchLocationFragment() // 모든 권한이 승인된 경우 다음 화면으로 이동
-            } else {
-                PermissionUtils.showPermissionsDeniedDialog(requireContext())
-            }
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            requestBackgroundLocationLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-        }
-    }
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun requestBackgroundLocationPermission() =
+        requestBackgroundLocationLauncher.launch(backgroundLocationPermission)
+
     private fun goSearchLocationFragment(){
         findNavController().navigate(R.id.action_addScheduleFragment_to_searchLocationFragment)
 //        {

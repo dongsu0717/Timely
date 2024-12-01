@@ -1,10 +1,27 @@
 package com.dongsu.timely.presentation.common
 
-//Dialog
+//Dialog - 로그인
 const val LOGIN_TITLE = "로그인이 필요합니다"
 const val LOGIN_MESSAGE = "카카오톡으로 로그인 하시겠습니까?"
 const val LOGIN_POSITIVE_BUTTON = "카카오톡 로그인"
 const val LOGIN_NEGATIVE_BUTTON = "취소"
+
+//Dialog - 위치 활성화
+const val LOCATION_SERVICE_ACTIVATION_TITLE = "위치 서비스 활성화 필요"
+const val LOCATION_SERVICE_ACTIVATION_MESSAGE = "위치 서비스를 활성화해야 이 기능을 사용할 수 있습니다. 설정으로 이동하시겠습니까?"
+const val LOCATION_SERVICE_ACTIVATION_POSITIVE_BUTTON = "설정으로 이동"
+const val LOCATION_SERVICE_ACTIVATION_TAG = "LocationServiceDialog"
+
+//Dialog - 위치 권한 필요성 설명
+const val LOCATION_PERMISSION_NEEDED_TITLE = "위치 권한 필요"
+const val LOCATION_PERMISSION_NEEDED_MESSAGE = "이 기능을 사용하려면 위치 권한이 필요합니다. 권한을 허용해 주세요."
+const val LOCATION_PERMISSION_NEEDED_TAG = "LocationPermissionsNeededDialog"
+
+//Dialog - 위치 권한 거부
+const val LOCATION_PERMISSION_DENIED_TITLE = "위치 권한 거부"
+const val LOCATION_PERMISSION_DENIED_MESSAGE = "위치 권한이 완전히 거부되었습니다. 이 기능을 사용하려면 설정에서 권한을 수동으로 허용해야 합니다."
+const val LOCATION_PERMISSION_DENIED_POSITIVE_BUTTON = "설정으로 이동"
+const val LOCATION_PERMISSION_DENIED_TAG = "LocationPermissionsDeniedDialog"
 
 //LOG 확인 TAG
 const val KAKAO_TAG = "KakaoLoginManager"
