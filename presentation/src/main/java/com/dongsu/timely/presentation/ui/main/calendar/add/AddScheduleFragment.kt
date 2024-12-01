@@ -67,6 +67,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             longitude = args.longitude.toDouble()
             binding.tvAppointmentPlace.text = args.place
     }
+
     private fun toolbarAction(){
         binding.toolbar.toolbarCommon.setNavigationOnClickListener {
             findNavController().popBackStack()
@@ -81,6 +82,27 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             }
         }
     }
+
+    private fun choiceSchedule() {
+        with(binding) {
+            tvStartDate.debouncedClickListener(lifecycleScope) { chooseDate(tvStartDate) }
+            tvLastDate.debouncedClickListener(lifecycleScope) { chooseDate(tvLastDate) }
+            tvStartTime.debouncedClickListener(lifecycleScope) { chooseTime(tvStartTime) }
+            tvEndTime.debouncedClickListener(lifecycleScope) { chooseTime(tvEndTime) }
+            chooseRepeat()
+
+            iconPlace.debouncedClickListener(lifecycleScope){ choosePlace() }
+            // 알람 설정 스위치
+            switchAppointmentAlarm.setOnCheckedChangeListener { _, isChecked ->
+                chooseAlarmPresenceOrAbsence(isChecked)
+            }
+            //알람 시간 선택
+            chooseAlarmTime()
+            // 색상 선택
+            chooseColor()
+        }
+    }
+
     private fun saveSchedule() {
         with(binding) {
             val title = etTitle.text.toString()
@@ -104,39 +126,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
 //            }
         }
     }
-    private fun getCurrentDataAndTime() {
-        with(binding){
-            addScheduleViewModel.currentDate.observe(viewLifecycleOwner) { date ->
-                tvStartDate.text = date
-                tvLastDate.text = date
-            }
-            lifecycleScope.launch {
-                addScheduleViewModel.currentTimeFlow.collect { time ->
-                    tvStartTime.text = time
-                    tvEndTime.text = time
-                }
-            }
-        }
-    }
-    private fun choiceSchedule() {
-        with(binding) {
-            tvStartDate.debouncedClickListener(lifecycleScope) { chooseDate(tvStartDate) }
-            tvLastDate.debouncedClickListener(lifecycleScope) { chooseDate(tvLastDate) }
-            tvStartTime.debouncedClickListener(lifecycleScope) { chooseTime(tvStartTime) }
-            tvEndTime.debouncedClickListener(lifecycleScope) { chooseTime(tvEndTime) }
-            chooseRepeat()
 
-            iconPlace.debouncedClickListener(lifecycleScope){ choosePlace() }
-            // 알람 설정 스위치
-            switchAppointmentAlarm.setOnCheckedChangeListener { _, isChecked ->
-                spinnerAlarm.visibility = if (isChecked) View.VISIBLE else View.GONE
-            }
-            //알람 시간 선택
-            chooseAlarmTime()
-            // 색상 선택
-            chooseColor()
-        }
-    }
     private fun chooseDate(targetView: TextView) {
         with(binding.calendarView) {
             setOnDateChangeListener { _, year, month, dayOfMonth ->
@@ -144,6 +134,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             }
         }
     }
+
     private fun chooseTime(targetView: TextView) {
         val picker = MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_24H)
@@ -157,6 +148,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             targetView.text = formattedTime
         }
     }
+
     private fun chooseRepeat(){
         binding.spinnerRepeat.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long ) {
@@ -174,6 +166,84 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
         }
     }
 
+    private fun chooseAlarmTime(){
+        binding.spinnerAlarm.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                appointmentAlarmTime = when (position) {
+                    EnumAlarmTime.BEFORE_1_HOUR.order -> EnumAlarmTime.BEFORE_1_HOUR.time
+                    EnumAlarmTime.BEFORE_1_HALF_HOUR.order -> EnumAlarmTime.BEFORE_1_HALF_HOUR.time
+                    EnumAlarmTime.BEFORE_2_HOUR.order -> EnumAlarmTime.BEFORE_2_HOUR.time
+                    EnumAlarmTime.BEFORE_2_HALF_HOUR.order -> EnumAlarmTime.BEFORE_2_HALF_HOUR.time
+                    EnumAlarmTime.BEFORE_3_HOUR.order -> EnumAlarmTime.BEFORE_3_HOUR.time
+                    else -> EnumAlarmTime.BEFORE_1_HOUR.time
+                }
+            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                appointmentAlarmTime = EnumAlarmTime.BEFORE_1_HOUR.time
+            }
+        }
+    }
+    //만약 다크모드, 라이트모드 할때는 이부분 어떻게 바꿔야할까
+    private fun chooseColor() {
+        with(binding){
+            setColorClickListener(iconColorLavender, R.color.dark_lavender,EnumColor.LAVENDER.color)
+            setColorClickListener(iconColorSage, R.color.dark_sage,EnumColor.SAGE.color)
+            setColorClickListener(iconColorGrape, R.color.dark_grape,EnumColor.GRAPE.color)
+            setColorClickListener(iconColorFlamingo, R.color.dark_flamingo,EnumColor.FLAMINGO.color)
+            setColorClickListener(iconColorBanana, R.color.dark_banana,EnumColor.BANANA.color)
+        }
+    }
+    private fun setColorClickListener(imageView: ShapeableImageView, colorResId: Int, saveColor: Int) {
+        imageView.debouncedClickListener(lifecycleScope) {
+            with(binding){
+                iconColor.setColorFilter(ContextCompat.getColor(requireContext(), colorResId))
+                color = saveColor
+            }
+        }
+    }
+
+    private fun setupSpinnerAdapter(){
+        setupSpinner(binding.spinnerRepeat, R.array.repeat_choice)
+        setupSpinner(binding.spinnerAlarm, R.array.alarm_choice)
+    }
+
+    private fun setupSpinner(spinner: Spinner, arrayResId: Int) {
+        val adapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            arrayResId,
+            android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+    }
+
+    private fun goSearchLocationFragment(){
+        findNavController().navigate(R.id.action_addScheduleFragment_to_searchLocationFragment)
+//        {
+//            //밑에 데이터 저장하는거 나중에 실험
+//            popUpTo(R.id.addSchedulerFragment){
+//                inclusive = true
+//            }
+//            launchSingleTop = true
+//            restoreState = true
+//        }
+    }
+
+    private fun getCurrentDataAndTime() {
+        with(binding){
+            addScheduleViewModel.currentDate.observe(viewLifecycleOwner) { date ->
+                tvStartDate.text = date
+                tvLastDate.text = date
+            }
+            lifecycleScope.launch {
+                addScheduleViewModel.currentTimeFlow.collect { time ->
+                    tvStartTime.text = time
+                    tvEndTime.text = time
+                }
+            }
+        }
+    }
+
     private val locationPermissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
@@ -182,6 +252,10 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
     @RequiresApi(Build.VERSION_CODES.Q)
     private val backgroundLocationPermission =
         Manifest.permission.ACCESS_BACKGROUND_LOCATION
+
+    private val postNotificationPermission = arrayOf(
+        Manifest.permission.POST_NOTIFICATIONS
+    )
 
     private val requestPermissionLauncher = PermissionUtils.requestMultiplePermissions(
         fragment = this,
@@ -244,65 +318,27 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
     private fun requestBackgroundLocationPermission() =
         requestBackgroundLocationLauncher.launch(backgroundLocationPermission)
 
-    private fun goSearchLocationFragment(){
-        findNavController().navigate(R.id.action_addScheduleFragment_to_searchLocationFragment)
-//        {
-//            //밑에 데이터 저장하는거 나중에 실험
-//            popUpTo(R.id.addSchedulerFragment){
-//                inclusive = true
-//            }
-//            launchSingleTop = true
-//            restoreState = true
-//        }
-    }
-    private fun chooseAlarmTime(){
-        binding.spinnerAlarm.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                appointmentAlarmTime = when (position) {
-                    EnumAlarmTime.BEFORE_1_HOUR.order -> EnumAlarmTime.BEFORE_1_HOUR.time
-                    EnumAlarmTime.BEFORE_1_HALF_HOUR.order -> EnumAlarmTime.BEFORE_1_HALF_HOUR.time
-                    EnumAlarmTime.BEFORE_2_HOUR.order -> EnumAlarmTime.BEFORE_2_HOUR.time
-                    EnumAlarmTime.BEFORE_2_HALF_HOUR.order -> EnumAlarmTime.BEFORE_2_HALF_HOUR.time
-                    EnumAlarmTime.BEFORE_3_HOUR.order -> EnumAlarmTime.BEFORE_3_HOUR.time
-                    else -> EnumAlarmTime.BEFORE_1_HOUR.time
-                }
-            }
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                appointmentAlarmTime = EnumAlarmTime.BEFORE_1_HOUR.time
-            }
+    private fun chooseAlarmPresenceOrAbsence(isChecked: Boolean) {
+        if (isChecked) {
+            isPostNotificationPermissionGranted()
+        } else {
+            binding.spinnerAlarm.visibility = View.GONE
         }
     }
-    //만약 다크모드, 라이트모드 할때는 이부분 어떻게 바꿔야할까
-    private fun chooseColor() {
-        with(binding){
-            setColorClickListener(iconColorLavender, R.color.dark_lavender,EnumColor.LAVENDER.color)
-            setColorClickListener(iconColorSage, R.color.dark_sage,EnumColor.SAGE.color)
-            setColorClickListener(iconColorGrape, R.color.dark_grape,EnumColor.GRAPE.color)
-            setColorClickListener(iconColorFlamingo, R.color.dark_flamingo,EnumColor.FLAMINGO.color)
-            setColorClickListener(iconColorBanana, R.color.dark_banana,EnumColor.BANANA.color)
-        }
-    }
-    private fun setColorClickListener(imageView: ShapeableImageView, colorResId: Int, saveColor: Int) {
-        imageView.debouncedClickListener(lifecycleScope) {
-            with(binding){
-                iconColor.setColorFilter(ContextCompat.getColor(requireContext(), colorResId))
-                color = saveColor
+
+    private fun isPostNotificationPermissionGranted(){
+        PermissionUtils.requestTedPermissions(
+            permissions = postNotificationPermission,
+            onGranted = {
+                binding.spinnerAlarm.visibility = View.VISIBLE
+            },
+            onDenied = {
+                binding.switchAppointmentAlarm.isChecked = false
+                binding.spinnerAlarm.visibility = View.GONE
             }
-        }
-    }
-    private fun setupSpinnerAdapter(){
-        setupSpinner(binding.spinnerRepeat, R.array.repeat_choice)
-        setupSpinner(binding.spinnerAlarm, R.array.alarm_choice)
-    }
-    private fun setupSpinner(spinner: Spinner, arrayResId: Int) {
-        val adapter = ArrayAdapter.createFromResource(
-            requireContext(),
-            arrayResId,
-            android.R.layout.simple_spinner_item
         )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
     }
+
     private fun checkUIState(){
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
