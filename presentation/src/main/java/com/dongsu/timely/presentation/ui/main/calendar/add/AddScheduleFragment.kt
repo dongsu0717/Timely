@@ -23,6 +23,7 @@ import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.Schedule
 import com.dongsu.timely.presentation.common.BaseFragment
 import com.dongsu.timely.presentation.common.CommonUtils
+import com.dongsu.timely.presentation.common.DialogUtils
 import com.dongsu.timely.presentation.common.EnumAlarmTime
 import com.dongsu.timely.presentation.common.EnumColor
 import com.dongsu.timely.presentation.common.EnumRepeat
@@ -172,24 +173,34 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             }
         }
     }
+
     private val requestPermissionLauncher = PermissionUtils.registerLocationPermissions(
         this,
         onPermissionsGranted = {
             // ACCESS_FINE_LOCATION 및 ACCESS_COARSE_LOCATION 권한이 승인된 후 호출됨
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // Android 10(API 29) 이상일 때만
                 requestBackgroundLocationPermission()
+
             } else {
                 goSearchLocationFragment() // BACKGROUND 권한 없이도 다음 화면으로 이동
             }
         },
         onPermissionsDenied = {
             if (PermissionUtils.shouldShowRequestPermissionRationaleForLocation(this)) {
-                PermissionUtils.showExplanationDialog(requireContext()) { requestLocationPermissions() }
+                DialogUtils.showLocationPermissionsNeededDialog(parentFragmentManager){requestLocationPermissions()}
             } else {
-                PermissionUtils.showPermissionsDeniedDialog(requireContext())
+                DialogUtils.showLocationPermissionsDeniedDialog(requireContext(),parentFragmentManager)
             }
         }
     )
+
+    private val requestBackgroundLocationLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        if (granted) {
+            goSearchLocationFragment() // 모든 권한이 승인된 경우 다음 화면으로 이동
+        } else {
+            DialogUtils.showLocationPermissionsDeniedDialog(requireContext(),parentFragmentManager)
+        }
+    }
 
     private fun choosePlace() {
         if (PermissionUtils.isLocationServiceEnabled(requireContext())) {
@@ -204,7 +215,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
                 requestLocationPermissions()
             }
         } else {
-            PermissionUtils.showLocationServiceDialog(requireContext())
+            DialogUtils.showLocationServiceDialog(requireContext(),parentFragmentManager)
         }
     }
 
@@ -218,13 +229,6 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
     }
 
     private fun requestBackgroundLocationPermission() {
-        val requestBackgroundLocationLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            if (granted) {
-                goSearchLocationFragment() // 모든 권한이 승인된 경우 다음 화면으로 이동
-            } else {
-                PermissionUtils.showPermissionsDeniedDialog(requireContext())
-            }
-        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             requestBackgroundLocationLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
         }

@@ -20,6 +20,7 @@ import com.dongsu.timely.domain.model.GroupSchedule
 import com.dongsu.timely.presentation.common.BaseFragment
 import com.dongsu.timely.presentation.common.CommonUtils
 import com.dongsu.timely.presentation.common.DEFAULT_ALARM_TIME
+import com.dongsu.timely.presentation.common.DialogUtils
 import com.dongsu.timely.presentation.common.SAVE_ERROR
 import com.dongsu.timely.presentation.common.SAVE_LOADING
 import com.dongsu.timely.presentation.common.SAVE_SUCCESS
@@ -107,10 +108,13 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
             }
         },
         onPermissionsDenied = {
+            Log.e("요청1","거절")
             if (PermissionUtils.shouldShowRequestPermissionRationaleForLocation(this)) {
-                PermissionUtils.showExplanationDialog(requireContext()) { requestLocationPermissions() }
+                Log.e("다시묻기","true")
+                DialogUtils.showLocationPermissionsNeededDialog(parentFragmentManager){requestLocationPermissions()}
             } else {
-                PermissionUtils.showPermissionsDeniedDialog(requireContext())
+                Log.e("다시묻기","false")
+                DialogUtils.showLocationPermissionsDeniedDialog(requireContext(),parentFragmentManager)
             }
         }
     )
@@ -128,7 +132,7 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
                 requestLocationPermissions()
             }
         } else {
-            PermissionUtils.showLocationServiceDialog(requireContext())
+            DialogUtils.showLocationServiceDialog(requireContext(),parentFragmentManager)
         }
     }
 
@@ -146,7 +150,7 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
             if (granted) {
                 goSearchLocationFragment() // 모든 권한이 승인된 경우 다음 화면으로 이동
             } else {
-                PermissionUtils.showPermissionsDeniedDialog(requireContext())
+                DialogUtils.showLocationPermissionsDeniedDialog(requireContext(),parentFragmentManager)
             }
         }
         requestBackgroundLocationLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
