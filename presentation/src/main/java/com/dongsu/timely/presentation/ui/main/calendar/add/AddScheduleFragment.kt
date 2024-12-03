@@ -30,9 +30,9 @@ import com.dongsu.timely.presentation.common.PermissionUtils
 import com.dongsu.timely.presentation.common.SAVE_ERROR
 import com.dongsu.timely.presentation.common.SAVE_LOADING
 import com.dongsu.timely.presentation.common.SAVE_SUCCESS
-import com.dongsu.timely.presentation.common.debouncedClickListener
 import com.dongsu.timely.presentation.common.formatDate
 import com.dongsu.timely.presentation.common.formatTimeToString
+import com.dongsu.timely.presentation.common.throttledClickListener
 import com.dongsu.timely.presentation.viewmodel.calendar.add.AddScheduleViewModel
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -85,13 +85,13 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
 
     private fun choiceSchedule() {
         with(binding) {
-            tvStartDate.debouncedClickListener(lifecycleScope) { chooseDate(tvStartDate) }
-            tvLastDate.debouncedClickListener(lifecycleScope) { chooseDate(tvLastDate) }
-            tvStartTime.debouncedClickListener(lifecycleScope) { chooseTime(tvStartTime) }
-            tvEndTime.debouncedClickListener(lifecycleScope) { chooseTime(tvEndTime) }
+            tvStartDate.throttledClickListener(lifecycleScope) { chooseDate(tvStartDate) }
+            tvLastDate.throttledClickListener(lifecycleScope) { chooseDate(tvLastDate) }
+            tvStartTime.throttledClickListener(lifecycleScope) { chooseTime(tvStartTime) }
+            tvEndTime.throttledClickListener(lifecycleScope) { chooseTime(tvEndTime) }
             chooseRepeat()
 
-            iconPlace.debouncedClickListener(lifecycleScope){ choosePlace() }
+            iconPlace.throttledClickListener(lifecycleScope){ choosePlace() }
             // 알람 설정 스위치
             switchAppointmentAlarm.setOnCheckedChangeListener { _, isChecked ->
                 chooseAlarmPresenceOrAbsence(isChecked)
@@ -194,7 +194,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
         }
     }
     private fun setColorClickListener(imageView: ShapeableImageView, colorResId: Int, saveColor: Int) {
-        imageView.debouncedClickListener(lifecycleScope) {
+        imageView.throttledClickListener(lifecycleScope) {
             with(binding){
                 iconColor.setColorFilter(ContextCompat.getColor(requireContext(), colorResId))
                 color = saveColor

@@ -13,7 +13,7 @@ import com.dongsu.timely.presentation.common.CommonUtils.toastShort
 import com.dongsu.timely.presentation.common.GET_EMPTY
 import com.dongsu.timely.presentation.common.GET_ERROR
 import com.dongsu.timely.presentation.common.GET_LOADING
-import com.dongsu.timely.presentation.common.debouncedClickListener
+import com.dongsu.timely.presentation.common.throttledClickListener
 import com.dongsu.timely.presentation.viewmodel.group.GroupListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -82,7 +82,7 @@ class GroupListFragment :
     }
 
     private fun goToCreateGroup() {
-        binding.fabAddGroup.debouncedClickListener(lifecycleScope) {
+        binding.fabAddGroup.throttledClickListener(lifecycleScope) {
             findNavController().navigate(R.id.action_groupListFragment_to_groupCreateFragment)
         }
     }

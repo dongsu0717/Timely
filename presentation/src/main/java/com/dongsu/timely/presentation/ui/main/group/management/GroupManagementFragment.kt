@@ -16,7 +16,7 @@ import com.dongsu.timely.presentation.common.GET_ERROR
 import com.dongsu.timely.presentation.common.INVITE_CODE
 import com.dongsu.timely.presentation.common.INVITE_GROUP_MESSAGE
 import com.dongsu.timely.presentation.common.LOADING
-import com.dongsu.timely.presentation.common.debouncedClickListener
+import com.dongsu.timely.presentation.common.throttledClickListener
 import com.dongsu.timely.presentation.viewmodel.group.GroupManagementViewModel
 import com.kakao.sdk.common.util.KakaoCustomTabsClient
 import com.kakao.sdk.share.ShareClient
@@ -38,7 +38,7 @@ class GroupManagementFragment: BaseTabFragment<FragmentGroupManagementBinding>(F
     }
 
     private fun clickInviteMember() {
-        binding.tvInviteGroup.debouncedClickListener(lifecycleScope) {
+        binding.tvInviteGroup.throttledClickListener(lifecycleScope) {
             createInviteCode()
         }
     }

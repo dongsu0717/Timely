@@ -19,8 +19,7 @@ import com.dongsu.timely.presentation.common.CommonUtils.toastShort
 import com.dongsu.timely.presentation.common.EnumColor
 import com.dongsu.timely.presentation.common.LOAD_SCHEDULE_EMPTY
 import com.dongsu.timely.presentation.common.LOAD_SCHEDULE_ERROR
-import com.dongsu.timely.presentation.common.LOAD_SCHEDULE_LOADING
-import com.dongsu.timely.presentation.common.debouncedClickListener
+import com.dongsu.timely.presentation.common.throttledClickListener
 import com.dongsu.timely.presentation.ui.main.calendar.home.container.DayViewContainer
 import com.dongsu.timely.presentation.ui.main.calendar.home.container.MonthViewContainer
 import com.dongsu.timely.presentation.viewmodel.calendar.home.CalendarViewModel
@@ -33,10 +32,7 @@ import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import reactivecircus.flowbinding.android.view.clicks
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -57,30 +53,11 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
     }
 
     private fun settingAddScheduleButton() {
-
-        binding.fabAddSchedule.clicks()
-            .onEach {
-                    findNavController().navigate(R.id.action_calendarFragment_to_addScheduleFragment)
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
+        binding.fabAddSchedule.throttledClickListener(viewLifecycleOwner.lifecycleScope){
+            findNavController().navigate(R.id.action_calendarFragment_to_addScheduleFragment)
+        }
     }
 
-    //    private fun addSchedule(){
-//        val title = binding.editTextSchedule.text.toString()
-//        if(title.isNotEmpty()){
-//            val schedule = ScheduleInfo(
-//                title = title,
-//                startDate = selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-//                lastDate = selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-//            )
-//            viewModel.insertSchedule(schedule)
-//            binding.editTextSchedule.text?.clear()
-//            requireActivity().hideSoftInput()
-//
-//            collectWhenStarted(viewModel.scheduleComplete){
-//                if(it) settingKizitonwoseCalendar()
-//            }
-//        }
-//    }
     private fun setCalendarMonth(currentMonth: YearMonth) {
         with(binding.calendarView) {
             val startMonth = currentMonth.minusMonths(5) // Adjust as needed
@@ -91,20 +68,10 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
         }
     }
 
+    // kizitonwose 라이브러리 사용
     private fun settingKizitonwoseCalendar() {
         setCalendarMonth(YearMonth.of(selectedDate.year, selectedDate.month))
-        // kizitonwose 라이브러리 사용
         with(binding.calendarView) {
-            // 달력 스크롤을 할 때마다 해당 월의 스케줄을 가져옴
-//            binding.calendarView.monthScrollListener = {
-//                if (scrollPaged) calendarViewModel.findScheduleByMonth(
-//                    it.yearMonth.format(
-//                        DateTimeFormatter.ofPattern(
-//                            "yyyy-MM"
-//                        )
-//                    )
-//                )
-//            }
             // 일 레이아웃 바인딩
             dayBinder = object : MonthDayBinder<DayViewContainer> {
                 // Called only when a new container is needed.
@@ -141,7 +108,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
                     settingContainerClickEvent(container, data)
                 }
 
-            } // MonthDayBinder 끝
+            }
 
             // 요일, 월 레이아웃 바인딩
             monthHeaderBinder = object : MonthHeaderFooterBinder<MonthViewContainer> {
@@ -200,7 +167,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
         container: DayViewContainer,
         data: CalendarDay,
     ) {
-        container.view.debouncedClickListener(viewLifecycleOwner.lifecycleScope) {
+        container.view.throttledClickListener(viewLifecycleOwner.lifecycleScope) {
             if (data.date == selectedDate) {
 
             } else {
@@ -224,9 +191,8 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
                 calendarViewModel.scheduleList.collectLatest { result ->
                     when (result) {
                         is TimelyResult.Loading -> {
-                            toastShort(requireContext(), LOAD_SCHEDULE_LOADING)
+//                            toastShort(requireContext(), LOAD_SCHEDULE_LOADING)
                         }
-
                         is TimelyResult.Success -> {
                             result.resultData.filter { data.date == LocalDate.parse(it.startDate) }
                                 .also { filteredList ->

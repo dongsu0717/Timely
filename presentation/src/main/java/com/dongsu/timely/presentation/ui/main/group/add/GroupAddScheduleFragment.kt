@@ -25,9 +25,9 @@ import com.dongsu.timely.presentation.common.SAVE_ERROR
 import com.dongsu.timely.presentation.common.SAVE_LOADING
 import com.dongsu.timely.presentation.common.SAVE_SUCCESS
 import com.dongsu.timely.presentation.common.combineDateTime
-import com.dongsu.timely.presentation.common.debouncedClickListener
 import com.dongsu.timely.presentation.common.formatDate
 import com.dongsu.timely.presentation.common.formatTimeToString
+import com.dongsu.timely.presentation.common.throttledClickListener
 import com.dongsu.timely.presentation.viewmodel.group.GroupAddScheduleViewModel
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -69,10 +69,10 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
     }
     private fun choiceSchedule() {
         with(binding) {
-            tvStartDate.debouncedClickListener(lifecycleScope) { chooseDate(tvStartDate) }
-            tvStartTime.debouncedClickListener(lifecycleScope) { chooseTime(tvStartTime) }
-            tvEndTime.debouncedClickListener(lifecycleScope) { chooseTime(tvEndTime) }
-            iconPlace.debouncedClickListener(lifecycleScope){ choosePlace() }
+            tvStartDate.throttledClickListener(lifecycleScope) { chooseDate(tvStartDate) }
+            tvStartTime.throttledClickListener(lifecycleScope) { chooseTime(tvStartTime) }
+            tvEndTime.throttledClickListener(lifecycleScope) { chooseTime(tvEndTime) }
+            iconPlace.throttledClickListener(lifecycleScope){ choosePlace() }
         }
     }
     private fun chooseDate(targetView: TextView) {

@@ -14,7 +14,7 @@ import com.dongsu.timely.presentation.common.OMG
 import com.dongsu.timely.presentation.common.SAVE_ERROR
 import com.dongsu.timely.presentation.common.SAVE_LOADING
 import com.dongsu.timely.presentation.common.SAVE_SUCCESS
-import com.dongsu.timely.presentation.common.debouncedClickListener
+import com.dongsu.timely.presentation.common.throttledClickListener
 import com.dongsu.timely.presentation.viewmodel.group.GroupCreateViewModel
 import com.google.android.material.imageview.ShapeableImageView
 import dagger.hilt.android.AndroidEntryPoint
@@ -80,7 +80,7 @@ class GroupCreateFragment: BaseFragment<FragmentGroupCreateBinding>(FragmentGrou
         saveColor: Int
     ) {
         val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_text_background)
-        imageView.debouncedClickListener(lifecycleScope) {
+        imageView.throttledClickListener(lifecycleScope) {
             drawable?.let {
                 val color = ContextCompat.getColor(requireContext(), colorResId)
                 it.setTint(color)
