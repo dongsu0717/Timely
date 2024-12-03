@@ -60,8 +60,6 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":presentation"))
-
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -74,16 +72,17 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     //kakao login, share
-    implementation ("com.kakao.sdk:v2-user:2.20.6")
-    implementation ("com.kakao.sdk:v2-share:2.20.6")
+    implementation (libs.v2.user)
+    implementation (libs.v2.share)
 
     //kakao map
-    implementation ("com.kakao.maps.open:android:2.12.8")
+    implementation (libs.android)
 
     //fcm
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.analytics)
     implementation(platform(libs.firebase.bom))
 
-    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    //work manager
+    implementation(libs.androidx.work.runtime.ktx)
 }
