@@ -89,7 +89,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.ui.sub.splash.SplashActivity"
+            android:name=".presentation.ui.main.SplashActivity"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

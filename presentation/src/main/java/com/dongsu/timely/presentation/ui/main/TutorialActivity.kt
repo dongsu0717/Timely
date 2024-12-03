@@ -1,11 +1,10 @@
-package com.dongsu.timely.presentation.ui.sub.tutorial
+package com.dongsu.timely.presentation.ui.main
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.dongsu.presentation.databinding.ActivityTutorialBinding
-import com.dongsu.timely.presentation.ui.main.TimelyActivity
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
