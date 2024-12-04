@@ -190,9 +190,8 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 calendarViewModel.scheduleList.collectLatest { result ->
                     when (result) {
-
                         is TimelyResult.Loading -> {
-                            Log.e("CalendarFragment", "리스트 가져오기 - Loading")
+//                            Log.e("CalendarFragment", "리스트 가져오기 - Loading")
                         }
 
                         is TimelyResult.Success -> {

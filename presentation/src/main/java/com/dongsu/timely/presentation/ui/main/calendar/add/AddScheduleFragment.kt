@@ -45,14 +45,39 @@ import kotlinx.coroutines.launch
 class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAddScheduleBinding::inflate) {
 
     private val addScheduleViewModel: AddScheduleViewModel by viewModels()
+    private val args: AddScheduleFragmentArgs by navArgs()
+
+    private val locationPermissions = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private val backgroundLocationPermission =
+        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+
+    private val postNotificationPermission = arrayOf(
+        Manifest.permission.POST_NOTIFICATIONS
+    )
+
+    private val requestPermissionLauncher = PermissionUtils.requestMultiplePermissions(
+        fragment = this,
+        permissions = locationPermissions,
+        onGranted = { checkBackgroundLocationNeeded() },
+        onDenied = { reRequestLocationPermissions() }
+    )
+
+    private val requestBackgroundLocationLauncher = PermissionUtils.requestSinglePermission(
+        fragment = this,
+        onGranted = { goSearchLocationFragment() },
+        onDenied = { DialogUtils.showLocationPermissionsDeniedDialog(requireContext(),parentFragmentManager) }
+    )
 
     private var repeatDays = EnumRepeat.NO.repeat
     private var appointmentAlarmTime = EnumAlarmTime.BEFORE_1_HOUR.time
     private var color = EnumScheduleColor.LAVENDER.color
     private var latitude = 0.0
     private var longitude = 0.0
-
-    private val args: AddScheduleFragmentArgs by navArgs()
 
     override fun initView() {
         setupArgument()
@@ -62,6 +87,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
         choiceSchedule()
         checkUIState()
     }
+
     private fun setupArgument(){
             latitude = args.latitude.toDouble()
             longitude = args.longitude.toDouble()
@@ -245,32 +271,6 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             }
         }
     }
-
-    private val locationPermissions = arrayOf(
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION
-    )
-
-    @RequiresApi(Build.VERSION_CODES.Q)
-    private val backgroundLocationPermission =
-        Manifest.permission.ACCESS_BACKGROUND_LOCATION
-
-    private val postNotificationPermission = arrayOf(
-        Manifest.permission.POST_NOTIFICATIONS
-    )
-
-    private val requestPermissionLauncher = PermissionUtils.requestMultiplePermissions(
-        fragment = this,
-        permissions = locationPermissions,
-        onGranted = { checkBackgroundLocationNeeded() },
-        onDenied = { reRequestLocationPermissions() }
-    )
-
-    private val requestBackgroundLocationLauncher = PermissionUtils.requestSinglePermission(
-        fragment = this,
-        onGranted = { goSearchLocationFragment() },
-        onDenied = { DialogUtils.showLocationPermissionsDeniedDialog(requireContext(),parentFragmentManager) }
-    )
 
     private fun choosePlace() =
         checkLocationServiceEnabled()
