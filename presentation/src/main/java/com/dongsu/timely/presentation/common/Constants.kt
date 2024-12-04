@@ -44,7 +44,9 @@ const val GET_ERROR = "데이터를 가져오는데 실패하였습니다."
 const val GET_LOADING = "가져오는중..."
 const val GET_EMPTY = "아무것도 없군요!"
 
-//bundle
+//그룹 - 리스트
+const val GET_GROUP_LIST_EMPTY = "그룹을 만들어 주세요!"
+const val GET_GROUP_LIST_ERROR = "그룹 리스트를 가져오는데 실패하였습니다."
 
 //tab
 const val GROUP_SCHEDULE = "일정"

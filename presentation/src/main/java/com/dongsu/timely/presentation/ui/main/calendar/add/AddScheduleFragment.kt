@@ -24,8 +24,8 @@ import com.dongsu.timely.presentation.common.BaseFragment
 import com.dongsu.timely.presentation.common.CommonUtils
 import com.dongsu.timely.presentation.common.DialogUtils
 import com.dongsu.timely.presentation.common.EnumAlarmTime
-import com.dongsu.timely.presentation.common.EnumColor
 import com.dongsu.timely.presentation.common.EnumRepeat
+import com.dongsu.timely.presentation.common.EnumScheduleColor
 import com.dongsu.timely.presentation.common.PermissionUtils
 import com.dongsu.timely.presentation.common.SAVE_ERROR
 import com.dongsu.timely.presentation.common.SAVE_LOADING
@@ -48,7 +48,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
 
     private var repeatDays = EnumRepeat.NO.repeat
     private var appointmentAlarmTime = EnumAlarmTime.BEFORE_1_HOUR.time
-    private var color = EnumColor.LAVENDER.color
+    private var color = EnumScheduleColor.LAVENDER.color
     private var latitude = 0.0
     private var longitude = 0.0
 
@@ -183,16 +183,18 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             }
         }
     }
+
     //만약 다크모드, 라이트모드 할때는 이부분 어떻게 바꿔야할까
     private fun chooseColor() {
         with(binding){
-            setColorClickListener(iconColorLavender, R.color.dark_lavender,EnumColor.LAVENDER.color)
-            setColorClickListener(iconColorSage, R.color.dark_sage,EnumColor.SAGE.color)
-            setColorClickListener(iconColorGrape, R.color.dark_grape,EnumColor.GRAPE.color)
-            setColorClickListener(iconColorFlamingo, R.color.dark_flamingo,EnumColor.FLAMINGO.color)
-            setColorClickListener(iconColorBanana, R.color.dark_banana,EnumColor.BANANA.color)
+            setColorClickListener(iconColorLavender, R.color.dark_lavender,EnumScheduleColor.LAVENDER.color)
+            setColorClickListener(iconColorSage, R.color.dark_sage,EnumScheduleColor.SAGE.color)
+            setColorClickListener(iconColorGrape, R.color.dark_grape,EnumScheduleColor.GRAPE.color)
+            setColorClickListener(iconColorFlamingo, R.color.dark_flamingo,EnumScheduleColor.FLAMINGO.color)
+            setColorClickListener(iconColorBanana, R.color.dark_banana,EnumScheduleColor.BANANA.color)
         }
     }
+
     private fun setColorClickListener(imageView: ShapeableImageView, colorResId: Int, saveColor: Int) {
         imageView.throttledClickListener(lifecycleScope) {
             with(binding){

@@ -13,6 +13,9 @@ data class GroupResponse(
     @SerializedName("hostUser")
     val hostUser: UserResponse,
 
+    @SerializedName("coverColor")
+    val coverColor: Int,
+
     @SerializedName("createAt")
     val createAt: String,
 

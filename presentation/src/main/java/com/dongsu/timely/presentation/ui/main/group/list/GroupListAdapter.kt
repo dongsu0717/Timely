@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dongsu.presentation.databinding.ItemGroupListBinding
 import com.dongsu.timely.domain.model.Group
+import com.dongsu.timely.presentation.common.CommonUtils
 
 class GroupListAdapter(
     private val onGroupClick: (Group) -> Unit
@@ -16,6 +17,12 @@ class GroupListAdapter(
     class GroupListViewHolder(private val binding: ItemGroupListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(group: Group, onGroupClick: (Group) -> Unit) {
             binding.tvGroupName.text = group.groupName
+            binding.imageGroupColor.setColorFilter(
+                binding.root.resources.getColor(
+                    CommonUtils.setGroupBackgroundColor(group.groupColor),
+                    null
+                )
+            )
             binding.root.setOnClickListener {
                 onGroupClick(group)
             }

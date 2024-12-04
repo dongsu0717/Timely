@@ -17,8 +17,8 @@ import com.dongsu.presentation.databinding.ScheduleBoxBinding
 import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.Schedule
 import com.dongsu.timely.presentation.common.BaseFragment
+import com.dongsu.timely.presentation.common.CommonUtils
 import com.dongsu.timely.presentation.common.CommonUtils.toastShort
-import com.dongsu.timely.presentation.common.EnumColor
 import com.dongsu.timely.presentation.common.LOAD_SCHEDULE_EMPTY
 import com.dongsu.timely.presentation.common.LOAD_SCHEDULE_ERROR
 import com.dongsu.timely.presentation.common.throttledClickListener
@@ -237,22 +237,10 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
         val scheduleView = ScheduleBoxBinding.inflate(layoutInflater)
         scheduleView.textViewScheduleTitle.text = schedule.title
         scheduleView.textViewScheduleTitle.setBackgroundColor(
-            resources.getColor(setScheduleBackgorundColor(schedule.color), null)
+            resources.getColor(CommonUtils.setScheduleBackgroundColor(schedule.color), null)
         )
         container.scheduleBox.addView(scheduleView.root)
     }
-
-    private fun setScheduleBackgorundColor(color: Int) =
-        when (color) {
-            EnumColor.LAVENDER.order -> R.color.dark_lavender
-            EnumColor.SAGE.order -> R.color.dark_sage
-            EnumColor.GRAPE.order -> R.color.dark_grape
-            EnumColor.FLAMINGO.order -> R.color.dark_flamingo
-            EnumColor.BANANA.order -> R.color.dark_banana
-            else -> {
-                R.color.dark_lavender
-            }
-        }
 
     private fun moveAddScheduleFragment() = findNavController().navigate(R.id.action_calendarFragment_to_addScheduleFragment)
 

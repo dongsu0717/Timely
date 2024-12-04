@@ -10,9 +10,8 @@ import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.Group
 import com.dongsu.timely.presentation.common.BaseFragment
 import com.dongsu.timely.presentation.common.CommonUtils.toastShort
-import com.dongsu.timely.presentation.common.GET_EMPTY
-import com.dongsu.timely.presentation.common.GET_ERROR
-import com.dongsu.timely.presentation.common.GET_LOADING
+import com.dongsu.timely.presentation.common.GET_GROUP_LIST_EMPTY
+import com.dongsu.timely.presentation.common.GET_GROUP_LIST_ERROR
 import com.dongsu.timely.presentation.common.throttledClickListener
 import com.dongsu.timely.presentation.viewmodel.group.GroupListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,7 +60,7 @@ class GroupListFragment :
         groupListViewModel.groupList.collectLatest { result ->
             when (result) {
                 is TimelyResult.Loading -> {
-                    toastShort(requireContext(), GET_LOADING)
+//                    toastShort(requireContext(), GET_LOADING)
                 }
 
                 is TimelyResult.Success -> {
@@ -69,11 +68,11 @@ class GroupListFragment :
                 }
 
                 is TimelyResult.Empty -> {
-                    toastShort(requireContext(), GET_EMPTY)
+                    toastShort(requireContext(), GET_GROUP_LIST_EMPTY)
                 }
 
                 is TimelyResult.NetworkError -> {
-                    toastShort(requireContext(), GET_ERROR)
+                    toastShort(requireContext(), GET_GROUP_LIST_ERROR)
                 }
 
                 else -> {}

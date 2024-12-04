@@ -4,5 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class GroupRequest(
     @SerializedName("groupName")
-    val groupName: String
+    val groupName: String,
+
+    @SerializedName("coverColor")
+    val coverColor: Int
 )

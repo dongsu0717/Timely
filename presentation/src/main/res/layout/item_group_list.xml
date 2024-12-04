@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/siv_group_color"
+        android:id="@+id/image_group_color"
         style="@style/Tangerine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/group_name"
         android:layout_marginStart="30dp"
-        app:layout_constraintStart_toEndOf="@+id/siv_group_color"
+        app:layout_constraintStart_toEndOf="@+id/image_group_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
