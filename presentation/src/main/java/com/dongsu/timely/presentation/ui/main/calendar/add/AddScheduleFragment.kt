@@ -56,6 +56,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
     private val backgroundLocationPermission =
         Manifest.permission.ACCESS_BACKGROUND_LOCATION
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private val postNotificationPermission = arrayOf(
         Manifest.permission.POST_NOTIFICATIONS
     )
@@ -329,16 +330,18 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
     }
 
     private fun isPostNotificationPermissionGranted(){
-        PermissionUtils.requestTedPermissions(
-            permissions = postNotificationPermission,
-            onGranted = {
-                binding.spinnerAlarm.visibility = View.VISIBLE
-            },
-            onDenied = {
-                binding.switchAppointmentAlarm.isChecked = false
-                binding.spinnerAlarm.visibility = View.GONE
-            }
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            PermissionUtils.requestTedPermissions(
+                permissions = postNotificationPermission,
+                onGranted = {
+                    binding.spinnerAlarm.visibility = View.VISIBLE
+                },
+                onDenied = {
+                    binding.switchAppointmentAlarm.isChecked = false
+                    binding.spinnerAlarm.visibility = View.GONE
+                }
+            )
+        }
     }
 
     private fun checkUIState(){
@@ -356,6 +359,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
                         }
 
                         is TimelyResult.LocalError -> {
+                            Log.e("AddScheduleFragment", "스케줄 저장 error: ${result.exception}")
                             CommonUtils.toastShort(requireContext(), SAVE_ERROR)
                         }
 
