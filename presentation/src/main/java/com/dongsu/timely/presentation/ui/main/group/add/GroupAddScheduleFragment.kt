@@ -25,9 +25,9 @@ import com.dongsu.timely.presentation.common.SAVE_ERROR
 import com.dongsu.timely.presentation.common.SAVE_LOADING
 import com.dongsu.timely.presentation.common.SAVE_SUCCESS
 import com.dongsu.timely.presentation.common.combineDateTime
-import com.dongsu.timely.presentation.common.debouncedClickListener
 import com.dongsu.timely.presentation.common.formatDate
 import com.dongsu.timely.presentation.common.formatTimeToString
+import com.dongsu.timely.presentation.common.throttledClickListener
 import com.dongsu.timely.presentation.viewmodel.group.GroupAddScheduleViewModel
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -40,6 +40,28 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
 
     private val groupAddScheduleViewModel: GroupAddScheduleViewModel by viewModels()
     private val args: GroupAddScheduleFragmentArgs by navArgs()
+
+    private val locationPermissions = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private val backgroundLocationPermission =
+        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+
+    private val requestPermissionLauncher = PermissionUtils.requestMultiplePermissions(
+        fragment = this,
+        permissions = locationPermissions,
+        onGranted = { checkBackgroundLocationNeeded() },
+        onDenied = { reRequestLocationPermissions() }
+    )
+
+    private val requestBackgroundLocationLauncher = PermissionUtils.requestSinglePermission(
+        fragment = this,
+        onGranted = { goSearchLocationFragment() },
+        onDenied = { DialogUtils.showLocationPermissionsDeniedDialog(requireContext(),parentFragmentManager) }
+    )
 
     override fun initView() {
         Log.e("그룹스케줄추가", "$args")
@@ -69,10 +91,10 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
     }
     private fun choiceSchedule() {
         with(binding) {
-            tvStartDate.debouncedClickListener(lifecycleScope) { chooseDate(tvStartDate) }
-            tvStartTime.debouncedClickListener(lifecycleScope) { chooseTime(tvStartTime) }
-            tvEndTime.debouncedClickListener(lifecycleScope) { chooseTime(tvEndTime) }
-            iconPlace.debouncedClickListener(lifecycleScope){ choosePlace() }
+            tvStartDate.throttledClickListener(lifecycleScope) { chooseDate(tvStartDate) }
+            tvStartTime.throttledClickListener(lifecycleScope) { chooseTime(tvStartTime) }
+            tvEndTime.throttledClickListener(lifecycleScope) { chooseTime(tvEndTime) }
+            iconPlace.throttledClickListener(lifecycleScope){ choosePlace() }
         }
     }
     private fun chooseDate(targetView: TextView) {
@@ -97,27 +119,6 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
             targetView.text = formattedTime
         }
     }
-    private val locationPermissions = arrayOf(
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION
-    )
-
-    @RequiresApi(Build.VERSION_CODES.Q)
-    private val backgroundLocationPermission =
-        Manifest.permission.ACCESS_BACKGROUND_LOCATION
-
-    private val requestPermissionLauncher = PermissionUtils.requestMultiplePermissions(
-        fragment = this,
-        permissions = locationPermissions,
-        onGranted = { checkBackgroundLocationNeeded() },
-        onDenied = { reRequestLocationPermissions() }
-    )
-
-    private val requestBackgroundLocationLauncher = PermissionUtils.requestSinglePermission(
-        fragment = this,
-        onGranted = { goSearchLocationFragment() },
-        onDenied = { DialogUtils.showLocationPermissionsDeniedDialog(requireContext(),parentFragmentManager) }
-    )
 
     private fun choosePlace() =
         checkLocationServiceEnabled()
@@ -223,26 +224,4 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
         }
     }
 }
-
-
-//    private fun postData() {
-//        binding.etTitle.addTextChangedListener { changedTitle ->
-//            groupAddScheduleViewModel.onTitleChanged(changedTitle.toString())
-//            Log.e("title바뀌는중", changedTitle.toString())
-//        }
-//    }
-//    private fun observeData() {
-//        lifecycleScope.launch {
-//            observeTitle()
-//        }
-//    }
-//    private suspend fun observeTitle() {
-//        groupAddScheduleViewModel.title.collectLatest { changedTitle ->
-//            binding.etTitle.setText(changedTitle)
-//        }
-//        groupAddScheduleViewModel.title.observe(viewLifecycleOwner) { observeTitle ->
-//            binding.etTitle.setText(observeTitle)
-//            Log.e("title가져옴", observeTitle)
-//        }
-//    }
 

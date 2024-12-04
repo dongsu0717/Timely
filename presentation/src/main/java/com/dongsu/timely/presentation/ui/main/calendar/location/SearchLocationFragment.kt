@@ -49,22 +49,21 @@ class SearchLocationFragment :
     private lateinit var kakaoMap: KakaoMap
     private lateinit var placeStartPosition: LatLng
     private lateinit var infoWindowLayer: InfoWindowLayer
+
     private val startZoomLevel = 15
     private val startPosition = LatLng.from(37.46819965686225, 126.90119500104446)
 
     override fun initView() {
-        persistentBottomSheetEvent()
+        bottomSheetEvent()
         setLayoutManager()
         setAdapter()
         search()
     }
 
-    private fun persistentBottomSheetEvent() {
+    private fun bottomSheetEvent() {
         behavior = BottomSheetBehavior.from(binding.persistentBottomSheet)
         behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // 슬라이드 되는 도중 계속 호출
-                // called continuously while dragging
                 Log.d(TAG, "onStateChanged: 드래그 중")
             }
 
@@ -80,9 +79,6 @@ class SearchLocationFragment :
 
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         Log.d(TAG, "onStateChanged: 펼침")
-//                        val intent = Intent(this@PersistentExample1Activity, PlaceInfoActivity::class.java)
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-//                        startActivity(intent)
                     }
 
                     BottomSheetBehavior.STATE_HIDDEN -> {
@@ -165,19 +161,6 @@ class SearchLocationFragment :
 
             getSearchLocationList(kakaoMap)
             infoWindowLayer = kakaoMap.mapWidgetManager!!.infoWindowLayer
-
-//            kakaoMap.setOnInfoWindowClickListener { kakaoMap, infoWindow, guiId ->
-//                val clickedPoi = searchViewModel.locationsList.value.let { result ->
-//                    if (result is TimelyResult.Success) {
-//                        result.resultData.find { it.noorLat == guiId }
-//                    } else null
-//                }
-//                if (clickedPoi != null) {
-//                    setNaviGraph(clickedPoi)
-//                } else {
-//                    toastShort(requireContext(), "선택한 장소 정보를 찾을 수 없습니다.")
-//                }
-//            }
         }
 
         override fun getPosition(): LatLng = startPosition // 지도 시작 시 위치 좌표를 설정
@@ -216,37 +199,9 @@ class SearchLocationFragment :
             val labelStyle = LabelStyles.from(LabelStyle.from(R.drawable.blue_marker))
             val labelOptions = LabelOptions.from(poiLocation).setStyles(labelStyle)
             labelManager?.layer?.addLabel(labelOptions)
-
-//            infoWindowLayer.addInfoWindow(getStateMessageLayout(
-//                messageId = poiItem.noorLat,
-//                placeName = poiItem.name,
-//                location = poiLocation))
-//            infoWindowLayer.getInfoWindow(poiItem.noorLat).show()
         }
     }
-//    private fun getStateMessageLayout(messageId:String, placeName: String, location: LatLng): InfoWindowOptions {
-//        val body = GuiLayout(Orientation.Horizontal)
-//        body.setPadding(20, 20, 20, 18)
-//
-//        val image = GuiImage(R.drawable.window_body, true)
-//        image.setFixedArea(7, 7, 7, 7)
-//        body.setBackground(image)
-//
-//        val text = GuiText(placeName)
-//        text.setTextSize(30)
-//        body.addView(text)
-//
-//        val options = InfoWindowOptions.from(
-//            messageId,
-//            location
-//        )
-//        options.setBody(body)
-//        options.setBodyOffset(0f, -4f)
-//        options.setTail(GuiImage(R.drawable.window_tail, false))
-//        options.setTailOffset(0f,-50f)
-//        options.setVisible(false)
-//        return options
-//    }
+
 
     private fun goGroupAddSchedule(poiItem: PoiItem) {
         val action =

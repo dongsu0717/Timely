@@ -13,7 +13,7 @@ import com.dongsu.timely.presentation.common.BaseTabFragment
 import com.dongsu.timely.presentation.common.CommonUtils.toastShort
 import com.dongsu.timely.presentation.common.GET_ERROR
 import com.dongsu.timely.presentation.common.GET_LOADING
-import com.dongsu.timely.presentation.common.debouncedClickListener
+import com.dongsu.timely.presentation.common.throttledClickListener
 import com.dongsu.timely.presentation.ui.main.group.GroupPageFragmentDirections
 import com.dongsu.timely.presentation.viewmodel.group.GroupDateViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,7 +72,7 @@ class GroupDateFragment : BaseTabFragment<FragmentGroupDateBinding>(FragmentGrou
     }
 
     private fun goAddGroupSchedule() {
-        binding.fabAddGroup.debouncedClickListener(lifecycleScope){
+        binding.fabAddGroup.throttledClickListener(lifecycleScope){
             val action = GroupPageFragmentDirections.actionGroupPageFragmentToGroupAddScheduleFragment(groupId)
             findNavController().navigate(action)
         }

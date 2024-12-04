@@ -3,7 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt)
     kotlin("kapt")
-    id("androidx.navigation.safeargs")
+    alias(libs.plugins.navigation.safeargs)
+//    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -42,15 +43,14 @@ android {
 }
 
 dependencies {
-
+    implementation(project(":common"))
+    implementation(project(":domain"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.legacy.support.v4)
-    implementation(project(":common"))
-    implementation(project(":domain"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -63,31 +63,31 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
-    //flowbinding
+    //flowbinding bundle
     implementation(libs.bundles.flowbindings)
 
     //calendar library
-    implementation("com.kizitonwose.calendar:view:2.6.0")
+    implementation(libs.view)
 
-    //annotations. 해야 중복방지
-    implementation("org.jetbrains:annotations:23.0.0")
+    //annotations
+    implementation(libs.annotations)
 
     //kakao login, share
-    implementation ("com.kakao.sdk:v2-user:2.20.6")
-    implementation ("com.kakao.sdk:v2-share:2.20.6")
+    implementation (libs.v2.user)
+    implementation (libs.v2.share)
 
     //kakao map
-    implementation ("com.kakao.maps.open:android:2.12.8")
+    implementation (libs.android)
 
     //lottie
-    implementation ("com.airbnb.android:lottie:6.6.0")
+    implementation (libs.lottie)
 
     //glide
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
-    kapt ("com.github.bumptech.glide:compiler:4.16.0")
+    implementation (libs.glide)
+    kapt (libs.compiler)
 
     //ted permission
-    implementation("io.github.ParkSangGwon:tedpermission-normal:3.4.2")
+    implementation(libs.tedpermission.normal)
 }
 kapt {
     correctErrorTypes = true

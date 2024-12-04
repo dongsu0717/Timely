@@ -15,11 +15,19 @@ enum class EnumAlarmTime(val order: Int, val time: Int) {
     BEFORE_3_HOUR(4,180)
 }
 
-enum class EnumColor(val order: Int,val color: Int) {
+enum class EnumScheduleColor(val order: Int, val color: Int) {
     LAVENDER(0,0),
     SAGE(1,1),
     GRAPE(2,2),
     FLAMINGO(3,3),
     BANANA(4,4)
+}
+
+enum class EnumGroupScheduleColor(val order: Int, val color: Int) {
+    TANGERINE(0,0),
+    PEACOCK(1,1),
+    BLUEBERRY(2,2),
+    BASIL(3,3),
+    TOMATO(4,4)
 }
 

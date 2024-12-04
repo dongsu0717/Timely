@@ -53,16 +53,17 @@ android {
 }
 
 dependencies {
-
+    implementation(project(":domain"))
+    implementation(project(":common"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(project(":domain"))
-    implementation(project(":common"))
-    implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //gms
+    implementation(libs.play.services.location)
 
     //room
     implementation(libs.androidx.room.runtime)
@@ -70,7 +71,7 @@ dependencies {
     ksp(libs.androidx.room.compiler)
 
     //annotations
-    implementation("org.jetbrains:annotations:23.0.0")
+    implementation(libs.annotations)
 
     //hilt
 //    implementation (libs.hilt.android)
@@ -78,14 +79,13 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     // Networking
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.squareup.okhttp3:logging-interceptor:4.8.0")
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.logging.interceptor)
 
     // Tmap SDK
 //    implementation(files("libs/vsm-tmap-sdk-v2-android-1.6.60.aar"))
 //    implementation(files("libs/tmap-sdk-1.5.aar"))
-
 }
 kapt {
     correctErrorTypes = true

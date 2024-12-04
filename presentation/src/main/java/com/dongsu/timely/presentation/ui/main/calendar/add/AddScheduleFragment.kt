@@ -24,15 +24,15 @@ import com.dongsu.timely.presentation.common.BaseFragment
 import com.dongsu.timely.presentation.common.CommonUtils
 import com.dongsu.timely.presentation.common.DialogUtils
 import com.dongsu.timely.presentation.common.EnumAlarmTime
-import com.dongsu.timely.presentation.common.EnumColor
 import com.dongsu.timely.presentation.common.EnumRepeat
+import com.dongsu.timely.presentation.common.EnumScheduleColor
 import com.dongsu.timely.presentation.common.PermissionUtils
 import com.dongsu.timely.presentation.common.SAVE_ERROR
 import com.dongsu.timely.presentation.common.SAVE_LOADING
 import com.dongsu.timely.presentation.common.SAVE_SUCCESS
-import com.dongsu.timely.presentation.common.debouncedClickListener
 import com.dongsu.timely.presentation.common.formatDate
 import com.dongsu.timely.presentation.common.formatTimeToString
+import com.dongsu.timely.presentation.common.throttledClickListener
 import com.dongsu.timely.presentation.viewmodel.calendar.add.AddScheduleViewModel
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -45,14 +45,39 @@ import kotlinx.coroutines.launch
 class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAddScheduleBinding::inflate) {
 
     private val addScheduleViewModel: AddScheduleViewModel by viewModels()
+    private val args: AddScheduleFragmentArgs by navArgs()
+
+    private val locationPermissions = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private val backgroundLocationPermission =
+        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+
+    private val postNotificationPermission = arrayOf(
+        Manifest.permission.POST_NOTIFICATIONS
+    )
+
+    private val requestPermissionLauncher = PermissionUtils.requestMultiplePermissions(
+        fragment = this,
+        permissions = locationPermissions,
+        onGranted = { checkBackgroundLocationNeeded() },
+        onDenied = { reRequestLocationPermissions() }
+    )
+
+    private val requestBackgroundLocationLauncher = PermissionUtils.requestSinglePermission(
+        fragment = this,
+        onGranted = { goSearchLocationFragment() },
+        onDenied = { DialogUtils.showLocationPermissionsDeniedDialog(requireContext(),parentFragmentManager) }
+    )
 
     private var repeatDays = EnumRepeat.NO.repeat
     private var appointmentAlarmTime = EnumAlarmTime.BEFORE_1_HOUR.time
-    private var color = EnumColor.LAVENDER.color
+    private var color = EnumScheduleColor.LAVENDER.color
     private var latitude = 0.0
     private var longitude = 0.0
-
-    private val args: AddScheduleFragmentArgs by navArgs()
 
     override fun initView() {
         setupArgument()
@@ -62,6 +87,7 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
         choiceSchedule()
         checkUIState()
     }
+
     private fun setupArgument(){
             latitude = args.latitude.toDouble()
             longitude = args.longitude.toDouble()
@@ -85,13 +111,13 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
 
     private fun choiceSchedule() {
         with(binding) {
-            tvStartDate.debouncedClickListener(lifecycleScope) { chooseDate(tvStartDate) }
-            tvLastDate.debouncedClickListener(lifecycleScope) { chooseDate(tvLastDate) }
-            tvStartTime.debouncedClickListener(lifecycleScope) { chooseTime(tvStartTime) }
-            tvEndTime.debouncedClickListener(lifecycleScope) { chooseTime(tvEndTime) }
+            tvStartDate.throttledClickListener(lifecycleScope) { chooseDate(tvStartDate) }
+            tvLastDate.throttledClickListener(lifecycleScope) { chooseDate(tvLastDate) }
+            tvStartTime.throttledClickListener(lifecycleScope) { chooseTime(tvStartTime) }
+            tvEndTime.throttledClickListener(lifecycleScope) { chooseTime(tvEndTime) }
             chooseRepeat()
 
-            iconPlace.debouncedClickListener(lifecycleScope){ choosePlace() }
+            iconPlace.throttledClickListener(lifecycleScope){ choosePlace() }
             // 알람 설정 스위치
             switchAppointmentAlarm.setOnCheckedChangeListener { _, isChecked ->
                 chooseAlarmPresenceOrAbsence(isChecked)
@@ -183,18 +209,20 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             }
         }
     }
+
     //만약 다크모드, 라이트모드 할때는 이부분 어떻게 바꿔야할까
     private fun chooseColor() {
         with(binding){
-            setColorClickListener(iconColorLavender, R.color.dark_lavender,EnumColor.LAVENDER.color)
-            setColorClickListener(iconColorSage, R.color.dark_sage,EnumColor.SAGE.color)
-            setColorClickListener(iconColorGrape, R.color.dark_grape,EnumColor.GRAPE.color)
-            setColorClickListener(iconColorFlamingo, R.color.dark_flamingo,EnumColor.FLAMINGO.color)
-            setColorClickListener(iconColorBanana, R.color.dark_banana,EnumColor.BANANA.color)
+            setColorClickListener(iconColorLavender, R.color.dark_lavender,EnumScheduleColor.LAVENDER.color)
+            setColorClickListener(iconColorSage, R.color.dark_sage,EnumScheduleColor.SAGE.color)
+            setColorClickListener(iconColorGrape, R.color.dark_grape,EnumScheduleColor.GRAPE.color)
+            setColorClickListener(iconColorFlamingo, R.color.dark_flamingo,EnumScheduleColor.FLAMINGO.color)
+            setColorClickListener(iconColorBanana, R.color.dark_banana,EnumScheduleColor.BANANA.color)
         }
     }
+
     private fun setColorClickListener(imageView: ShapeableImageView, colorResId: Int, saveColor: Int) {
-        imageView.debouncedClickListener(lifecycleScope) {
+        imageView.throttledClickListener(lifecycleScope) {
             with(binding){
                 iconColor.setColorFilter(ContextCompat.getColor(requireContext(), colorResId))
                 color = saveColor
@@ -243,32 +271,6 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             }
         }
     }
-
-    private val locationPermissions = arrayOf(
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION
-    )
-
-    @RequiresApi(Build.VERSION_CODES.Q)
-    private val backgroundLocationPermission =
-        Manifest.permission.ACCESS_BACKGROUND_LOCATION
-
-    private val postNotificationPermission = arrayOf(
-        Manifest.permission.POST_NOTIFICATIONS
-    )
-
-    private val requestPermissionLauncher = PermissionUtils.requestMultiplePermissions(
-        fragment = this,
-        permissions = locationPermissions,
-        onGranted = { checkBackgroundLocationNeeded() },
-        onDenied = { reRequestLocationPermissions() }
-    )
-
-    private val requestBackgroundLocationLauncher = PermissionUtils.requestSinglePermission(
-        fragment = this,
-        onGranted = { goSearchLocationFragment() },
-        onDenied = { DialogUtils.showLocationPermissionsDeniedDialog(requireContext(),parentFragmentManager) }
-    )
 
     private fun choosePlace() =
         checkLocationServiceEnabled()
