@@ -60,6 +60,12 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
         }
     }
 
+    private fun setCalendar() {
+        setCalendarMonth(YearMonth.of(now.year, now.month))
+        setDayLayoutBind() //일 레이아웃 바인딩
+        setMonthHeaderLayoutBind() //요일, 월 레이아웃 바인딩
+    }
+
     private fun setCalendarMonth(currentMonth: YearMonth) {
         with(binding.calendarView) {
             val startMonth = currentMonth.minusMonths(100)
@@ -68,12 +74,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
             setup(startMonth, endMonth, firstDayOfWeek)
             scrollToMonth(currentMonth)
         }
-    }
-
-    private fun setCalendar() {
-        setCalendarMonth(YearMonth.of(now.year, now.month))
-        setDayLayoutBind() //일 레이아웃 바인딩
-        setMonthHeaderLayoutBind() //요일, 월 레이아웃 바인딩
     }
 
     private fun setDayLayoutBind(){
@@ -195,7 +195,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
                         }
 
                         is TimelyResult.Success -> {
-                            Log.e("CalendarFragment", "리스트 가져오기 - Success")
+//                            Log.e("CalendarFragment", "리스트 가져오기 - Success")
                             loadSchedule(data, container, result.resultData)
                         }
 

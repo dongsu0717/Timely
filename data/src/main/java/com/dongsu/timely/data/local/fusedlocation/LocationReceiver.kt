@@ -20,7 +20,7 @@ class LocationReceiver @Inject constructor(
     fun startReceivingLocation(scheduleId: Int) {
         locationProvider.startLocationUpdates { location ->
             if( scheduleId == -1) {
-                Log.e("알람리시버로 위치전송","시작")
+                Log.e("LocationReceiver","알람리시버에서 내 위치 가져감")
                 handleLocationUpdateToAlarmReceiver(location)
             } else {
                 Log.e("서버위치전송","시작")
@@ -53,6 +53,7 @@ class LocationReceiver @Inject constructor(
     val myLocation = _myLocation.asStateFlow()
 
     private fun handleLocationUpdateToAlarmReceiver(location: Location) {
+        _myLocation.value = TimelyResult.Loading
         _myLocation.value = TimelyResult.Success(UserLocation(location.latitude, location.longitude))
     }
 }

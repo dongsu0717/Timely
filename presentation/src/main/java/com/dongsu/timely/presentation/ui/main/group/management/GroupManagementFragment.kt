@@ -38,7 +38,7 @@ class GroupManagementFragment: BaseTabFragment<FragmentGroupManagementBinding>(F
     }
 
     private fun clickInviteMember() {
-        binding.tvInviteGroup.throttledClickListener(lifecycleScope) {
+        binding.linearInviteGroup.throttledClickListener(lifecycleScope) {
             createInviteCode()
         }
     }
@@ -79,17 +79,8 @@ class GroupManagementFragment: BaseTabFragment<FragmentGroupManagementBinding>(F
     }
 
     private fun sendInviteMessageKaKaoTalk(groupId: Int, inviteCode: String) {
+        val inviteTextTemplate = makeInviteTemplate(groupId, inviteCode)
 
-        val inviteTextTemplate = TextTemplate(
-            text = INVITE_GROUP_MESSAGE
-                .trimIndent(),
-            link = Link(
-                androidExecutionParams = mapOf(
-                    GROUP_ID to groupId.toString(),
-                    INVITE_CODE to inviteCode
-                )
-            )
-        )
         // 카카오톡 설치여부 확인
         if (ShareClient.instance.isKakaoTalkSharingAvailable(requireContext())) {
             // 카카오톡으로 카카오톡 공유 가능
@@ -133,4 +124,16 @@ class GroupManagementFragment: BaseTabFragment<FragmentGroupManagementBinding>(F
             }
         }
     }
+
+    private fun makeInviteTemplate(groupId: Int, inviteCode: String): TextTemplate =
+        TextTemplate(
+            text = INVITE_GROUP_MESSAGE
+                .trimIndent(),
+            link = Link(
+                androidExecutionParams = mapOf(
+                    GROUP_ID to groupId.toString(), //데이터 담기
+                    INVITE_CODE to inviteCode
+                )
+            )
+        )
 }
