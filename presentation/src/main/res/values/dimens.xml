@@ -9,6 +9,15 @@
     <dimen name="profile_image_width">150dp</dimen>
     <dimen name="profile_image_height">150dp</dimen>
     <dimen name="profile_image_margin">100dp</dimen>
+    <dimen name="nickname_margin_top">30dp</dimen>
+    <dimen name="late_margin_top">30dp</dimen>
+    <dimen name="late_count_marin_top">15dp</dimen>
+    <dimen name="late_margin_marin_start">40dp</dimen>
+    <dimen name="in_linear_top_and_bottom_margin">20dp</dimen>
+
+
+    <!--Calendar-->
+    <dimen name="calendar_margin_top">20dp</dimen>
 
     <dimen name="zero">0dp</dimen>
     <dimen name="guideline_margin">25dp</dimen>

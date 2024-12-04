@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--스케줄 추가-->
     <fraction name="guideline_start">0.02</fraction>
     <fraction name="guideline_end">0.98</fraction>
     <fraction name="guideline_bottom">0.99</fraction>
     <fraction name="guideline_second">0.3</fraction>
     <fraction name="guideline_third">0.62</fraction>
+
+    <!--프로필-->
+    <fraction name="guideline_profile_start">0.04</fraction>
+    <fraction name="guideline_profile_end">0.94</fraction>
 </resources>

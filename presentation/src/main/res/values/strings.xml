@@ -76,11 +76,17 @@
     <string name="group_members">그룹 멤버</string>
 
     <!--마이 프로필-->
+    <string name="not_login_state">로그인하지 않은 상태입니다.</string>
     <string name="nickname">닉네임</string>
+
+    <string name="total_appointment">약속</string>
+    <string name="late_appointment">지각</string>
     <string name="lateness">지각률</string>
     <string name="percent_lateness">0%</string>
+
     <string name="invite_message_box">받은 초대 메세지</string>
     <string name="setting">설정</string>
+    <string name="profile_edit">프로필 수정</string>
     <string name="logout">로그아웃</string>
     <string name="withdraw">회원탈퇴</string>
 </resources>
