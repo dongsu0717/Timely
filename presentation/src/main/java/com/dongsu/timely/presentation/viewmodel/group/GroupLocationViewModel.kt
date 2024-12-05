@@ -49,7 +49,7 @@ class GroupLocationViewModel @Inject constructor(
         }
     }
 
-    fun getParticipationMemberLocation(scheduleId: Int) {
+    fun fetchGroupMeetingInfo(scheduleId: Int) {
         viewModelScope.launch {
             _groupMeetingInfo.value = TimelyResult.Loading
             _groupMeetingInfo.value = groupScheduleRepository.fetchGroupMeetingInfo(scheduleId)
