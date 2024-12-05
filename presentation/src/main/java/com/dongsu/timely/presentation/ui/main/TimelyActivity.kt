@@ -299,4 +299,24 @@ class TimelyActivity : AppCompatActivity() {
         super.onResume()
         timelyViewModel.isLoggedIn()
     }
+
+    override fun onStart() {
+        super.onStart()
+        Log.e("TimelyActivity", "onStart")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.e("TimelyActivity", "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.e("TimelyActivity", "onStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("TimelyActivity", "onDestroy")
+    }
 }
