@@ -38,7 +38,7 @@ abstract class BaseTabFragment<VB : ViewBinding>(
 
     private fun extractGroupId() {
         _groupId = arguments?.getInt(GROUP_ID) ?: -1
-        Log.e("공통",groupId.toString())
+        Log.e(this::class.java.simpleName,"groupId : $groupId")
     }
     override fun onDestroyView() {
         super.onDestroyView()

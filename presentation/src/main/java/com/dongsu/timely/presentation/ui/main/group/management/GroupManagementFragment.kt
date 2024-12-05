@@ -33,7 +33,6 @@ class GroupManagementFragment: BaseTabFragment<FragmentGroupManagementBinding>(F
     private val groupManagementViewModel: GroupManagementViewModel by viewModels()
 
     override fun initView() {
-        Log.e("관리", groupId.toString())
         clickInviteMember()
     }
 
