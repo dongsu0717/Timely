@@ -125,54 +125,65 @@ class TimelyActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun sendFCMToken() {
-        timelyViewModel.sendFCMToken()
-        timelyViewModel.sendFCMTokenState.collectLatest { result ->
-            when (result) {
-                is TimelyResult.Loading -> {
+    private fun saveTokenLocal(accessToken: String?, refreshToken: String?) {
+        if (accessToken != null && refreshToken != null)
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED){
+                    timelyViewModel.saveTokenLocal(accessToken, refreshToken)
+                    timelyViewModel.saveTokenLocalState.collectLatest { result ->
+                        when (result) {
+                            is TimelyResult.Loading -> {
 
+                            }
+
+                            is TimelyResult.Success -> {
+                                Log.e("TimelyActivitiy토큰저장", "성공")
+                            }
+
+                            is TimelyResult.Empty -> {
+
+                            }
+
+                            is TimelyResult.LocalError -> {
+                                Log.e("TimelyActivitiy토큰저장", "localError")
+
+                            }
+
+                            else -> {}
+                        }
+                    }
                 }
-
-                is TimelyResult.Success -> {
-                    Log.e("fcm보내기", "성공")
-                }
-
-                is TimelyResult.Empty -> {
-
-                }
-
-                is TimelyResult.NetworkError -> {
-
-                }
-
-                else -> {}
             }
-        }
     }
 
-    private suspend fun saveTokenLocal(accessToken: String?, refreshToken: String?) {
-        if (accessToken != null && refreshToken != null)
-            timelyViewModel.saveTokenLocal(accessToken, refreshToken)
-        timelyViewModel.saveTokenLocalState.collectLatest { result ->
-            when (result) {
-                is TimelyResult.Loading -> {
+    private fun sendFCMToken() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                timelyViewModel.sendFCMToken()
+                timelyViewModel.sendFCMTokenState.collectLatest { result ->
+                    when (result) {
+                        is TimelyResult.Loading -> {
+                            Log.e("TimelyActivity", "fcm보내기 : Loading")
 
+                        }
+
+                        is TimelyResult.Success -> {
+                            Log.e("TimelyActivity", "fcm보내기 : Success")
+                        }
+
+                        is TimelyResult.Empty -> {
+                            Log.e("TimelyActivity", "fcm보내기 : Empty")
+
+                        }
+
+                        is TimelyResult.NetworkError -> {
+                            Log.e("TimelyActivity", "fcm보내기 : Error")
+
+                        }
+
+                        else -> {}
+                    }
                 }
-
-                is TimelyResult.Success -> {
-                    Log.e("TimelyActivitiy토큰저장", "성공")
-                }
-
-                is TimelyResult.Empty -> {
-
-                }
-
-                is TimelyResult.LocalError -> {
-                    Log.e("TimelyActivitiy토큰저장", "localError")
-
-                }
-
-                else -> {}
             }
         }
     }
