@@ -15,8 +15,8 @@ class AddScheduleUseCase @Inject constructor(
     private val scheduleRepository: ScheduleRepository,
     private val alarmRepository: AlarmRepository
 ) {
-    suspend operator fun invoke(newSchedule: Schedule): TimelyResult<Unit> {
-        return try {
+    suspend operator fun invoke(newSchedule: Schedule): TimelyResult<Unit> =
+        try {
             scheduleRepository.insertSchedule(newSchedule.copy(title = newSchedule.title.ifEmpty { "내일정" }))
             if(newSchedule.appointmentAlarm
                 && convertToLocalDateTime(newSchedule.startDate, newSchedule.startTime).isAfter(LocalDateTime.now())) {
@@ -26,7 +26,7 @@ class AddScheduleUseCase @Inject constructor(
         } catch (e: Exception) {
             TimelyResult.LocalError(e)
         }
-    }
+
 
     private fun convertToLocalDateTime(date: String, time: String): LocalDateTime {
         val localDate = LocalDateTime.parse("$date $time", DateTimeFormatter.ofPattern(LOCAL_DATE_TIME_FORMAT))

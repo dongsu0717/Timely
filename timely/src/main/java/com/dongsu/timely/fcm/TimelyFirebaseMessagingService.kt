@@ -41,7 +41,7 @@ class TimelyFirebaseMessagingService : FirebaseMessagingService() {
                 FCM_APPOINTMENT_CHANNEL_ID -> {
                     Log.e("FCM일정 시간 됨","FCM일정 시간 됐음")
 //                    setWorkManager(message)
-                    AppointmentAlarmPushMessage(groupName, scheduleTitle)
+                    appointmentAlarmPushMessage(groupName, scheduleTitle)
                 }
             }
             setWorkManager(message) //바로 울리기 테스트용
@@ -72,7 +72,7 @@ class TimelyFirebaseMessagingService : FirebaseMessagingService() {
         notificationManager.notify(NOTIFICATION_FCM_CREATE_SCHEDULE_ID, notification)
     }
 
-    private fun AppointmentAlarmPushMessage(groupName: String, scheduleTitle: String) {
+    private fun appointmentAlarmPushMessage(groupName: String, scheduleTitle: String) {
         val notificationManager = NotificationUtils.createNotificationManager(this)
         NotificationUtils.createNotificationChannel(
             notificationManager,

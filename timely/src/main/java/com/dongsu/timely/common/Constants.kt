@@ -3,7 +3,7 @@ package com.dongsu.timely.common
 //TMap 연결
 const val TMAP_PACKAGE_NAME = "com.skt.tmap.ku"
 const val TMAP_ROUTE_URL = "tmap://route?goalname=%s&goalx=%s&goaly=%s&startx=%s&starty=%s"
-const val TMAP_MARKET_URL = "market://details?id=%s"
+const val MARKET_URL = "market://details?id=%s"
 
 //기본 스케줄 채널
 const val PERSONAL_CHANNEL_ID = "기본"

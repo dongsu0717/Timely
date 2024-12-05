@@ -10,7 +10,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.FragmentGroupLocationBinding
 import com.dongsu.timely.common.TimelyResult
-import com.dongsu.timely.domain.model.map.LocationInfo
+import com.dongsu.timely.domain.model.map.GroupMeetingInfo
 import com.dongsu.timely.domain.model.map.TargetLocation
 import com.dongsu.timely.domain.model.map.UserMeeting
 import com.dongsu.timely.presentation.common.BaseTabFragment
@@ -63,7 +63,7 @@ class GroupLocationFragment :
 
     private val startZoomLevel = DEFAULT_START_ZOOM_LEVEL
     private val startPosition = LatLng.from(37.46819965686225, 126.90119500104446) //우리집임 ㅋㅋ
-    private var locationScheduleId: Int? = null
+    private var scheduleIdToShowMap: Int? = null
     private var myId: Int? = null
 
     private lateinit var shapeManager: ShapeManager
@@ -71,9 +71,7 @@ class GroupLocationFragment :
     private lateinit var infoWindowLayer: InfoWindowLayer
 
     override fun initView() {
-        Log.e("위치프래그먼트", groupId.toString())
-
-        checkStartMap()
+        getScheduleIdToShowMap()
     }
 
     private val readyCallback: KakaoMapReadyCallback = object : KakaoMapReadyCallback() {
@@ -85,7 +83,6 @@ class GroupLocationFragment :
             shapeLayer = shapeManager.layer
             infoWindowLayer = kakaoMap.mapWidgetManager!!.infoWindowLayer
             getGroupMeetingInfoOnMap(kakaoMap)
-
 
             kakaoMap.setOnInfoWindowClickListener { kakaoMap, infoWindow, guiId ->
                 DialogUtils.showInputDialog(context = requireContext()) { inputText ->
@@ -116,78 +113,89 @@ class GroupLocationFragment :
             toastShort(requireContext(), "onMapError")  // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
     }
 
-    private fun checkStartMap() {
+    private fun getScheduleIdToShowMap() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                getScheduleIdShowMap()
-                Log.e("GroupLocationFragment", "맵 열릴 scheduleId: $locationScheduleId")
-                if (locationScheduleId != null && locationScheduleId != -1) {
-                    textGone()
-                    getMyId()
-                    startMap()
-                    getGroupMemberLocation(locationScheduleId!!)
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                groupLocationViewModel.fetchGroupScheduleShowMap(groupId)
+                groupLocationViewModel.groupScheduleToShowMap.collectLatest { result ->
+                    when (result) {
+                        is TimelyResult.Loading -> {
+                            Log.e("맵에 보여줄 스케줄", "로딩중")
+                        }
+
+                        is TimelyResult.Success -> {
+                            setScheduleIdToShowMap(result.resultData.scheduleId)
+                            setBeforeStartMap()
+                        }
+
+                        is TimelyResult.Empty -> {
+                            Log.e("맵에 보여줄 스케줄", "비어있음. empty라고")
+                        }
+
+                        is TimelyResult.NetworkError -> {
+                            Log.e("맵에 보여줄 스케줄", "에러뜸")
+                        }
+
+                        else -> {
+                            Log.e("맵에 보여줄 스케줄", "니가왜떠")
+                        }
+                    }
                 }
             }
         }
     }
 
-    private suspend fun getScheduleIdShowMap() {
-        groupLocationViewModel.fetchGroupScheduleShowMap(groupId)
-        groupLocationViewModel.groupScheduleToShowMap.collectLatest { result ->
-            when (result) {
-                is TimelyResult.Loading -> {
-                    Log.e("맵에 보여줄 스케줄", "로딩중")
-                }
+    private fun setScheduleIdToShowMap(scheduleId: Int) {
+        scheduleIdToShowMap = scheduleId
+        Log.e("GroupLocationFragment", "맵에 보여줄 scheduleId - $scheduleIdToShowMap")
+    }
 
-                is TimelyResult.Success -> {
-                    locationScheduleId = result.resultData.scheduleId
-                }
-
-                is TimelyResult.Empty -> {
-                    Log.e("맵에 보여줄 스케줄", "비어있음. empty라고")
-                }
-
-                is TimelyResult.NetworkError -> {
-                    Log.e("맵에 보여줄 스케줄", "에러뜸")
-                }
-
-                else -> {
-                    Log.e("맵에 보여줄 스케줄", "니가왜떠")
-                }
-            }
+    private fun setBeforeStartMap() {
+        if (scheduleIdToShowMap != null && scheduleIdToShowMap != -1) {
+            textGone()
+            getMyId()
+            startMap()
+            getGroupMemberLocation(scheduleIdToShowMap!!)
         }
     }
+
     private fun textGone() {
         binding.tvNothingScheduleTime.visibility = View.GONE
     }
 
-    private suspend fun getMyId() {
-        groupLocationViewModel.fetchMyUserId()
-        groupLocationViewModel.myUserId.collectLatest { result ->
-            when (result) {
-                is TimelyResult.Loading -> {
+    private fun getMyId() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                groupLocationViewModel.fetchMyUserId()
+                groupLocationViewModel.myUserId.collectLatest { result ->
+                    when (result) {
+                        is TimelyResult.Loading -> {
+                            Log.e("GroupLocationFragment", "내아이디 가져오기 - 로딩중")
+                        }
 
+                        is TimelyResult.Success -> {
+                            Log.e("GroupLocationFragment", "내아이디 가져오기 - 성공")
+                            myId = result.resultData
+                        }
+
+                        is TimelyResult.Empty -> {
+                            Log.e("GroupLocationFragment", "내아이디 가져오기 - 비어있음")
+                        }
+
+                        is TimelyResult.NetworkError -> {
+                            Log.e("GroupLocationFragment", "내아이디 가져오기 - 네트워크 오류")
+                        }
+
+                        else -> {}
+                    }
                 }
 
-                is TimelyResult.Success -> {
-                    myId = result.resultData
-                }
-
-                is TimelyResult.Empty -> {
-
-                }
-
-                is TimelyResult.NetworkError -> {
-
-                }
-
-                else -> {}
             }
         }
     }
 
     private fun getGroupMemberLocation(scheduleId: Int) =
-        groupLocationViewModel.getParticipationMemberLocation(scheduleId)
+        groupLocationViewModel.fetchGroupMeetingInfo(scheduleId)
 
 
     private fun getGroupMeetingInfoOnMap(kakaoMap: KakaoMap) {
@@ -200,21 +208,7 @@ class GroupLocationFragment :
                         }
 
                         is TimelyResult.Success -> {
-                            val targetLocation = meetingInfo.resultData.targetLocation
-                            Log.e("약속장소 가져오기", targetLocation.toString())
-
-                            val usersLocation = meetingInfo.resultData.userMeetingData
-                            Log.e("멤버들 가져오기", usersLocation.toString())
-
-                            val myLocation = getMyLocation(usersLocation)
-                            Log.e("내위치 가져오기", myLocation.toString())
-
-                            updateAppointPlaceOnMap(kakaoMap, targetLocation)
-                            updateMemberLocationsOnMap(
-                                kakaoMap,
-                                meetingInfo.resultData.userMeetingData
-                            )
-                            checkArrive(myLocation, targetLocation)
+                            setGroupMeetingInfoOnMap(kakaoMap, meetingInfo.resultData)
                         }
 
                         is TimelyResult.Empty -> {
@@ -235,17 +229,30 @@ class GroupLocationFragment :
         }
     }
 
+    private fun setGroupMeetingInfoOnMap(kakaoMap: KakaoMap, meetingInfo: GroupMeetingInfo) {
+        val targetLocation = meetingInfo.targetLocation
+        Log.e("약속장소 가져오기", targetLocation.toString())
+
+        val usersLocation = meetingInfo.userMeetingData
+        Log.e("멤버들 가져오기", usersLocation.toString())
+
+        updateAppointPlaceOnMap(kakaoMap, targetLocation)
+        updateMemberLocationsOnMap(kakaoMap, usersLocation)
+        checkIsArrive(usersLocation,targetLocation)
+    }
+
     private fun startMap() {
-        mapView.apply {
-            binding.mapView
-            start(lifeCycleCallback, readyCallback)
-        }
+        mapView = binding.mapView
+        mapView.start(lifeCycleCallback, readyCallback)
     }
 
     private fun getMyLocation(usersLocation: List<UserMeeting>) =
         usersLocation.find { it.user.userId == myId }?.location
 
-    private fun checkArrive(myLocation: LocationInfo?, targetLocation: TargetLocation) {
+    private fun checkIsArrive(usersLocation: List<UserMeeting>, targetLocation: TargetLocation) {
+        val myLocation = getMyLocation(usersLocation)
+        Log.e("내위치 가져오기", myLocation.toString())
+
         if (myLocation != null) {
             val distance = calculateDistance(
                 myLocation.latitude,
@@ -258,7 +265,6 @@ class GroupLocationFragment :
             if (distance <= DISTANCE_TO_ARRIVE_POINT) {
                 arrivedPlace()
                 closeKakaoMap()
-//                return@collectLatest
             }
         }
     }
@@ -273,12 +279,7 @@ class GroupLocationFragment :
     private fun updateStateMessage(stateMessage: String) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                locationScheduleId?.let {
-                    groupLocationViewModel.updateStateMessage(
-                        it,
-                        stateMessage
-                    )
-                }
+                scheduleIdToShowMap?.let { groupLocationViewModel.updateStateMessage(it, stateMessage) }
                 groupLocationViewModel.stateMessage.collectLatest { result ->
                     when (result) {
                         is TimelyResult.Loading -> {
@@ -320,7 +321,7 @@ class GroupLocationFragment :
         infoWindowLayer.addInfoWindow(
             getStateMessageLayout(
                 messageId = id,
-                stateMessage = member.stateMessage,
+                stateMessage = member.stateMessage?:"가는중",
                 location = location
             )
         )
@@ -369,7 +370,7 @@ class GroupLocationFragment :
 
     private fun getStateMessageLayout(
         messageId: String,
-        stateMessage: String? = "가는중",
+        stateMessage: String,
         location: LatLng,
     ): InfoWindowOptions {
         val body = GuiLayout(Orientation.Horizontal)

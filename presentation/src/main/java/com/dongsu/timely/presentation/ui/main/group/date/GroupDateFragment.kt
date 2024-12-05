@@ -27,7 +27,6 @@ class GroupDateFragment : BaseTabFragment<FragmentGroupDateBinding>(FragmentGrou
     private lateinit var groupScheduleListAdapter: GroupScheduleListAdapter
 
     override fun initView() {
-        Log.e("일정", groupId.toString())
         Log.e("일정",arguments.toString())
         setLayoutManager()
         setAdapter()

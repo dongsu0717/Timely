@@ -1,6 +1,5 @@
 package com.dongsu.timely.data.datasource.remote
 
-import android.util.Log
 import com.dongsu.timely.data.mapper.GroupMapper
 import com.dongsu.timely.data.mapper.InviteCodeMapper
 import com.dongsu.timely.data.remote.api.GroupService
@@ -14,7 +13,9 @@ class GroupRemoteDatasourceImpl @Inject constructor(
 ) : GroupRemoteDatasource {
     override suspend fun createGroup(groupName: String, groupColor: Int) {
         val response = groupService.createGroup(GroupRequest(groupName, groupColor))
-        Log.e("만들어진 그룹", "${response.body()}")
+        if (!response.isSuccessful) {
+            throw Exception("그룹 만들기 Error: ${response.code()}, Message: ${response.message()}")
+        }
     }
 
     override suspend fun fetchMyGroupList(): List<Group> =

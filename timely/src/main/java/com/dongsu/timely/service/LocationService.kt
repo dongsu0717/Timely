@@ -2,6 +2,8 @@ package com.dongsu.timely.service
 
 import android.app.Service
 import android.content.Intent
+import android.content.pm.ServiceInfo
+import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import com.dongsu.timely.common.CHANNEL_ID
@@ -75,7 +77,12 @@ class LocationService : Service() {
             pendingIntent = pendingIntent,
             autoCancel = false
         ).build()
-        startForeground(NOTIFICATION_FOREGROUND_LOCATION_ID, notification)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            startForeground(NOTIFICATION_FOREGROUND_LOCATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION)
+        } else {
+            startForeground(NOTIFICATION_FOREGROUND_LOCATION_ID, notification)
+        }
     }
 
     override fun onBind(intent: Intent?): IBinder? {

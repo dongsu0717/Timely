@@ -9,9 +9,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.dongsu.timely.R
+import com.dongsu.timely.common.MARKET_URL
 import com.dongsu.timely.common.NOTIFICATION_ROUTE_ID
 import com.dongsu.timely.common.NOTIFICATION_SCHEDULE_ID
 import com.dongsu.timely.common.NotificationUtils
@@ -22,7 +24,6 @@ import com.dongsu.timely.common.PERSONAL_ROUTE_CHANNEL_ID
 import com.dongsu.timely.common.PERSONAL_ROUTE_CHANNEL_NAME
 import com.dongsu.timely.common.TIME_TO_ROUTE_SCHEDULE
 import com.dongsu.timely.common.TIME_TO_SCHEDULE
-import com.dongsu.timely.common.TMAP_MARKET_URL
 import com.dongsu.timely.common.TMAP_PACKAGE_NAME
 import com.dongsu.timely.common.TMAP_ROUTE_URL
 import com.dongsu.timely.common.TimelyResult
@@ -179,7 +180,11 @@ class AlarmReceiver : BroadcastReceiver() {
         startLongitude: Double
     ): PendingIntent {
         val isTMapInstalled = try {
-            context.packageManager.getPackageInfo(TMAP_PACKAGE_NAME, 0)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                context.packageManager.getPackageInfo(TMAP_PACKAGE_NAME, PackageManager.PackageInfoFlags.of(0))
+            } else {
+                context.packageManager.getPackageInfo(TMAP_PACKAGE_NAME, 0)
+            }
             true
         } catch (e: PackageManager.NameNotFoundException) {
             false
@@ -187,6 +192,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val tMapIntent = if (isTMapInstalled) {
             Intent(Intent.ACTION_VIEW).apply {
+                Log.e("티맵","설치됨")
                 data = Uri.parse(
                     String.format(
                         TMAP_ROUTE_URL,
@@ -201,7 +207,8 @@ class AlarmReceiver : BroadcastReceiver() {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
         } else {
-            Intent(Intent.ACTION_VIEW, Uri.parse(String.format(TMAP_MARKET_URL, TMAP_ROUTE_URL)))
+            Log.e("티맵","설치안됨")
+            Intent(Intent.ACTION_VIEW, Uri.parse(String.format(MARKET_URL, TMAP_PACKAGE_NAME)))
         }
         return PendingIntent.getActivity(
             context,

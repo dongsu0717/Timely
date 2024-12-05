@@ -5,11 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="@fraction/guideline_profile_start" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="@fraction/guideline_profile_end" />
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/image_profile"
         android:layout_width="@dimen/profile_image_width"
         android:layout_height="@dimen/profile_image_height"
         android:layout_marginTop="@dimen/profile_image_margin"
+        app:shapeAppearanceOverlay="@style/RoundedImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,39 +33,172 @@
         android:id="@+id/text_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nickname"
-        app:layout_constraintBottom_toBottomOf="@+id/image_profile"
-        app:layout_constraintStart_toEndOf="@+id/image_profile" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_setting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/setting"
-        app:layout_constraintBottom_toTopOf="@+id/tv_invite_message_box"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/nickname_margin_top"
+        android:text="@string/not_login_state"
+        app:layout_constraintEnd_toEndOf="@+id/image_profile"
+        app:layout_constraintStart_toStartOf="@+id/image_profile"
         app:layout_constraintTop_toBottomOf="@+id/image_profile" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_invite_message_box"
+        android:id="@+id/text_total_appointment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/invite_message_box"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="@string/total_appointment"
+        android:layout_marginTop="@dimen/late_margin_top"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/text_nickname"/>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_withdraw"
+        android:id="@+id/text_total_appointment_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/withdraw"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_invite_message_box" />
+        android:hint="0"
+        android:layout_marginTop="@dimen/late_count_marin_top"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/text_total_appointment"/>
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_late_appointment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/late_margin_marin_start"
+        android:text="@string/late_appointment"
+        app:layout_constraintStart_toEndOf="@+id/text_total_appointment"
+        app:layout_constraintTop_toTopOf="@+id/text_total_appointment" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_late_appointment_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="0"
+        app:layout_constraintStart_toStartOf="@+id/text_late_appointment"
+        app:layout_constraintTop_toTopOf="@+id/text_total_appointment_count" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_lateness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/late_margin_marin_start"
+        android:text="@string/lateness"
+        app:layout_constraintStart_toEndOf="@+id/text_late_appointment"
+        app:layout_constraintTop_toTopOf="@+id/text_total_appointment" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_lateness_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="0%"
+        app:layout_constraintStart_toStartOf="@+id/text_lateness"
+        app:layout_constraintTop_toTopOf="@+id/text_total_appointment_count" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="@dimen/zero"
+        android:layout_height="1dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/linear_invite_message"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end" />
+
+    <LinearLayout
+        android:id="@+id/linear_invite_message"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/in_linear_top_and_bottom_margin"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/text_total_appointment_count">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/in_linear_top_and_bottom_margin"
+            android:layout_marginBottom="@dimen/in_linear_top_and_bottom_margin"
+            android:text="@string/invite_message_box" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/in_linear_top_and_bottom_margin"
+            android:layout_marginBottom="@dimen/in_linear_top_and_bottom_margin"
+            android:src="@drawable/baseline_keyboard_arrow_right_24"/>
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="@dimen/zero"
+        android:layout_height="1dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/linear_invite_message"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end" />
+
+    <LinearLayout
+        android:id="@+id/linear_setting"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/linear_invite_message">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="@dimen/zero"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/in_linear_top_and_bottom_margin"
+            android:layout_marginBottom="@dimen/in_linear_top_and_bottom_margin"
+            android:text="@string/setting" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/in_linear_top_and_bottom_margin"
+            android:layout_marginBottom="@dimen/in_linear_top_and_bottom_margin"
+            android:src="@drawable/baseline_keyboard_arrow_right_24"/>
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="@dimen/zero"
+        android:layout_height="1dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/linear_setting"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end" />
+
+    <LinearLayout
+        android:id="@+id/linear_profile_edit"
+        android:layout_width="@dimen/zero"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/linear_setting">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/in_linear_top_and_bottom_margin"
+            android:layout_marginBottom="@dimen/in_linear_top_and_bottom_margin"
+            android:text="@string/profile_edit" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/in_linear_top_and_bottom_margin"
+            android:layout_marginBottom="@dimen/in_linear_top_and_bottom_margin"
+            android:src="@drawable/baseline_keyboard_arrow_right_24"/>
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="@dimen/zero"
+        android:layout_height="1dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/linear_profile_edit"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
