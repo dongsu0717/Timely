@@ -7,9 +7,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.dongsu.presentation.R
@@ -27,6 +25,7 @@ import com.dongsu.timely.presentation.common.SAVE_SUCCESS
 import com.dongsu.timely.presentation.common.combineDateTime
 import com.dongsu.timely.presentation.common.formatDate
 import com.dongsu.timely.presentation.common.formatTimeToString
+import com.dongsu.timely.presentation.common.launchRepeatOnLifecycle
 import com.dongsu.timely.presentation.common.throttledClickListener
 import com.dongsu.timely.presentation.viewmodel.group.GroupAddScheduleViewModel
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -69,7 +68,6 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
         setupArgs()
         getCurrentDataAndTime()
         choiceSchedule()
-        checkUIState()
     }
     private fun setupToolbar(){
         binding.toolbar.toolbarCommon.apply {
@@ -78,7 +76,6 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
                 when (it.itemId) {
                     R.id.action_save -> {
                         saveSchedule()
-                        findNavController().popBackStack()
                         true
                     }
                     else -> false
@@ -167,15 +164,33 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun requestBackgroundLocationPermission() =
         requestBackgroundLocationLauncher.launch(backgroundLocationPermission)
+
     private fun goSearchLocationFragment() {
         val action = GroupAddScheduleFragmentDirections.actionGroupAddScheduleFragmentToSearchLocationFragment(args.groupId)
         findNavController().navigate(action)
     }
+
     private fun saveSchedule() {
-        lifecycleScope.launch {
+        launchRepeatOnLifecycle {
             groupAddScheduleViewModel.addSchedule(args.groupId, makeGroupSchedule())
+            groupAddScheduleViewModel.addScheduleState.collectLatest {result ->
+                when (result) {
+                    is TimelyResult.Loading -> {
+                        CommonUtils.toastShort(requireContext(), SAVE_LOADING)
+                    }
+                    is TimelyResult.Success -> {
+                        CommonUtils.toastShort(requireContext(), SAVE_SUCCESS)
+                        findNavController().popBackStack()
+                    }
+                    is TimelyResult.NetworkError -> {
+                        CommonUtils.toastShort(requireContext(), SAVE_ERROR)
+                    }
+                    else -> {}
+                }
+            }
         }
     }
+
     private fun makeGroupSchedule(): GroupSchedule {
         return with(binding) {
             GroupSchedule(
@@ -199,26 +214,6 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
                 groupAddScheduleViewModel.currentTimeFlow.collect { time ->
                     tvStartTime.text = time
                     tvEndTime.text = time
-                }
-            }
-        }
-    }
-    private fun checkUIState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                groupAddScheduleViewModel.addScheduleState.collectLatest {result ->
-                    when (result) {
-                        is TimelyResult.Loading -> {
-                            CommonUtils.toastShort(requireContext(), SAVE_LOADING)
-                        }
-                        is TimelyResult.Success -> {
-                            CommonUtils.toastShort(requireContext(), SAVE_SUCCESS)
-                        }
-                        is TimelyResult.NetworkError -> {
-                            CommonUtils.toastShort(requireContext(), SAVE_ERROR)
-                        }
-                        else -> {}
-                    }
                 }
             }
         }

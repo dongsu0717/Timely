@@ -4,9 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.dongsu.presentation.databinding.FragmentGroupManagementBinding
 import com.dongsu.timely.common.GROUP_ID
 import com.dongsu.timely.common.TimelyResult
@@ -16,6 +14,7 @@ import com.dongsu.timely.presentation.common.GET_ERROR
 import com.dongsu.timely.presentation.common.INVITE_CODE
 import com.dongsu.timely.presentation.common.INVITE_GROUP_MESSAGE
 import com.dongsu.timely.presentation.common.LOADING
+import com.dongsu.timely.presentation.common.launchRepeatOnLifecycle
 import com.dongsu.timely.presentation.common.throttledClickListener
 import com.dongsu.timely.presentation.viewmodel.group.GroupManagementViewModel
 import com.kakao.sdk.common.util.KakaoCustomTabsClient
@@ -25,7 +24,6 @@ import com.kakao.sdk.template.model.Link
 import com.kakao.sdk.template.model.TextTemplate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GroupManagementFragment: BaseTabFragment<FragmentGroupManagementBinding>(FragmentGroupManagementBinding::inflate) {
@@ -43,37 +41,35 @@ class GroupManagementFragment: BaseTabFragment<FragmentGroupManagementBinding>(F
     }
 
     private fun createInviteCode() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                groupManagementViewModel.createInviteCode(groupId)
-                groupManagementViewModel.inviteCode.collectLatest { result ->
-                    when (result) {
-                        is TimelyResult.Loading -> {
-                            Log.e("초대 코드 가져오기", "로딩중")
-                            toastShort(requireContext(), LOADING)
-                        }
-
-                        is TimelyResult.Success -> {
-                            Log.e("초대 코드 가져오기", "성공")
-
-                            with(result.resultData) {
-                                sendInviteMessageKaKaoTalk(groupId, inviteCode)
-                            }
-                        }
-
-                        is TimelyResult.Empty -> {
-                            Log.e("초대 코드 가져오기", "비어있음")
-                        }
-
-                        is TimelyResult.NetworkError -> {
-                            Log.e("초대 코드 가져오기", "에러. 실패임")
-                            toastShort(requireContext(), GET_ERROR)
-                        }
-
-                        else -> {}
+        launchRepeatOnLifecycle {
+            groupManagementViewModel.createInviteCode(groupId)
+            groupManagementViewModel.inviteCode.collectLatest { result ->
+                when (result) {
+                    is TimelyResult.Loading -> {
+                        Log.e("초대 코드 가져오기", "로딩중")
+                        toastShort(requireContext(), LOADING)
                     }
+
+                    is TimelyResult.Success -> {
+                        Log.e("초대 코드 가져오기", "성공")
+                        val groupId = result.resultData.groupId
+                        val inviteCode = result.resultData.inviteCode
+                        sendInviteMessageKaKaoTalk(groupId, inviteCode)
+                    }
+
+                    is TimelyResult.Empty -> {
+                        Log.e("초대 코드 가져오기", "비어있음")
+                    }
+
+                    is TimelyResult.NetworkError -> {
+                        Log.e("초대 코드 가져오기", "에러. 실패임")
+                        toastShort(requireContext(), GET_ERROR)
+                    }
+
+                    else -> {}
                 }
             }
+
         }
     }
 

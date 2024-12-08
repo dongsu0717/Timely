@@ -5,9 +5,6 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -18,6 +15,7 @@ import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.PoiItem
 import com.dongsu.timely.presentation.common.BaseFragment
 import com.dongsu.timely.presentation.common.CommonUtils.toastShort
+import com.dongsu.timely.presentation.common.launchRepeatOnLifecycle
 import com.dongsu.timely.presentation.viewmodel.calendar.location.SearchLocationViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.kakao.vectormap.KakaoMap
@@ -33,7 +31,6 @@ import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.mapwidget.InfoWindowLayer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -127,27 +124,25 @@ class SearchLocationFragment :
     }
 
     private fun getSearchLocationList(kakaoMap: KakaoMap) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                searchViewModel.locationsList.collectLatest { results ->
-                    when (results) {
-                        is TimelyResult.Success -> {
-                            Log.d("SearchLocationFragment", "result: ${results.resultData}")
-                            setStartMapPoint(kakaoMap, results.resultData)
-                            setPoiListOnMap(kakaoMap, results.resultData)
-                            searchAdapter.submitList(results.resultData)
-                        }
-
-                        is TimelyResult.Loading -> {
-
-                        }
-
-                        is TimelyResult.NetworkError -> {
-
-                        }
-
-                        else -> {}
+        launchRepeatOnLifecycle {
+            searchViewModel.locationsList.collectLatest { results ->
+                when (results) {
+                    is TimelyResult.Success -> {
+                        Log.d("SearchLocationFragment", "result: ${results.resultData}")
+                        setStartMapPoint(kakaoMap, results.resultData)
+                        setPoiListOnMap(kakaoMap, results.resultData)
+                        searchAdapter.submitList(results.resultData)
                     }
+
+                    is TimelyResult.Loading -> {
+
+                    }
+
+                    is TimelyResult.NetworkError -> {
+
+                    }
+
+                    else -> {}
                 }
             }
         }

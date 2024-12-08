@@ -7,9 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.children
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.FragmentCalendarBinding
@@ -21,6 +19,7 @@ import com.dongsu.timely.presentation.common.CommonUtils
 import com.dongsu.timely.presentation.common.CommonUtils.toastShort
 import com.dongsu.timely.presentation.common.LOAD_SCHEDULE_EMPTY
 import com.dongsu.timely.presentation.common.LOAD_SCHEDULE_ERROR
+import com.dongsu.timely.presentation.common.launchRepeatOnLifecycle
 import com.dongsu.timely.presentation.common.throttledClickListener
 import com.dongsu.timely.presentation.ui.main.calendar.home.container.DayViewContainer
 import com.dongsu.timely.presentation.ui.main.calendar.home.container.MonthViewContainer
@@ -34,7 +33,6 @@ import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -186,30 +184,27 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
 
     // 일정 데이터 불러와서 표시
     private fun getSchedule(data: CalendarDay, container: DayViewContainer) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                calendarViewModel.scheduleList.collectLatest { result ->
-                    when (result) {
-                        is TimelyResult.Loading -> {
+        launchRepeatOnLifecycle {
+            calendarViewModel.scheduleList.collectLatest { result ->
+                when (result) {
+                    is TimelyResult.Loading -> {
 //                            Log.e("CalendarFragment", "리스트 가져오기 - Loading")
-                        }
-
-                        is TimelyResult.Success -> {
-//                            Log.e("CalendarFragment", "리스트 가져오기 - Success")
-                            loadSchedule(data, container, result.resultData)
-                        }
-
-                        is TimelyResult.Empty -> {
-                            Log.e("CalendarFragment", "리스트 가져오기 - Empty")
-                            toastShort(requireContext(), LOAD_SCHEDULE_EMPTY)
-                        }
-
-                        is TimelyResult.LocalError -> {
-                            toastShort(requireContext(), LOAD_SCHEDULE_ERROR)
-                        }
-
-                        else -> {}
                     }
+
+                    is TimelyResult.Success -> {
+//                            Log.e("CalendarFragment", "리스트 가져오기 - Success")
+                        loadSchedule(data, container, result.resultData)
+                    }
+
+                    is TimelyResult.Empty -> {
+                        Log.e("CalendarFragment", "리스트 가져오기 - Empty")
+                        toastShort(requireContext(), LOAD_SCHEDULE_EMPTY)
+                    }
+
+                    is TimelyResult.LocalError -> {
+                        toastShort(requireContext(), LOAD_SCHEDULE_ERROR)
+                    }
+                    else -> {}
                 }
             }
         }

@@ -6,9 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.onNavDestinationSelected
@@ -25,6 +23,7 @@ import com.dongsu.timely.presentation.common.LOGIN_MESSAGE
 import com.dongsu.timely.presentation.common.LOGIN_NEGATIVE_BUTTON
 import com.dongsu.timely.presentation.common.LOGIN_POSITIVE_BUTTON
 import com.dongsu.timely.presentation.common.LOGIN_TITLE
+import com.dongsu.timely.presentation.common.launchRepeatOnLifecycle
 import com.dongsu.timely.presentation.kakao.KaKaoLoginManager
 import com.dongsu.timely.presentation.viewmodel.TimelyViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -121,101 +120,98 @@ class TimelyActivity : AppCompatActivity() {
                         else -> {}
                     }
                 }
+
             }
         }
     }
 
     private fun saveTokenLocal(accessToken: String?, refreshToken: String?) {
         if (accessToken != null && refreshToken != null)
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED){
-                    timelyViewModel.saveTokenLocal(accessToken, refreshToken)
-                    timelyViewModel.saveTokenLocalState.collectLatest { result ->
-                        when (result) {
-                            is TimelyResult.Loading -> {
+            launchRepeatOnLifecycle {
+                timelyViewModel.saveTokenLocal(accessToken, refreshToken)
+                timelyViewModel.saveTokenLocalState.collectLatest { result ->
+                    when (result) {
+                        is TimelyResult.Loading -> {
 
-                            }
-
-                            is TimelyResult.Success -> {
-                                Log.e("TimelyActivitiy토큰저장", "성공")
-                            }
-
-                            is TimelyResult.Empty -> {
-
-                            }
-
-                            is TimelyResult.LocalError -> {
-                                Log.e("TimelyActivitiy토큰저장", "localError")
-
-                            }
-
-                            else -> {}
                         }
+
+                        is TimelyResult.Success -> {
+                            Log.e("TimelyActivitiy토큰저장", "성공")
+                        }
+
+                        is TimelyResult.Empty -> {
+
+                        }
+
+                        is TimelyResult.LocalError -> {
+                            Log.e("TimelyActivitiy토큰저장", "localError")
+
+                        }
+
+                        else -> {}
                     }
+
                 }
             }
     }
 
     private fun sendFCMToken() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                timelyViewModel.sendFCMToken()
-                timelyViewModel.sendFCMTokenState.collectLatest { result ->
-                    when (result) {
-                        is TimelyResult.Loading -> {
-                            Log.e("TimelyActivity", "fcm보내기 : Loading")
+            timelyViewModel.sendFCMToken()
+            timelyViewModel.sendFCMTokenState.collectLatest { result ->
+                when (result) {
+                    is TimelyResult.Loading -> {
+                        Log.e("TimelyActivity", "fcm보내기 : Loading")
 
-                        }
-
-                        is TimelyResult.Success -> {
-                            Log.e("TimelyActivity", "fcm보내기 : Success")
-                        }
-
-                        is TimelyResult.Empty -> {
-                            Log.e("TimelyActivity", "fcm보내기 : Empty")
-
-                        }
-
-                        is TimelyResult.NetworkError -> {
-                            Log.e("TimelyActivity", "fcm보내기 : Error")
-
-                        }
-
-                        else -> {}
                     }
+
+                    is TimelyResult.Success -> {
+                        Log.e("TimelyActivity", "fcm보내기 : Success")
+                    }
+
+                    is TimelyResult.Empty -> {
+                        Log.e("TimelyActivity", "fcm보내기 : Empty")
+
+                    }
+
+                    is TimelyResult.NetworkError -> {
+                        Log.e("TimelyActivity", "fcm보내기 : Error")
+
+                    }
+
+                    else -> {}
                 }
             }
         }
+
     }
 
     private fun checkIsLoggedIn(isLoggedIn: (Boolean) -> Unit) {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                timelyViewModel.loginStatus.collectLatest { result ->
-                    when (result) {
-                        is TimelyResult.Loading -> {
-                            Log.e("TimelyActivity로그인확인", "로그인상태 로딩중임")
+        launchRepeatOnLifecycle {
+            timelyViewModel.loginStatus.collectLatest { result ->
+                when (result) {
+                    is TimelyResult.Loading -> {
+                        Log.e("TimelyActivity로그인확인", "로그인상태 로딩중임")
 
-                        }
+                    }
 
-                        is TimelyResult.Success -> {
-                            Log.e("TimelyActivity로그인확인", "로그인상태 success임")
-                            isLoggedIn(result.resultData)
-                        }
+                    is TimelyResult.Success -> {
+                        Log.e("TimelyActivity로그인확인", "로그인상태 success임")
+                        isLoggedIn(result.resultData)
+                    }
 
-                        is TimelyResult.Empty -> {
-                            Log.e("TimelyActivity로그인확인", "로그인상태 empty임")
+                    is TimelyResult.Empty -> {
+                        Log.e("TimelyActivity로그인확인", "로그인상태 empty임")
 
-                        }
+                    }
 
-                        is TimelyResult.LocalError -> {
-                            Log.e("TimelyActivity로그인확인", "로그인상태 localError뜸")
+                    is TimelyResult.LocalError -> {
+                        Log.e("TimelyActivity로그인확인", "로그인상태 localError뜸")
 
-                        }
+                    }
 
-                        else -> {
-                            Log.e("TimelyActivity로그인확인", "로그인상태 니가 왜떠")
-                        }
+                    else -> {
+                        Log.e("TimelyActivity로그인확인", "로그인상태 니가 왜떠")
                     }
                 }
             }

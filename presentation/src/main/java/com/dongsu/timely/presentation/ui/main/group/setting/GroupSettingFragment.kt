@@ -5,6 +5,6 @@ import com.dongsu.timely.presentation.common.BaseFragment
 
 class GroupSettingFragment: BaseFragment<FragmentGroupSettingBinding>(FragmentGroupSettingBinding::inflate)  {
     override fun initView() {
-        TODO("Not yet implemented")
+
     }
 }
