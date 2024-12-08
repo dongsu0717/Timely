@@ -6,5 +6,5 @@ interface UserRemoteDatasource {
     suspend fun sendKaKaoTokenAndGetToken(token: String): Token
     suspend fun sendFCMToken(token: String)
     suspend fun fetchMyInfo(): User
-    suspend fun countLateness()
+    suspend fun countLateness(isLate: Boolean)
 }

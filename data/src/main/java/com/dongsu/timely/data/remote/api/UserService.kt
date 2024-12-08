@@ -2,8 +2,10 @@ package com.dongsu.timely.data.remote.api
 
 import com.dongsu.timely.data.common.USER_INFO
 import com.dongsu.timely.data.common.USER_LATE
+import com.dongsu.timely.data.remote.dto.request.LateRequest
 import com.dongsu.timely.data.remote.dto.response.map.UserResponse
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
@@ -13,6 +15,7 @@ interface UserService {
     suspend fun fetchMyInfo(): Response<UserResponse>
 
     @POST(USER_LATE)
-    suspend fun countLateness()
-
+    suspend fun countLateness(
+        @Body isLate: LateRequest
+    ): Response<Unit>
 }

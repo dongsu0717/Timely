@@ -35,6 +35,9 @@ class GroupLocationViewModel @Inject constructor(
     private val _stateMessage = MutableStateFlow<TimelyResult<Unit>>(TimelyResult.Empty)
     val stateMessage = _stateMessage.asStateFlow()
 
+    private val _isLateState = MutableStateFlow<TimelyResult<Unit>>(TimelyResult.Empty)
+    val isLateState = _isLateState.asStateFlow()
+
     fun fetchGroupScheduleShowMap(groupId: Int) {
         viewModelScope.launch {
             _groupScheduleToShowMap.value = TimelyResult.Loading
@@ -63,7 +66,10 @@ class GroupLocationViewModel @Inject constructor(
         }
     }
 
-    suspend fun countLateness() {
-        return userRepository.countLateness()
+    fun countLateness(isLate: Boolean) {
+        viewModelScope.launch {
+            _isLateState.value = TimelyResult.Loading
+            _isLateState.value = userRepository.countLateness(isLate)
+        }
     }
 }

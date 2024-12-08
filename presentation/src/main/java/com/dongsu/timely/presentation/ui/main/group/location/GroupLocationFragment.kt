@@ -10,7 +10,10 @@ import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.map.GroupMeetingInfo
 import com.dongsu.timely.domain.model.map.TargetLocation
 import com.dongsu.timely.domain.model.map.UserMeeting
+import com.dongsu.timely.presentation.common.ARRIVE_MESSAGE
+import com.dongsu.timely.presentation.common.ARRIVE_TITLE
 import com.dongsu.timely.presentation.common.BaseTabFragment
+import com.dongsu.timely.presentation.common.CommonDialogFragment
 import com.dongsu.timely.presentation.common.CommonUtils.calculateDistance
 import com.dongsu.timely.presentation.common.CommonUtils.toastShort
 import com.dongsu.timely.presentation.common.DEFAULT_START_ZOOM_LEVEL
@@ -20,6 +23,8 @@ import com.dongsu.timely.presentation.common.FAIL_SEND_STATE_MESSAGE
 import com.dongsu.timely.presentation.common.GET_EMPTY
 import com.dongsu.timely.presentation.common.GET_ERROR
 import com.dongsu.timely.presentation.common.GET_LOADING
+import com.dongsu.timely.presentation.common.LATE_MESSAGE
+import com.dongsu.timely.presentation.common.LATE_TITLE
 import com.dongsu.timely.presentation.common.SUCCESS_SEND_STATE_MESSAGE
 import com.dongsu.timely.presentation.common.launchRepeatOnLifecycle
 import com.dongsu.timely.presentation.viewmodel.group.GroupLocationViewModel
@@ -104,10 +109,10 @@ class GroupLocationFragment :
         override fun onMapResumed() = super.onMapResumed()
         override fun onMapPaused() = super.onMapPaused()
         override fun onMapDestroy() =
-            toastShort(requireContext(), "onMapDestroy") // 지도 API 가 정상적으로 종료될 때 호출됨
+            toastShort(requireContext(), "지도를 닫습니다.") // 지도 API 가 정상적으로 종료될 때 호출됨
 
         override fun onMapError(error: java.lang.Exception) =
-            toastShort(requireContext(), "onMapError")  // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
+            toastShort(requireContext(), "지도 불러오기 Error")  // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
     }
 
     private fun getScheduleIdToShowMap() {
@@ -253,8 +258,9 @@ class GroupLocationFragment :
             Log.d("목적지까지 남은 거리", "목적지까지 남은 거리 ${distance}m")
 
             if (distance <= DISTANCE_TO_ARRIVE_POINT) {
-                arrivedPlace()
-                closeKakaoMap()
+                arrivedAppointmentPlace()
+                showDialogIsLate(ARRIVE_TITLE, ARRIVE_MESSAGE)
+                updateLate(false)
             }
         }
     }
@@ -290,7 +296,53 @@ class GroupLocationFragment :
                     else -> {}
                 }
             }
+        }
+    }
 
+    private fun checkIsLate() {
+
+    }
+
+    private fun arrivedAppointmentPlace() {
+        showDialogIsLate(ARRIVE_TITLE, ARRIVE_MESSAGE)
+        updateLate(false)
+    }
+
+    private fun lateAppointmentPlace() {
+        showDialogIsLate(LATE_TITLE, LATE_MESSAGE)
+        updateLate(true)
+    }
+
+    private fun showDialogIsLate(
+        title: String,
+        message: String
+    ) = CommonDialogFragment(
+        title,
+        message
+    ) {
+        closeKakaoMap()
+    }.show(parentFragmentManager, "LateDialogFragment")
+
+    private fun updateLate(isLate: Boolean){
+        launchRepeatOnLifecycle {
+            groupLocationViewModel.countLateness(isLate)
+            groupLocationViewModel.isLateState.collectLatest { result ->
+                when (result) {
+                    is TimelyResult.Loading -> {
+                        Log.e("GroupLocationFragment", "지각 업데이트 로딩중")
+                    }
+                    is TimelyResult.Success -> {
+                        Log.e("GroupLocationFragment", "지각 업데이트 성공")
+                    }
+                    is TimelyResult.Empty -> {
+                        Log.e("GroupLocationFragment", "지각 업데이트 비어있음")
+                    }
+                    is TimelyResult.NetworkError -> {
+                        Log.e("GroupLocationFragment", "지각 업데이트 네트워크 오류")
+                    }
+                    else -> {}
+                }
+            }
         }
     }
 
@@ -386,12 +438,8 @@ class GroupLocationFragment :
         return options
     }
 
-    private fun arrivedPlace() {
-
-    }
-
     private fun closeKakaoMap() {
-        toastShort(requireContext(), "약속 장소에 도착했습니다. 지도를 닫습니다.")
+//        toastShort(requireContext(), "약속 장소에 도착했습니다. 지도를 닫습니다.")
         binding.mapView.visibility = View.GONE
         binding.tvNothingScheduleTime.visibility = View.VISIBLE
         mapView.finish()
