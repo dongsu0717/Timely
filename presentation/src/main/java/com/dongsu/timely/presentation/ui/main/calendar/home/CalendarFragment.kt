@@ -1,6 +1,5 @@
 package com.dongsu.timely.presentation.ui.main.calendar.home
 
-//import com.dongsu.timely.presentation.common.toastShort
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
@@ -46,10 +45,11 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
     private var selectedDayView: LinearLayout? = null
 
     private val calendarViewModel: CalendarViewModel by viewModels()
+    private lateinit var scheduleList : List<Schedule>
 
     override fun initView() {
+        getSchedule()
         setAddScheduleButton()
-        setCalendar()
     }
 
     private fun setAddScheduleButton() {
@@ -76,16 +76,20 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
 
     private fun setDayLayoutBind(){
         binding.calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
-            override fun create(view: View) = DayViewContainer(view)
+            override fun create(view: View): DayViewContainer {
+                Log.e("CalendarFragment", "날짜 - create")
+                return DayViewContainer(view)
+            }
             override fun bind(container: DayViewContainer, data: CalendarDay) {
+                Log.e("CalendarFragment", "날짜 - bind")
                 setDayDate(container, data)
                 setDayText(container, data)
                 setDayTextColor(container, data)
                 // 초기 선택일 표시
                 if (data.date == now) {
-                    selectedDayView(data, container)
+                    selectedDayView(container, data)
                 }
-                getSchedule(data, container)
+                loadSchedule(container, data)
                 settingContainerClickEvent(container, data)
             }
         }
@@ -169,12 +173,12 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
             if (data.date == now) {
 
             } else {
-                selectedDayView(data, container)
+                selectedDayView(container, data)
             }
         }
     }
 
-    private fun selectedDayView(data: CalendarDay, container: DayViewContainer) {
+    private fun selectedDayView(container: DayViewContainer, data: CalendarDay) {
         if (selectedDayView != null) selectedDayView?.background = null
         selectedDayView = container.view as LinearLayout
         now = data.date
@@ -183,17 +187,19 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
     }
 
     // 일정 데이터 불러와서 표시
-    private fun getSchedule(data: CalendarDay, container: DayViewContainer) {
+    private fun getSchedule() {
         launchRepeatOnLifecycle {
+            calendarViewModel.loadAllSchedule()
             calendarViewModel.scheduleList.collectLatest { result ->
                 when (result) {
                     is TimelyResult.Loading -> {
-//                            Log.e("CalendarFragment", "리스트 가져오기 - Loading")
+                        Log.e("CalendarFragment", "리스트 가져오기 - Loading")
                     }
 
                     is TimelyResult.Success -> {
-//                            Log.e("CalendarFragment", "리스트 가져오기 - Success")
-                        loadSchedule(data, container, result.resultData)
+                        Log.e("CalendarFragment", "리스트 가져오기 - Success")
+                        scheduleList = result.resultData
+                        setCalendar()
                     }
 
                     is TimelyResult.Empty -> {
@@ -211,10 +217,10 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
     }
 
     private fun loadSchedule(
-        data: CalendarDay,
         container: DayViewContainer,
-        scheduleList: List<Schedule>
+        data: CalendarDay,
     ) {
+        Log.e("CalendarFragment", "loadSchedule작동")
         scheduleList.filter { data.date == LocalDate.parse(it.startDate) }
             .also { filteredList ->
                 if (filteredList.isNotEmpty()) {
@@ -236,10 +242,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
         container.scheduleBox.addView(scheduleView.root)
     }
 
-    private fun moveAddScheduleFragment() = findNavController().navigate(R.id.action_calendarFragment_to_addScheduleFragment)
-
-    override fun onResume() {
-        super.onResume()
-        calendarViewModel.loadAllSchedule()
-    }
+    private fun moveAddScheduleFragment() =
+        findNavController().navigate(R.id.action_calendarFragment_to_addScheduleFragment)
 }
