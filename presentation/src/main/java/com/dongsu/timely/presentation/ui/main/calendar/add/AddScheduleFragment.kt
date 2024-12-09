@@ -368,29 +368,4 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
             }
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        Log.e("AddScheduleFragment", "onResume()")
-    }
-    override fun onPause() {
-        super.onPause()
-        Log.e("AddScheduleFragment", "onPause()")
-    }
-    override fun onStop() {
-        super.onStop()
-        Log.e("AddScheduleFragment", "onStop()")
-    }
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.e("AddScheduleFragment", "onDestroyView()")
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.e("AddScheduleFragment", "onDestroy()")
-    }
-    override fun onDetach() {
-        super.onDetach()
-        Log.e("AddScheduleFragment", "onDetach()")
-    }
 }
