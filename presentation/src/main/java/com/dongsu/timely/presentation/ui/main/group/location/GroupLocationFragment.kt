@@ -4,16 +4,16 @@ import android.graphics.Color
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.FragmentGroupLocationBinding
 import com.dongsu.timely.common.TimelyResult
 import com.dongsu.timely.domain.model.map.GroupMeetingInfo
 import com.dongsu.timely.domain.model.map.TargetLocation
 import com.dongsu.timely.domain.model.map.UserMeeting
+import com.dongsu.timely.presentation.common.ARRIVE_MESSAGE
+import com.dongsu.timely.presentation.common.ARRIVE_TITLE
 import com.dongsu.timely.presentation.common.BaseTabFragment
+import com.dongsu.timely.presentation.common.CommonDialogFragment
 import com.dongsu.timely.presentation.common.CommonUtils.calculateDistance
 import com.dongsu.timely.presentation.common.CommonUtils.toastShort
 import com.dongsu.timely.presentation.common.DEFAULT_START_ZOOM_LEVEL
@@ -23,7 +23,10 @@ import com.dongsu.timely.presentation.common.FAIL_SEND_STATE_MESSAGE
 import com.dongsu.timely.presentation.common.GET_EMPTY
 import com.dongsu.timely.presentation.common.GET_ERROR
 import com.dongsu.timely.presentation.common.GET_LOADING
+import com.dongsu.timely.presentation.common.LATE_MESSAGE
+import com.dongsu.timely.presentation.common.LATE_TITLE
 import com.dongsu.timely.presentation.common.SUCCESS_SEND_STATE_MESSAGE
+import com.dongsu.timely.presentation.common.launchRepeatOnLifecycle
 import com.dongsu.timely.presentation.viewmodel.group.GroupLocationViewModel
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
@@ -52,7 +55,6 @@ import com.kakao.vectormap.shape.animation.CircleWave
 import com.kakao.vectormap.shape.animation.CircleWaves
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GroupLocationFragment :
@@ -107,38 +109,36 @@ class GroupLocationFragment :
         override fun onMapResumed() = super.onMapResumed()
         override fun onMapPaused() = super.onMapPaused()
         override fun onMapDestroy() =
-            toastShort(requireContext(), "onMapDestroy") // 지도 API 가 정상적으로 종료될 때 호출됨
+            toastShort(requireContext(), "지도를 닫습니다.") // 지도 API 가 정상적으로 종료될 때 호출됨
 
         override fun onMapError(error: java.lang.Exception) =
-            toastShort(requireContext(), "onMapError")  // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
+            toastShort(requireContext(), "지도 불러오기 Error")  // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
     }
 
     private fun getScheduleIdToShowMap() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                groupLocationViewModel.fetchGroupScheduleShowMap(groupId)
-                groupLocationViewModel.groupScheduleToShowMap.collectLatest { result ->
-                    when (result) {
-                        is TimelyResult.Loading -> {
-                            Log.e("맵에 보여줄 스케줄", "로딩중")
-                        }
+        launchRepeatOnLifecycle {
+            groupLocationViewModel.fetchGroupScheduleShowMap(groupId)
+            groupLocationViewModel.groupScheduleToShowMap.collectLatest { result ->
+                when (result) {
+                    is TimelyResult.Loading -> {
+                        Log.e("맵에 보여줄 스케줄", "로딩중")
+                    }
 
-                        is TimelyResult.Success -> {
-                            setScheduleIdToShowMap(result.resultData.scheduleId)
-                            setBeforeStartMap()
-                        }
+                    is TimelyResult.Success -> {
+                        setScheduleIdToShowMap(result.resultData.scheduleId)
+                        setBeforeStartMap()
+                    }
 
-                        is TimelyResult.Empty -> {
-                            Log.e("맵에 보여줄 스케줄", "비어있음. empty라고")
-                        }
+                    is TimelyResult.Empty -> {
+                        Log.e("맵에 보여줄 스케줄", "비어있음. empty라고")
+                    }
 
-                        is TimelyResult.NetworkError -> {
-                            Log.e("맵에 보여줄 스케줄", "에러뜸")
-                        }
+                    is TimelyResult.NetworkError -> {
+                        Log.e("맵에 보여줄 스케줄", "에러뜸")
+                    }
 
-                        else -> {
-                            Log.e("맵에 보여줄 스케줄", "니가왜떠")
-                        }
+                    else -> {
+                        Log.e("맵에 보여줄 스케줄", "니가왜떠")
                     }
                 }
             }
@@ -164,32 +164,29 @@ class GroupLocationFragment :
     }
 
     private fun getMyId() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                groupLocationViewModel.fetchMyUserId()
-                groupLocationViewModel.myUserId.collectLatest { result ->
-                    when (result) {
-                        is TimelyResult.Loading -> {
-                            Log.e("GroupLocationFragment", "내아이디 가져오기 - 로딩중")
-                        }
-
-                        is TimelyResult.Success -> {
-                            Log.e("GroupLocationFragment", "내아이디 가져오기 - 성공")
-                            myId = result.resultData
-                        }
-
-                        is TimelyResult.Empty -> {
-                            Log.e("GroupLocationFragment", "내아이디 가져오기 - 비어있음")
-                        }
-
-                        is TimelyResult.NetworkError -> {
-                            Log.e("GroupLocationFragment", "내아이디 가져오기 - 네트워크 오류")
-                        }
-
-                        else -> {}
+        launchRepeatOnLifecycle {
+            groupLocationViewModel.fetchMyUserId()
+            groupLocationViewModel.myUserId.collectLatest { result ->
+                when (result) {
+                    is TimelyResult.Loading -> {
+                        Log.e("GroupLocationFragment", "내아이디 가져오기 - 로딩중")
                     }
-                }
 
+                    is TimelyResult.Success -> {
+                        Log.e("GroupLocationFragment", "내아이디 가져오기 - 성공")
+                        myId = result.resultData
+                    }
+
+                    is TimelyResult.Empty -> {
+                        Log.e("GroupLocationFragment", "내아이디 가져오기 - 비어있음")
+                    }
+
+                    is TimelyResult.NetworkError -> {
+                        Log.e("GroupLocationFragment", "내아이디 가져오기 - 네트워크 오류")
+                    }
+
+                    else -> {}
+                }
             }
         }
     }
@@ -199,30 +196,28 @@ class GroupLocationFragment :
 
 
     private fun getGroupMeetingInfoOnMap(kakaoMap: KakaoMap) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                groupLocationViewModel.groupMeetingInfo.collectLatest { meetingInfo ->
-                    when (meetingInfo) {
-                        is TimelyResult.Loading -> {
-                            toastShort(requireContext(), GET_LOADING)
-                        }
+        launchRepeatOnLifecycle {
+            groupLocationViewModel.groupMeetingInfo.collectLatest { meetingInfo ->
+                when (meetingInfo) {
+                    is TimelyResult.Loading -> {
+                        toastShort(requireContext(), GET_LOADING)
+                    }
 
-                        is TimelyResult.Success -> {
-                            setGroupMeetingInfoOnMap(kakaoMap, meetingInfo.resultData)
-                        }
+                    is TimelyResult.Success -> {
+                        setGroupMeetingInfoOnMap(kakaoMap, meetingInfo.resultData)
+                    }
 
-                        is TimelyResult.Empty -> {
-                            toastShort(requireContext(), GET_EMPTY)
-                        }
+                    is TimelyResult.Empty -> {
+                        toastShort(requireContext(), GET_EMPTY)
+                    }
 
-                        is TimelyResult.NetworkError -> {
-                            toastShort(requireContext(), GET_ERROR)
-                            Log.e("멤버들 가져오기", meetingInfo.exception.toString())
-                        }
+                    is TimelyResult.NetworkError -> {
+                        toastShort(requireContext(), GET_ERROR)
+                        Log.e("멤버들 가져오기", meetingInfo.exception.toString())
+                    }
 
-                        else -> {
-                            toastShort(requireContext(), "참여자 위치 가져오는 곳 ")
-                        }
+                    else -> {
+                        toastShort(requireContext(), "참여자 위치 가져오는 곳 ")
                     }
                 }
             }
@@ -263,8 +258,9 @@ class GroupLocationFragment :
             Log.d("목적지까지 남은 거리", "목적지까지 남은 거리 ${distance}m")
 
             if (distance <= DISTANCE_TO_ARRIVE_POINT) {
-                arrivedPlace()
-                closeKakaoMap()
+                arrivedAppointmentPlace()
+                showDialogIsLate(ARRIVE_TITLE, ARRIVE_MESSAGE)
+                updateLate(false)
             }
         }
     }
@@ -277,29 +273,74 @@ class GroupLocationFragment :
     }
 
     private fun updateStateMessage(stateMessage: String) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                scheduleIdToShowMap?.let { groupLocationViewModel.updateStateMessage(it, stateMessage) }
-                groupLocationViewModel.stateMessage.collectLatest { result ->
-                    when (result) {
-                        is TimelyResult.Loading -> {
+        launchRepeatOnLifecycle {
+            scheduleIdToShowMap?.let { groupLocationViewModel.updateStateMessage(it, stateMessage) }
+            groupLocationViewModel.stateMessage.collectLatest { result ->
+                when (result) {
+                    is TimelyResult.Loading -> {
 
-                        }
-
-                        is TimelyResult.Success -> {
-                            toastShort(requireContext(), SUCCESS_SEND_STATE_MESSAGE)
-                        }
-
-                        is TimelyResult.Empty -> {
-
-                        }
-
-                        is TimelyResult.NetworkError -> {
-                            toastShort(requireContext(), FAIL_SEND_STATE_MESSAGE)
-                        }
-
-                        else -> {}
                     }
+
+                    is TimelyResult.Success -> {
+                        toastShort(requireContext(), SUCCESS_SEND_STATE_MESSAGE)
+                    }
+
+                    is TimelyResult.Empty -> {
+
+                    }
+
+                    is TimelyResult.NetworkError -> {
+                        toastShort(requireContext(), FAIL_SEND_STATE_MESSAGE)
+                    }
+
+                    else -> {}
+                }
+            }
+        }
+    }
+
+    private fun checkIsLate() {
+
+    }
+
+    private fun arrivedAppointmentPlace() {
+        showDialogIsLate(ARRIVE_TITLE, ARRIVE_MESSAGE)
+        updateLate(false)
+    }
+
+    private fun lateAppointmentPlace() {
+        showDialogIsLate(LATE_TITLE, LATE_MESSAGE)
+        updateLate(true)
+    }
+
+    private fun showDialogIsLate(
+        title: String,
+        message: String
+    ) = CommonDialogFragment(
+        title,
+        message
+    ) {
+        closeKakaoMap()
+    }.show(parentFragmentManager, "LateDialogFragment")
+
+    private fun updateLate(isLate: Boolean){
+        launchRepeatOnLifecycle {
+            groupLocationViewModel.countLateness(isLate)
+            groupLocationViewModel.isLateState.collectLatest { result ->
+                when (result) {
+                    is TimelyResult.Loading -> {
+                        Log.e("GroupLocationFragment", "지각 업데이트 로딩중")
+                    }
+                    is TimelyResult.Success -> {
+                        Log.e("GroupLocationFragment", "지각 업데이트 성공")
+                    }
+                    is TimelyResult.Empty -> {
+                        Log.e("GroupLocationFragment", "지각 업데이트 비어있음")
+                    }
+                    is TimelyResult.NetworkError -> {
+                        Log.e("GroupLocationFragment", "지각 업데이트 네트워크 오류")
+                    }
+                    else -> {}
                 }
             }
         }
@@ -397,12 +438,8 @@ class GroupLocationFragment :
         return options
     }
 
-    private fun arrivedPlace() {
-
-    }
-
     private fun closeKakaoMap() {
-        toastShort(requireContext(), "약속 장소에 도착했습니다. 지도를 닫습니다.")
+//        toastShort(requireContext(), "약속 장소에 도착했습니다. 지도를 닫습니다.")
         binding.mapView.visibility = View.GONE
         binding.tvNothingScheduleTime.visibility = View.VISIBLE
         mapView.finish()

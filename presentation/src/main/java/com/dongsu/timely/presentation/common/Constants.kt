@@ -56,11 +56,22 @@ const val GROUP_MANAGEMENT = "관리"
 //groupSchedule
 const val DEFAULT_ALARM_TIME = 1
 
-//GroupMeeting
+//GroupLocation - Map
 const val DISTANCE_TO_ARRIVE_POINT = 100
 const val DEFAULT_START_ZOOM_LEVEL = 15
+
+//GroupLocation - StateMessage
 const val SUCCESS_SEND_STATE_MESSAGE = "모두에게 상태메세지 전송 완료!"
 const val FAIL_SEND_STATE_MESSAGE = "상태메세지 전송 실패"
+
+//GroupLocation - Dialog - Late
+const val LATE_TITLE = "지각 하셨네요."
+const val LATE_MESSAGE = "지각률이 증가 합니다."
+
+//GroupLocation - Dialog - NotLate
+const val ARRIVE_TITLE = "약속 시간 전에 오셨군요!"
+const val ARRIVE_MESSAGE = "대단하세요!"
+
 
 //inviteGroup
 const val INVITE_GROUP_MESSAGE = """Timely로 초대합니다. 

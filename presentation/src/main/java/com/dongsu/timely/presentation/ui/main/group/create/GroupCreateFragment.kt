@@ -2,9 +2,7 @@ package com.dongsu.timely.presentation.ui.main.group.create
 
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.dongsu.presentation.R
 import com.dongsu.presentation.databinding.FragmentGroupCreateBinding
@@ -17,12 +15,12 @@ import com.dongsu.timely.presentation.common.OMG
 import com.dongsu.timely.presentation.common.SAVE_ERROR
 import com.dongsu.timely.presentation.common.SAVE_LOADING
 import com.dongsu.timely.presentation.common.SAVE_SUCCESS
+import com.dongsu.timely.presentation.common.launchRepeatOnLifecycle
 import com.dongsu.timely.presentation.common.throttledClickListener
 import com.dongsu.timely.presentation.viewmodel.group.GroupCreateViewModel
 import com.google.android.material.imageview.ShapeableImageView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GroupCreateFragment: BaseFragment<FragmentGroupCreateBinding>(FragmentGroupCreateBinding::inflate) {
@@ -50,31 +48,30 @@ class GroupCreateFragment: BaseFragment<FragmentGroupCreateBinding>(FragmentGrou
         }
     }
     private fun saveGroup(){
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                val groupName = binding.etGroupName.text.toString()
-                groupCreateViewModel.createGroup(groupName, groupColor)
-                groupCreateViewModel.createGroupState.collectLatest { result ->
-                    when (result) {
-                        is TimelyResult.Loading -> {
-                            toastShort(requireContext(), SAVE_LOADING)
-                        }
+        launchRepeatOnLifecycle {
+            val groupName = binding.etGroupName.text.toString()
+            groupCreateViewModel.createGroup(groupName, groupColor)
+            groupCreateViewModel.createGroupState.collectLatest { result ->
+                when (result) {
+                    is TimelyResult.Loading -> {
+                        toastShort(requireContext(), SAVE_LOADING)
+                    }
 
-                        is TimelyResult.Success -> {
-                            toastShort(requireContext(), SAVE_SUCCESS)
-                            findNavController().popBackStack()
-                        }
+                    is TimelyResult.Success -> {
+                        toastShort(requireContext(), SAVE_SUCCESS)
+                        findNavController().popBackStack()
+                    }
 
-                        is TimelyResult.NetworkError -> {
-                            toastShort(requireContext(), SAVE_ERROR)
-                        }
+                    is TimelyResult.NetworkError -> {
+                        toastShort(requireContext(), SAVE_ERROR)
+                    }
 
-                        else -> {
-                            toastShort(requireContext(), OMG)
-                        }
+                    else -> {
+                        toastShort(requireContext(), OMG)
                     }
                 }
             }
+
         }
     }
     private fun chooseColor() {

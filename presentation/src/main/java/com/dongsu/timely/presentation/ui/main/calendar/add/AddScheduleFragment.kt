@@ -11,9 +11,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.dongsu.presentation.R
@@ -32,6 +30,7 @@ import com.dongsu.timely.presentation.common.SAVE_LOADING
 import com.dongsu.timely.presentation.common.SAVE_SUCCESS
 import com.dongsu.timely.presentation.common.formatDate
 import com.dongsu.timely.presentation.common.formatTimeToString
+import com.dongsu.timely.presentation.common.launchRepeatOnLifecycle
 import com.dongsu.timely.presentation.common.throttledClickListener
 import com.dongsu.timely.presentation.viewmodel.calendar.add.AddScheduleViewModel
 import com.google.android.material.imageview.ShapeableImageView
@@ -345,55 +344,28 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
     }
 
     private fun checkUIState(){
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                addScheduleViewModel.addScheduleState.collectLatest { result ->
-                    when (result) {
-                        is TimelyResult.Loading -> {
-                            CommonUtils.toastShort(requireContext(), SAVE_LOADING)
-                        }
+        launchRepeatOnLifecycle {
+            addScheduleViewModel.addScheduleState.collectLatest { result ->
+                when (result) {
+                    is TimelyResult.Loading -> {
+                        CommonUtils.toastShort(requireContext(), SAVE_LOADING)
+                    }
 
-                        is TimelyResult.Success -> {
-                            CommonUtils.toastShort(requireContext(), SAVE_SUCCESS)
-                            findNavController().popBackStack()
-                        }
+                    is TimelyResult.Success -> {
+                        CommonUtils.toastShort(requireContext(), SAVE_SUCCESS)
+                        findNavController().popBackStack()
+                    }
 
-                        is TimelyResult.LocalError -> {
-                            Log.e("AddScheduleFragment", "스케줄 저장 error: ${result.exception}")
-                            CommonUtils.toastShort(requireContext(), SAVE_ERROR)
-                        }
+                    is TimelyResult.LocalError -> {
+                        Log.e("AddScheduleFragment", "스케줄 저장 error: ${result.exception}")
+                        CommonUtils.toastShort(requireContext(), SAVE_ERROR)
+                    }
 
-                        else -> {
+                    else -> {
 
-                        }
                     }
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.e("AddScheduleFragment", "onResume()")
-    }
-    override fun onPause() {
-        super.onPause()
-        Log.e("AddScheduleFragment", "onPause()")
-    }
-    override fun onStop() {
-        super.onStop()
-        Log.e("AddScheduleFragment", "onStop()")
-    }
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.e("AddScheduleFragment", "onDestroyView()")
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.e("AddScheduleFragment", "onDestroy()")
-    }
-    override fun onDetach() {
-        super.onDetach()
-        Log.e("AddScheduleFragment", "onDetach()")
     }
 }

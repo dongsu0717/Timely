@@ -1,6 +1,10 @@
 package com.dongsu.timely.presentation.common
 
 import android.view.View
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.awaitClose
@@ -11,6 +15,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import reactivecircus.flowbinding.android.view.clicks
 
 //fun <T> LifecycleOwner.collectWhenStarted(flow: StateFlow<T>, action: suspend (value: T) -> Unit) {
@@ -69,5 +74,14 @@ fun <T> Flow<T>.throttleFirst(intervalTime: Long): Flow<T> = flow {
             throttleTime = currentTime
             emit(value)
         }
+    }
+}
+
+fun LifecycleOwner.launchRepeatOnLifecycle(
+    state: Lifecycle.State = Lifecycle.State.STARTED,
+    block: suspend CoroutineScope.() -> Unit
+) {
+    lifecycleScope.launch {
+        lifecycle.repeatOnLifecycle(state, block)
     }
 }

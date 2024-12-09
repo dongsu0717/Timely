@@ -12,11 +12,11 @@ import com.dongsu.timely.presentation.common.BaseFragment
 import com.dongsu.timely.presentation.common.CommonUtils.toastShort
 import com.dongsu.timely.presentation.common.GET_GROUP_LIST_EMPTY
 import com.dongsu.timely.presentation.common.GET_GROUP_LIST_ERROR
+import com.dongsu.timely.presentation.common.launchRepeatOnLifecycle
 import com.dongsu.timely.presentation.common.throttledClickListener
 import com.dongsu.timely.presentation.viewmodel.group.GroupListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class GroupListFragment :
@@ -50,32 +50,28 @@ class GroupListFragment :
     }
 
     private fun fetchGroupList() {
-        lifecycleScope.launch {
+        launchRepeatOnLifecycle {
             groupListViewModel.fetchMyGroupList()
-            setGroupList()
-        }
-    }
-
-    private suspend fun setGroupList() {
-        groupListViewModel.groupList.collectLatest { result ->
-            when (result) {
-                is TimelyResult.Loading -> {
+            groupListViewModel.groupList.collectLatest { result ->
+                when (result) {
+                    is TimelyResult.Loading -> {
 //                    toastShort(requireContext(), GET_LOADING)
-                }
+                    }
 
-                is TimelyResult.Success -> {
-                    groupListAdapter.submitList(result.resultData)
-                }
+                    is TimelyResult.Success -> {
+                        groupListAdapter.submitList(result.resultData)
+                    }
 
-                is TimelyResult.Empty -> {
-                    toastShort(requireContext(), GET_GROUP_LIST_EMPTY)
-                }
+                    is TimelyResult.Empty -> {
+                        toastShort(requireContext(), GET_GROUP_LIST_EMPTY)
+                    }
 
-                is TimelyResult.NetworkError -> {
-                    toastShort(requireContext(), GET_GROUP_LIST_ERROR)
-                }
+                    is TimelyResult.NetworkError -> {
+                        toastShort(requireContext(), GET_GROUP_LIST_ERROR)
+                    }
 
-                else -> {}
+                    else -> {}
+                }
             }
         }
     }

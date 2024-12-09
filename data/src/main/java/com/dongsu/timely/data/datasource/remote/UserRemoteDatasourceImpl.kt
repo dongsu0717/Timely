@@ -5,6 +5,7 @@ import com.dongsu.timely.data.mapper.UserMapper
 import com.dongsu.timely.data.remote.api.FCMService
 import com.dongsu.timely.data.remote.api.LoginService
 import com.dongsu.timely.data.remote.api.UserService
+import com.dongsu.timely.data.remote.dto.request.LateRequest
 import com.dongsu.timely.data.remote.dto.request.SendFCMTokenRequest
 import com.dongsu.timely.data.remote.dto.request.SendTokenRequest
 import com.dongsu.timely.domain.model.Token
@@ -36,8 +37,12 @@ class UserRemoteDatasourceImpl @Inject constructor(
     }
 
 
-    override suspend fun countLateness()
-    = userService.countLateness()
+    override suspend fun countLateness(isLate: Boolean) {
+        val response = userService.countLateness(LateRequest(isLate))
+        if (!response.isSuccessful) {
+            throw Exception("출석체크 Error: ${response.code()}, Message: ${response.message()}")
+        }
+    }
 //        return try {
 //            userService.countLateness()
 //            TimelyResult.Success(Unit)

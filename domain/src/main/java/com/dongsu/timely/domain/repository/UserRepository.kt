@@ -10,7 +10,7 @@ interface UserRepository {
     suspend fun sendFCMToken(token: String): TimelyResult<Unit>
     suspend fun isLoggedIn(): TimelyResult<Boolean>
     suspend fun fetchMyInfo(): TimelyResult<User>
-    suspend fun countLateness()
+    suspend fun countLateness(isLate: Boolean): TimelyResult<Unit>
     suspend fun getUserProfile()
     suspend fun updateUserProfile()
     suspend fun kakaoLogout()

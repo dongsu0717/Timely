@@ -29,7 +29,7 @@ class TimelyViewModel @Inject constructor(
     private val _saveTokenLocalState = MutableStateFlow<TimelyResult<Unit>>(TimelyResult.Empty)
     val saveTokenLocalState = _saveTokenLocalState.asStateFlow()
 
-    private var _loginStatus = MutableStateFlow<TimelyResult<Boolean>>(TimelyResult.Empty)
+    private val _loginStatus = MutableStateFlow<TimelyResult<Boolean>>(TimelyResult.Empty)
     val loginStatus = _loginStatus.asStateFlow()
 
     suspend fun sendKaKaoTokenAndGetToken(token: String) {

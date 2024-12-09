@@ -54,7 +54,13 @@ class UserRepositoryImpl @Inject constructor(
             TimelyResult.NetworkError(e)
         }
 
-    override suspend fun countLateness() = userRemoteDatasource.countLateness()
+    override suspend fun countLateness(isLate: Boolean): TimelyResult<Unit> =
+        try{
+            userRemoteDatasource.countLateness(isLate)
+            TimelyResult.Success(Unit)
+        } catch (e: Exception) {
+            TimelyResult.NetworkError(e)
+        }
 
 
     override suspend fun getUserProfile() {
