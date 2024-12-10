@@ -50,6 +50,13 @@ BackEnd: 유종환
 <br><br>
 ## 03. Screen 및 상세 기능
 ### 개인 스케줄
+<table>
+  <tr><th>캘린더</th><th>개인 스케줄 추가</th><th>위치 권한</th></tr>
+  <tr>
+    <td><img src = "https://github.com/user-attachments/assets/1e17ed53-7451-4b3a-a43e-173fd9b85933" width="200px"/></td>
+  </tr>
+</table>
+
 | 캘린더| 개인 스케줄 추가 | 위치 권한 |
 |---|---|---|
 |![캘린더 영상 (online-video-cutter com) (1)](https://github.com/user-attachments/assets/3b7b38be-c4cf-4ae5-bff4-2ba0998726dd)|![일정추가 영상 (1)](https://github.com/user-attachments/assets/44063ccb-42bf-49b5-b83d-e2b357c031ad)|![위치 권한 영상 ](https://github.com/user-attachments/assets/9b1f4ec8-69f7-49d7-b08c-444d77682eb6)|
