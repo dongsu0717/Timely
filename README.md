@@ -48,7 +48,8 @@ BackEnd: 유종환
 | **Data Binding** |  ViewBinding,  FlowBinding  |
 
 <br><br>
-
+![위치 공유 영상 (2)](https://github.com/user-attachments/assets/fea90383-c793-47c4-8720-4443e6945eda)
+![일정추가 영상](https://github.com/user-attachments/assets/2f11083f-cdd0-463a-93a2-dfa0c056e66d)
 ## 03. Screen 및 상세 기능
 ### 개인 스케줄
 | 캘린더| 개인 스케줄 추가 | 위치 권한 |
