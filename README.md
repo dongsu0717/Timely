@@ -24,7 +24,6 @@ BackEnd: 유종환
 <br><br>
 
 ### ***모듈 구성***
-<img src="https://github.com/user-attachments/assets/84a1a595-3903-4e5e-afd4-44a9203231a8" width="500px" />
 ![image](https://github.com/user-attachments/assets/84a1a595-3903-4e5e-afd4-44a9203231a8)
 
 <br><br>
