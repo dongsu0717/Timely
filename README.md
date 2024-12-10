@@ -31,7 +31,7 @@ BackEnd: 유종환
 ### ***사용 기술***
 | **Category** | **Technologies** |
 | --- | --- |
-| **Architecture** | Multi Module, Clean Architecture, MVVM, SAA |
+| **Architecture** | Multi Module,  Clean Architecture,  MVVM,  SAA |
 | **DI** | Dagger-Hilt |
 | **Networking** | Retrofit, OkHttp, Interceptor, Gson|
 | **Database** | RoomDB |
