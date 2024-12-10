@@ -42,7 +42,8 @@ BackEnd: 유종환
 ### 개인 스케줄
 | 캘린더| 개인 스케줄 추가 | 위치 권한 |
 |---|---|---|
-| ![캘린더 영상 (online-video-cutter com) (1)](https://github.com/user-attachments/assets/f9dfc00e-9ba0-4c8a-88af-853f1c4626b9) | ![일정추가 영상](https://github.com/user-attachments/assets/2f11083f-cdd0-463a-93a2-dfa0c056e66d) | ![위치 권한 영상 ](https://github.com/user-attachments/assets/4b54ed15-e7cb-4afb-a4b5-0fbd2cc02075)|
+|![캘린더 영상](https://github.com/user-attachments/assets/0518bf5d-06f5-437b-9179-0b444b0aa15b)
+ | ![일정추가 영상](https://github.com/user-attachments/assets/2f11083f-cdd0-463a-93a2-dfa0c056e66d) | ![위치 권한 영상 ](https://github.com/user-attachments/assets/4b54ed15-e7cb-4afb-a4b5-0fbd2cc02075)|
 
 
 | 위치검색 | 알람 | TMap 연결|
