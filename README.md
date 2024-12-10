@@ -52,15 +52,13 @@ BackEnd: 유종환
 ### 개인 스케줄
 | 캘린더| 개인 스케줄 추가 | 위치 권한 |
 |---|---|---|
-|![위치 공유 영상 (2)](https://github.com/user-attachments/assets/84456ee8-c2e7-4888-b527-2e19702e827c)|![일정추가 영상](https://github.com/user-attachments/assets/2f11083f-cdd0-463a-93a2-dfa0c056e66d)|![위치 권한 영상 ](https://github.com/user-attachments/assets/4b54ed15-e7cb-4afb-a4b5-0fbd2cc02075)|
-|![위치 공유 영상 (2)](https://github.com/user-attachments/assets/84456ee8-c2e7-4888-b527-2e19702e827c)|![위치 공유 영상 (2)](https://github.com/user-attachments/assets/84456ee8-c2e7-4888-b527-2e19702e827c)|![위치 공유 영상 (2)](https://github.com/user-attachments/assets/84456ee8-c2e7-4888-b527-2e19702e827c)|
+|![캘린더 영상](https://github.com/user-attachments/assets/041aef2d-e0a8-41cd-ab5f-119dbd9c715a)|![일정추가 영상](https://github.com/user-attachments/assets/2f11083f-cdd0-463a-93a2-dfa0c056e66d)|![위치 권한 영상 ](https://github.com/user-attachments/assets/4b54ed15-e7cb-4afb-a4b5-0fbd2cc02075)|
 <br>
 <br>
 
-| 위치검색 | 알람 | TMap 연결|
+| 위치검색 | 알람(시간, 거리 표시) | 알람 클릭시 TMap 연결|
 |---|---|---|
-|![위치 검색 스샷](https://github.com/user-attachments/assets/b03aa7db-26ab-4f81-954d-923490316161)|![위치알람 스샷](https://github.com/user-attachments/assets/32db328c-3783-4fe8-8217-7ab0c284cdd5)| 
- |
+|![위치검색 영상  (1)](https://github.com/user-attachments/assets/3b0d3d57-2a36-4f41-880e-083b17139511)|![위치알람 스샷](https://github.com/user-attachments/assets/9037a9f8-5c01-43b4-a51f-f1735ec2fdc9)|![TMap연결 시켜서 (online-video-cutter com) (1)](https://github.com/user-attachments/assets/5cb68c87-e29a-4b5c-ab7b-5ae011aa7ee4)|
 <br>
 <br>
 
