@@ -51,9 +51,18 @@ BackEnd: 유종환
 ## 03. Screen 및 상세 기능
 ### 개인 스케줄 관리
 <table>
-  <tr><th>캘린더</th><th>개인 스케줄 추가</th><th>위치 권한</th></tr>
+  <tr><th>캘린더</th><th>개인 스케줄 추가</th><th>권한 확인(위치, 알람)</th></tr>
   <tr>
     <td><img src = "https://github.com/user-attachments/assets/1e17ed53-7451-4b3a-a43e-173fd9b85933" width="200px"/></td>
+    <td><img src = "https://github.com/user-attachments/assets/428ae46e-f3a0-4924-b606-735ddb61fbf0" width="200px"/></td>
+    <td><img src = "https://github.com/user-attachments/assets/63756369-1650-4dea-9a25-1ef002313fd7" width="200px"/></td>
+  </tr>
+</table>
+<br>
+
+<table>
+  <tr><th>위치 검색</th><th>TMap 경로안내</th></tr>
+  <tr>
     <td><img src = "https://github.com/user-attachments/assets/c1716a42-33db-4697-acf7-32811557ad48" width="200px"/></td>
     <td><img src = "https://github.com/user-attachments/assets/ac84982e-f33e-4b72-af5f-cb4f5b1c0d1d" width="200px"/></td>
   </tr>
