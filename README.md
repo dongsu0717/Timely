@@ -1,6 +1,6 @@
 # Timely
-### ***개인 & 그룹 스케줄 관리 및 지각 방지 Application***<br>
-<br><br><br><br>
+### ***개인 & 그룹 스케줄 관리 및 지각 방지 Application***
+<br><br>
 ## 01. 프로젝트 개요
 개인 & 그룹 스케줄 한번에 관리     
 개인 스케줄 시간 관리   
@@ -16,12 +16,14 @@
 디자인: 이동수    
 Android: 이동수   
 BackEnd: 유종환   
-      
-       
+
+<br><br>
+
 ### ***모듈 구성***
 ![image](https://github.com/user-attachments/assets/84a1a595-3903-4e5e-afd4-44a9203231a8)
-      
-      
+
+<br><br>
+
 ### ***사용 기술***
 | **Category** | **Technologies** |
 | --- | --- |
