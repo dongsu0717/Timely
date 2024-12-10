@@ -42,4 +42,6 @@ BackEnd: 유종환
 | 캘린더| 개인 스케줄 추가 | 위치 권한 |
 |---|---|---|
 |![캐린더 스샷](https://github.com/user-attachments/assets/8fe63960-102d-41e4-aaec-8ebfc796c280)
- | | |
+ |![캐린더 스샷](https://github.com/user-attachments/assets/c769d90d-ac47-4968-a938-40edba090105)
+ |![캐린더 스샷](https://github.com/user-attachments/assets/d01291d0-b1cd-4375-87bf-a5de3e529b1b)
+ |
