@@ -39,6 +39,31 @@ BackEnd: 유종환
 | **Data Binding** | ViewBinding, FlowBinding |
 
 ### 03. Screen 및 상세 기능
+개인 스케줄
 | 캘린더| 개인 스케줄 추가 | 위치 권한 |
 |---|---|---|
-|![캐린더 스샷](https://github.com/user-attachments/assets/8fe63960-102d-41e4-aaec-8ebfc796c280)| ![캐린더 스샷](https://github.com/user-attachments/assets/f6a8d9c8-2c9c-4c54-82a1-eff482e8423e) | ![캐린더 스샷](https://github.com/user-attachments/assets/0b0577a2-3714-4021-93ac-7b15d54bf4e6) |
+|||
+
+| 위치검색 | 알람 | TMap 연결|
+|---|---|---|
+|||
+
+그룹 스케줄
+| KaKao 로그인 | 내 그룹 리스트 | 그룹 생성 |
+|---|---|---|
+|||
+
+| 그룹 페이지 | 그룹 초대 | 그룹 생성 |
+|---|---|---|
+|||
+
+| 그룹 알람 | 그룹원 위치 확인 | 위치 확인 종료 |
+|---|---|---|
+|||
+
+마이 프로필
+| 지각률 확인 |
+|---|
+||
+
+
