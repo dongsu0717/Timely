@@ -61,10 +61,9 @@ BackEnd: 유종환
 <br>
 
 <table>
-  <tr><th>위치 검색</th><th>알람(시간, 거리 표시)</th><th>알람 클릭시 TMap 연결</th></tr>
+  <tr><th>위치 검색</th><th>알람(장소O) 클릭시 TMap 연결</th></tr>
   <tr>
     <td><img src = "https://github.com/user-attachments/assets/c1716a42-33db-4697-acf7-32811557ad48" width="200px"/></td>
-    <td><img src = "https://github.com/user-attachments/assets/e55b3140-9a94-4b66-9423-2317499218f0" width="200px"/></td>
     <td><img src = "https://github.com/user-attachments/assets/ac84982e-f33e-4b72-af5f-cb4f5b1c0d1d" width="200px"/></td>
   </tr>
 </table>
