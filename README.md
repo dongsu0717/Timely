@@ -53,7 +53,7 @@ BackEnd: 유종환
 ### 개인 스케줄
 | 캘린더| 개인 스케줄 추가 | 위치 권한 |
 |---|---|---|
-|![캘린더 영상](https://github.com/user-attachments/assets/0518bf5d-06f5-437b-9179-0b444b0aa15b)|![일정추가 영상](https://github.com/user-attachments/assets/2f11083f-cdd0-463a-93a2-dfa0c056e66d)|![위치 권한 영상 ](https://github.com/user-attachments/assets/4b54ed15-e7cb-4afb-a4b5-0fbd2cc02075)|
+|![위치 공유 영상 (2)](https://github.com/user-attachments/assets/84456ee8-c2e7-4888-b527-2e19702e827c)|![일정추가 영상](https://github.com/user-attachments/assets/2f11083f-cdd0-463a-93a2-dfa0c056e66d)|![위치 권한 영상 ](https://github.com/user-attachments/assets/4b54ed15-e7cb-4afb-a4b5-0fbd2cc02075)|
 <br>
 <br>
 
@@ -81,7 +81,7 @@ BackEnd: 유종환
 
 | 그룹 알람 | 그룹원 위치 확인 | 위치 확인 종료 |
 |---|---|---|
-|||![지각시](https://github.com/user-attachments/assets/f1b8851b-2cee-4e4b-951e-6d600cd3041e)|
+||![위치 공유 영상 (2)](https://github.com/user-attachments/assets/afdf27d5-af6a-494a-bf49-4a96a1249f9c)|![지각시](https://github.com/user-attachments/assets/f1b8851b-2cee-4e4b-951e-6d600cd3041e)|
 <br>
 <br>
 
