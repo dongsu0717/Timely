@@ -1,12 +1,12 @@
 # Timely
 ### ***개인 & 그룹 스케줄 관리 및 지각 방지 Application***
-### 01. 프로젝트 개요
+## 01. 프로젝트 개요
 개인 & 그룹 스케줄 한번에 관리     
 개인 스케줄 시간 관리   
 그룹모임 약속시간 전 위치 거짓말 방지    
   ex) "나 지금 가고있어~"(사실 아직 집이야) X   
 
-### 02. 프로젝트 구성
+## 02. 프로젝트 구성
 ***개발 기간***   
 2024.10.23 ~ 2024.11.19 (4주)
 
@@ -38,8 +38,8 @@ BackEnd: 유종환
 | **Concurrency** | Thread, Coroutine, Flow |
 | **Data Binding** | ViewBinding, FlowBinding |
 
-### 03. Screen 및 상세 기능
-개인 스케줄
+## 03. Screen 및 상세 기능
+### 개인 스케줄
 | 캘린더| 개인 스케줄 추가 | 위치 권한 |
 |---|---|---|
 |![캐린더 스샷](https://github.com/user-attachments/assets/94465563-4235-4829-8042-f4e9c36eb89b)| ![일정추가 스샷](https://github.com/user-attachments/assets/de902a69-5614-46f3-aa94-6d6c36d9cec7) | ![위치  권한 스샷](https://github.com/user-attachments/assets/b8a3bd74-8ad4-484e-a762-d83a8104c1e9) |
@@ -49,7 +49,7 @@ BackEnd: 유종환
 |---|---|---|
 |![위치 검색 스샷](https://github.com/user-attachments/assets/b03aa7db-26ab-4f81-954d-923490316161)| | |
 
-그룹 스케줄
+### 그룹 스케줄
 | KaKao 로그인 | 내 그룹 리스트 | 그룹 생성 |
 |---|---|---|
 ||||
@@ -62,7 +62,7 @@ BackEnd: 유종환
 |---|---|---|
 |||
 
-마이 프로필
+### 마이 프로필
 | 지각률 확인 |
 |---|
 ||
