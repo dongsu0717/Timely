@@ -31,21 +31,21 @@ BackEnd: 유종환
 ### ***사용 기술***
 | **Category** | **Technologies** |
 | --- | --- |
-| **Architecture** | Multi Module,  Clean Architecture,  MVVM,  SAA |
+| **Architecture** |  Multi Module,  Clean Architecture,  MVVM,  SAA  |
 | **DI** | Dagger-Hilt |
-| **Networking** | Retrofit, OkHttp, Interceptor, Gson|
+| **Networking** |  Retrofit,  OkHttp,  Interceptor,  Gson  |
 | **Database** | RoomDB |
-| **Data Storage** |  Datastore, Preferences |
-| **UI/UX** | Glide, Lottie, Material 3, VeiwPager2 + TabLayout |
-| **Navigation** | Navigation Graph |
-| **Location & Maps** | TMap API, Kakao Map API, FusedLocationProviderClient |
-| **Permissions** | Runtime Permission, TedPermission |
-| **Notifications** | FCM, AlarmManager |
-| **Background Processing** | WorkManager, Foreground Service, Broadcast Receiver |
-| **UI State** |StateFlow|
-| **Login & Social** | Kakao Login, Kakao Share |
-| **Concurrency** | Thread, Coroutine, Flow |
-| **Data Binding** | ViewBinding, FlowBinding |
+| **Data Storage** |  Datastore,  Preferences  |
+| **UI/UX** |  Glide,  Lottie,  Material 3,  VeiwPager2 + TabLayout  |
+| **Navigation** |  Navigation Graph  |
+| **Location & Maps** |  TMap API,  Kakao Map API,  FusedLocationProviderClient  |
+| **Permissions** |  Runtime Permission,  TedPermission  |
+| **Notifications** |  FCM,  AlarmManager  |
+| **Background Processing** |  WorkManager,  Foreground Service,  Broadcast Receiver  |
+| **UI State** |  StateFlow  |
+| **Login & Social** |  Kakao Login,  Kakao Share  |
+| **Concurrency** |  Thread,  Coroutine,  Flow  |
+| **Data Binding** |  ViewBinding,  FlowBinding  |
 
 <br><br>
 
