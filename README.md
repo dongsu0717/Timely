@@ -49,8 +49,8 @@ BackEnd: 유종환
 
 <br><br>
 ## 03. Screen 및 상세 기능
-### 개인 스케줄
-<center><table>
+### 개인 스케줄 관리
+<table>
   <tr><th>캘린더</th><th>개인 스케줄 추가</th><th>위치 권한</th></tr>
   <tr>
     <td><img src = "https://github.com/user-attachments/assets/1e17ed53-7451-4b3a-a43e-173fd9b85933" width="200px"/></td>
@@ -58,6 +58,7 @@ BackEnd: 유종환
     <td><img src = "https://github.com/user-attachments/assets/e26095f2-cdc5-4511-b1ce-db7cba1be60b" width="200px"/></td>
   </tr>
 </table>
+<br>
 
 <table>
   <tr><th>위치 검색</th><th>알람(시간, 거리 표시)</th><th>알람 클릭시 TMap 연결</th></tr>
@@ -67,54 +68,61 @@ BackEnd: 유종환
     <td><img src = "https://github.com/user-attachments/assets/ac84982e-f33e-4b72-af5f-cb4f5b1c0d1d" width="200px"/></td>
   </tr>
 </table>
-
-
-
-| 캘린더| 개인 스케줄 추가 | 위치 권한 |
-|---|---|---|
-|![캘린더 영상 (online-video-cutter com) (1)](https://github.com/user-attachments/assets/3b7b38be-c4cf-4ae5-bff4-2ba0998726dd)|![일정추가 영상 (1)](https://github.com/user-attachments/assets/44063ccb-42bf-49b5-b83d-e2b357c031ad)|![위치 권한 영상 ](https://github.com/user-attachments/assets/9b1f4ec8-69f7-49d7-b08c-444d77682eb6)|
-<br>
-<br>
-![일정추가 영상](https://github.com/user-attachments/assets/37619f38-6586-4418-b320-4bdd9eebd245)
-
-| 위치검색 | 알람(시간, 거리 표시) | 알람 클릭시 TMap 연결|
-|---|---|---|
-|![위치검색 영상 -276](https://github.com/user-attachments/assets/41871bbc-2314-4d20-8f36-5a5f1b43294b)|![위치알람 스샷-276](https://github.com/user-attachments/assets/57401285-78dc-43dc-ac03-f22fa7c83529)|![TMap연결 시켜서 (online-video-cutter com) (1) (1)-276](https://github.com/user-attachments/assets/a52021f5-78a2-4c5f-9fc8-b9e02e92ca66)|
-<br>
 <br>
 
-### 그룹 스케줄
-| KaKao 로그인 | 내 그룹 리스트 | 그룹 생성 |
-|---|---|---|
-||![그룹 부분 영상-276](https://github.com/user-attachments/assets/266fbd25-47de-4d18-a69e-1b898d5003b8)||
-<br>
-<br>
-
-
-| 그룹 페이지 | 그룹 초대 | 그룹 스케줄 생성 |
-|---|---|---|
-|![그룹페이지 영상 (리스트x)-276](https://github.com/user-attachments/assets/4dfd4395-ef18-4241-9bfe-b40042b05618)|||
-<br>
+### 그룹 스케줄 관리리
+<table>
+  <tr><th>KaKao 로그인</th><th>그룹 생성</th><th>내 그룹 리스트</th></tr>
+  <tr>
+    <td><img src = "https://github.com/user-attachments/assets/19d93e0f-8cb0-4278-bc57-4ce10c81131c" width="200px"/></td>
+    <td><img src = "https://github.com/user-attachments/assets/3463b384-c367-41aa-b9ee-777146196c81" width="200px"/></td>
+    <td><img src = "https://github.com/user-attachments/assets/a9089007-8d20-4d73-babe-a545e6bbdf98" width="200px"/></td>
+  </tr>
+</table>
 <br>
 
-| 스케줄 생성 알람 | 스케줄 1시간전 알람 | 위치 공유 시작 알람 |
-|---|---|---|
-||||
-<br>
-<br>
-
-| 그룹 알람 | 그룹원 위치 확인 | 위치 확인 종료 |
-|---|---|---|
-||![위치 공유 영상 (2)](https://github.com/user-attachments/assets/afdf27d5-af6a-494a-bf49-4a96a1249f9c)|![지각시](https://github.com/user-attachments/assets/f1b8851b-2cee-4e4b-951e-6d600cd3041e)|
-<br>
+<table>
+  <tr><th>그룹 페이지</th><th>그룹 초대</th><th>그룹 스케줄 생성</th></tr>
+  <tr>
+    <td><img src = "https://github.com/user-attachments/assets/4f8e1b13-b7cc-45ab-b45c-e3a7ae465ff6" width="200px"/></td>
+    <td><img src = "https://github.com/user-attachments/assets/449d69dc-694d-4984-8a92-10c8f2b5f3e7" width="200px"/></td>
+    <td><img src = "https://github.com/user-attachments/assets/f38b0ae7-3ea9-454b-8151-65e28a4fc071" width="200px"/></td>
+  </tr>
+</table>
 <br>
 
-
-### 마이 프로필
-| 지각률 확인 |
-|---|
-|![프로필 스샷 ](https://github.com/user-attachments/assets/d6e68576-953c-4317-8c7f-59debb809e25)|
+<table>
+  <tr><th>스케줄 생성 알람</th><tr>
+  <tr>
+    <td><img src = "https://github.com/user-attachments/assets/7451f52d-f2af-4457-a035-df04d0669a48" width="400px"/></td>
+  </tr>
+  <tr><th>모임 1시간전 알람</th><tr>
+  <tr>
+    <td><img src = "https://github.com/user-attachments/assets/793eb24a-b737-432c-b84b-9c57d41db07c" width="400px"/></td>
+  </tr>
+  <tr><th>위치 공유 시작 알람</th><tr>
+  <tr>
+    <td><img src = "https://github.com/user-attachments/assets/9ac328de-7be1-4e0c-99d9-b6b77547f040" width="400px"/></td>
+  </tr>
+</table>
 <br>
+
+<table>
+  <tr><th>그룹원 위치, 상태 확인</th><th>지각 체크후 지도 종료</th></tr>
+  <tr>
+    <td><img src = "https://github.com/user-attachments/assets/c75d115b-caa5-4f05-a54d-4d921355d342" width="200px"/></td>
+    <td><img src = "https://github.com/user-attachments/assets/961afc8d-9cc1-48df-a1f0-dd062d3a2ccf" width="200px"/></td>
+  </tr>
+</table>
+<br>
+
+### 마이 페이지
+<table>
+  <tr><th>지각률 확인</th></tr>
+  <tr>
+    <td><img src = "https://github.com/user-attachments/assets/abaadb1f-d0ae-489c-af9e-cd93c1597abc" width="200px"/></td>
+  </tr>
+</table>
 <br>
 
 
