@@ -10,6 +10,7 @@
 ## 02. 프로젝트 구성
 ### ***개발 기간***   
 2024.10.23 ~ 2024.11.19 (4주)
+<br><br>
 
 ### ***담당***   
 기획: 이동수    
@@ -43,7 +44,7 @@ BackEnd: 유종환
 | **Concurrency** | Thread, Coroutine, Flow |
 | **Data Binding** | ViewBinding, FlowBinding |
 
-
+<br><br>
 
 ## 03. Screen 및 상세 기능
 ### 개인 스케줄
