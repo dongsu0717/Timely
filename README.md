@@ -50,7 +50,7 @@ BackEnd: 유종환
 <br><br>
 ## 03. Screen 및 상세 기능
 ### 개인 스케줄
-<table>
+<center><table>
   <tr><th>캘린더</th><th>개인 스케줄 추가</th><th>위치 권한</th></tr>
   <tr>
     <td><img src = "https://github.com/user-attachments/assets/1e17ed53-7451-4b3a-a43e-173fd9b85933" width="200px"/></td>
