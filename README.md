@@ -70,7 +70,7 @@ BackEnd: 유종환
 </table>
 <br>
 
-### 그룹 스케줄 관리리
+### 그룹 스케줄 관리
 <table>
   <tr><th>KaKao 로그인</th><th>그룹 생성</th><th>내 그룹 리스트</th></tr>
   <tr>
