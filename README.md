@@ -41,7 +41,4 @@ BackEnd: 유종환
 ### 03. Screen 및 상세 기능
 | 캘린더| 개인 스케줄 추가 | 위치 권한 |
 |---|---|---|
-|![캐린더 스샷](https://github.com/user-attachments/assets/8fe63960-102d-41e4-aaec-8ebfc796c280)
- |![캐린더 스샷](https://github.com/user-attachments/assets/c769d90d-ac47-4968-a938-40edba090105)
- |![캐린더 스샷](https://github.com/user-attachments/assets/d01291d0-b1cd-4375-87bf-a5de3e529b1b)
- |
+|![캐린더 스샷](https://github.com/user-attachments/assets/8fe63960-102d-41e4-aaec-8ebfc796c280)| ![캐린더 스샷](https://github.com/user-attachments/assets/f6a8d9c8-2c9c-4c54-82a1-eff482e8423e) | ![캐린더 스샷](https://github.com/user-attachments/assets/0b0577a2-3714-4021-93ac-7b15d54bf4e6) |
