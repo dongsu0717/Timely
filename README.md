@@ -55,8 +55,6 @@ BackEnd: 유종환
   <tr>
     <td>
       <img src = "https://github.com/user-attachments/assets/1e17ed53-7451-4b3a-a43e-173fd9b85933" width="200px"/>
-      <br />
-      아이고
     </td>
     <td><img src = "https://github.com/user-attachments/assets/428ae46e-f3a0-4924-b606-735ddb61fbf0" width="200px"/></td>
     <td><img src = "https://github.com/user-attachments/assets/63756369-1650-4dea-9a25-1ef002313fd7" width="200px"/></td>
@@ -100,7 +98,9 @@ BackEnd: 유종환
   <tr><th>그룹 페이지</th><th>그룹 초대</th><th>그룹 스케줄 생성</th></tr>
   <tr>
     <td><img src = "https://github.com/user-attachments/assets/4f8e1b13-b7cc-45ab-b45c-e3a7ae465ff6" width="200px"/></td>
-    <td><img src = "https://github.com/user-attachments/assets/449d69dc-694d-4984-8a92-10c8f2b5f3e7" width="200px"/></td>
+    <td>
+      <img src = "https://github.com/user-attachments/assets/449d69dc-694d-4984-8a92-10c8f2b5f3e7" width="200px"/>
+    </td>
     <td><img src = "https://github.com/user-attachments/assets/f38b0ae7-3ea9-454b-8151-65e28a4fc071" width="200px"/></td>
   </tr>
 </table>
