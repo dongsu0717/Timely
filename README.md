@@ -47,7 +47,7 @@ BackEnd: 유종환
 
 | 위치검색 | 알람 | TMap 연결|
 |---|---|---|
-|![위치 검색 스샷](https://github.com/user-attachments/assets/b03aa7db-26ab-4f81-954d-923490316161)| | |
+|![위치 검색 스샷](https://github.com/user-attachments/assets/b03aa7db-26ab-4f81-954d-923490316161)|![위치알람 스샷](https://github.com/user-attachments/assets/32db328c-3783-4fe8-8217-7ab0c284cdd5)|  |
 
 ### 그룹 스케줄
 | KaKao 로그인 | 내 그룹 리스트 | 그룹 생성 |
