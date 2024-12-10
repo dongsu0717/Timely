@@ -54,30 +54,33 @@ BackEnd: 유종환
 | 캘린더| 개인 스케줄 추가 | 위치 권한 |
 |---|---|---|
 |![캘린더 영상](https://github.com/user-attachments/assets/0518bf5d-06f5-437b-9179-0b444b0aa15b)|![일정추가 영상](https://github.com/user-attachments/assets/2f11083f-cdd0-463a-93a2-dfa0c056e66d)|![위치 권한 영상 ](https://github.com/user-attachments/assets/4b54ed15-e7cb-4afb-a4b5-0fbd2cc02075)|
-
+<br>
 
 | 위치검색 | 알람 | TMap 연결|
 |---|---|---|
 |![위치 검색 스샷](https://github.com/user-attachments/assets/b03aa7db-26ab-4f81-954d-923490316161)|![위치알람 스샷](https://github.com/user-attachments/assets/32db328c-3783-4fe8-8217-7ab0c284cdd5)| 
  |
-
+<br>
 ### 그룹 스케줄
 | KaKao 로그인 | 내 그룹 리스트 | 그룹 생성 |
 |---|---|---|
 ||![그룹 부분 영상](https://github.com/user-attachments/assets/b351ff3f-670c-46b8-b9b4-d5358585b6b2)||
+<br>
 
 | 그룹 페이지 | 그룹 초대 | 그룹 스케줄 생성 |
 |---|---|---|
 |![그룹페이지 영상 (리스트x)](https://github.com/user-attachments/assets/875895de-5d05-409a-8485-9b557934f93a)|||
+<br>
 
 | 그룹 알람 | 그룹원 위치 확인 | 위치 확인 종료 |
 |---|---|---|
 |||![지각시](https://github.com/user-attachments/assets/f1b8851b-2cee-4e4b-951e-6d600cd3041e)|
-
+<br>
 
 ### 마이 프로필
 | 지각률 확인 |
 |---|
 |![프로필 스샷 ](https://github.com/user-attachments/assets/d6e68576-953c-4317-8c7f-59debb809e25)|
+
 
 
