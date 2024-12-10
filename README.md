@@ -52,30 +52,35 @@ BackEnd: 유종환
 ### 개인 스케줄
 | 캘린더| 개인 스케줄 추가 | 위치 권한 |
 |---|---|---|
-|![캘린더 영상](https://github.com/user-attachments/assets/041aef2d-e0a8-41cd-ab5f-119dbd9c715a)|![일정추가 영상](https://github.com/user-attachments/assets/2f11083f-cdd0-463a-93a2-dfa0c056e66d)|![위치 권한 영상 ](https://github.com/user-attachments/assets/4b54ed15-e7cb-4afb-a4b5-0fbd2cc02075)|
+|![캘린더 영상-276](https://github.com/user-attachments/assets/220440b7-fa5b-4f86-83b4-f77ad1887c34)|![일정추가 영상-276](https://github.com/user-attachments/assets/cae42ee7-cf1f-4ba9-b402-b7d99c0ba58b)|![위치 권한 영상 -276](https://github.com/user-attachments/assets/90cec94b-45b1-4f1b-961c-ceb3133ce386)|
 <br>
 <br>
 
 | 위치검색 | 알람(시간, 거리 표시) | 알람 클릭시 TMap 연결|
 |---|---|---|
-|![위치검색 영상  (1)](https://github.com/user-attachments/assets/3b0d3d57-2a36-4f41-880e-083b17139511)|![위치알람 스샷](https://github.com/user-attachments/assets/9037a9f8-5c01-43b4-a51f-f1735ec2fdc9)|![TMap연결 시켜서 (online-video-cutter com) (1)](https://github.com/user-attachments/assets/5cb68c87-e29a-4b5c-ab7b-5ae011aa7ee4)|
+|![위치검색 영상 -276](https://github.com/user-attachments/assets/41871bbc-2314-4d20-8f36-5a5f1b43294b)|![위치알람 스샷-276](https://github.com/user-attachments/assets/57401285-78dc-43dc-ac03-f22fa7c83529)|![TMap연결 시켜서 (online-video-cutter com) (1) (1)-276](https://github.com/user-attachments/assets/a52021f5-78a2-4c5f-9fc8-b9e02e92ca66)|
 <br>
 <br>
 
 ### 그룹 스케줄
 | KaKao 로그인 | 내 그룹 리스트 | 그룹 생성 |
 |---|---|---|
-||![그룹 부분 영상](https://github.com/user-attachments/assets/b351ff3f-670c-46b8-b9b4-d5358585b6b2)||
+||![그룹 부분 영상-276](https://github.com/user-attachments/assets/266fbd25-47de-4d18-a69e-1b898d5003b8)||
 <br>
 <br>
 
 
 | 그룹 페이지 | 그룹 초대 | 그룹 스케줄 생성 |
 |---|---|---|
-|![그룹페이지 영상 (리스트x)](https://github.com/user-attachments/assets/875895de-5d05-409a-8485-9b557934f93a)|||
+|![그룹페이지 영상 (리스트x)-276](https://github.com/user-attachments/assets/4dfd4395-ef18-4241-9bfe-b40042b05618)|||
 <br>
 <br>
 
+| 스케줄 생성 알람 | 스케줄 1시간전 알람 | 위치 공유 시작 알람 |
+|---|---|---|
+||||
+<br>
+<br>
 
 | 그룹 알람 | 그룹원 위치 확인 | 위치 확인 종료 |
 |---|---|---|
