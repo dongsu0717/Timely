@@ -54,14 +54,28 @@ BackEnd: 유종환
   <tr><th>캘린더</th><th>개인 스케줄 추가</th><th>위치 권한</th></tr>
   <tr>
     <td><img src = "https://github.com/user-attachments/assets/1e17ed53-7451-4b3a-a43e-173fd9b85933" width="200px"/></td>
+    <td><img src = "https://github.com/user-attachments/assets/37619f38-6586-4418-b320-4bdd9eebd245" width="200px"/></td>
+    <td><img src = "https://github.com/user-attachments/assets/e26095f2-cdc5-4511-b1ce-db7cba1be60b" width="200px"/></td>
   </tr>
 </table>
+
+<table>
+  <tr><th>위치 검색</th><th>알람(시간, 거리 표시)</th><th>알람 클릭시 TMap 연결</th></tr>
+  <tr>
+    <td><img src = "https://github.com/user-attachments/assets/c1716a42-33db-4697-acf7-32811557ad48" width="200px"/></td>
+    <td><img src = "https://github.com/user-attachments/assets/e55b3140-9a94-4b66-9423-2317499218f0" width="200px"/></td>
+    <td><img src = "https://github.com/user-attachments/assets/ac84982e-f33e-4b72-af5f-cb4f5b1c0d1d" width="200px"/></td>
+  </tr>
+</table>
+
+
 
 | 캘린더| 개인 스케줄 추가 | 위치 권한 |
 |---|---|---|
 |![캘린더 영상 (online-video-cutter com) (1)](https://github.com/user-attachments/assets/3b7b38be-c4cf-4ae5-bff4-2ba0998726dd)|![일정추가 영상 (1)](https://github.com/user-attachments/assets/44063ccb-42bf-49b5-b83d-e2b357c031ad)|![위치 권한 영상 ](https://github.com/user-attachments/assets/9b1f4ec8-69f7-49d7-b08c-444d77682eb6)|
 <br>
 <br>
+![일정추가 영상](https://github.com/user-attachments/assets/37619f38-6586-4418-b320-4bdd9eebd245)
 
 | 위치검색 | 알람(시간, 거리 표시) | 알람 클릭시 TMap 연결|
 |---|---|---|
