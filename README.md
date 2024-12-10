@@ -15,9 +15,11 @@
 디자인: 이동수    
 Android: 이동수   
 BackEnd: 유종환   
+
  
 ### ***모듈 구성***
 ![image](https://github.com/user-attachments/assets/84a1a595-3903-4e5e-afd4-44a9203231a8)
+
 
 ### ***사용 기술***
 | **Category** | **Technologies** |
@@ -37,6 +39,8 @@ BackEnd: 유종환
 | **Login & Social** | Kakao Login, Kakao Share |
 | **Concurrency** | Thread, Coroutine, Flow |
 | **Data Binding** | ViewBinding, FlowBinding |
+
+
 
 ## 03. Screen 및 상세 기능
 ### 개인 스케줄
