@@ -53,8 +53,7 @@ BackEnd: 유종환
 <table>
   <tr><th>캘린더</th><th>개인 스케줄 추가</th><th>위치 권한</th></tr>
   <tr>
-    <td><img src = "https://github.com/user-attachments/assets/1e17ed53-7451-4b3a-a43e-173fd9b85933" width=내</th></tr>
-  <tr>
+    <td><img src = "https://github.com/user-attachments/assets/1e17ed53-7451-4b3a-a43e-173fd9b85933" width="200px"/></tr>
     <td><img src = "https://github.com/user-attachments/assets/c1716a42-33db-4697-acf7-32811557ad48" width="200px"/></td>
     <td><img src = "https://github.com/user-attachments/assets/ac84982e-f33e-4b72-af5f-cb4f5b1c0d1d" width="200px"/></td>
   </tr>
