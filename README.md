@@ -70,6 +70,18 @@ BackEnd: 유종환
 </table>
 <br>
 
+<table>
+  <tr><th>알람 - 장소X(데이터X)</th></tr>
+  <tr>
+    <td><img src = "https://github.com/user-attachments/assets/5b2e8690-b668-4330-a22d-46266e7e7ca2" width="400px"/></td>
+  </tr>
+  <tr><th>알람 - 장소O(시간, 거리 표시)</th></tr>
+  <tr>
+    <td><img src = "https://github.com/user-attachments/assets/e55b3140-9a94-4b66-9423-2317499218f0" width="400px"/></td>
+  </tr>
+</table>
+<br>
+
 ### 그룹 스케줄 관리
 <table>
   <tr><th>KaKao 로그인</th><th>그룹 생성</th><th>내 그룹 리스트</th></tr>
