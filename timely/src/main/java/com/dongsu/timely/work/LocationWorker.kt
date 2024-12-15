@@ -3,7 +3,7 @@ package com.dongsu.timely.work
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.work.Worker
+import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.dongsu.timely.common.CHANNEL_ID
 import com.dongsu.timely.common.GROUP_ID
@@ -16,9 +16,9 @@ import com.dongsu.timely.service.LocationService
 class LocationWorker(
     context: Context,
     private val params: WorkerParameters
-) : Worker(context,params) {
+) : CoroutineWorker(context,params) {
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
         Log.e("워크매니저로 넘어온 데이터",params.inputData.toString())
         return if(locationService()){
             Log.e("워크매너저","성공")
@@ -28,6 +28,7 @@ class LocationWorker(
             Result.failure()
         }
     }
+
     private fun locationService(): Boolean {
         var flag = false
         if(params.inputData.getInt(SCHEDULE_ID, -1) != -1){
