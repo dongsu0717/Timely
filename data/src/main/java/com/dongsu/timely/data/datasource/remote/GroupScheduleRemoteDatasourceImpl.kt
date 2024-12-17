@@ -12,15 +12,17 @@ import javax.inject.Inject
 
 class GroupScheduleRemoteDatasourceImpl @Inject constructor(
     private val groupScheduleService: GroupScheduleService,
+    private val groupScheduleMapper: GroupScheduleMapper,
+    private val groupMeetingInfoMapper: GroupMeetingInfoMapper
 ) : GroupScheduleRemoteDatasource {
 
     override suspend fun insertSchedule(groupId: Int, groupSchedule: GroupSchedule) {
-        groupScheduleService.insertSchedule(groupId, GroupScheduleMapper.toDto(groupSchedule))
+        groupScheduleService.insertSchedule(groupId, groupScheduleMapper.toDto(groupSchedule))
     }
 
     override suspend fun fetchGroupScheduleList(groupId: Int): List<TotalGroupScheduleInfo> =
         groupScheduleService.fetchGroupScheduleList(groupId).body()
-            ?.map { GroupScheduleMapper.toDomainTotal(it) } ?: emptyList()
+            ?.map { groupScheduleMapper.toDomainTotal(it) } ?: emptyList()
 
     override suspend fun participationSchedule(groupId: Int, scheduleId: Int) {
         groupScheduleService.participationSchedule(groupId, scheduleId)
@@ -37,7 +39,7 @@ class GroupScheduleRemoteDatasourceImpl @Inject constructor(
                 throw Exception()
             }
 
-            else -> GroupMeetingInfoMapper.toDomain(meetingInfo)
+            else -> groupMeetingInfoMapper.toDomain(meetingInfo)
         }
 
 

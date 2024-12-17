@@ -15,7 +15,8 @@ import javax.inject.Inject
 class UserRemoteDatasourceImpl @Inject constructor(
     private val loginService: LoginService,
     private val fcmService: FCMService,
-    private val userService: UserService
+    private val userService: UserService,
+    private val userMapper: UserMapper
 ): UserRemoteDatasource {
 
     override suspend fun sendKaKaoTokenAndGetToken(token: String): Token {
@@ -32,7 +33,7 @@ class UserRemoteDatasourceImpl @Inject constructor(
     override suspend fun fetchMyInfo(): User {
         return when (val user = userService.fetchMyInfo().body()) {
             null -> User.EMPTY
-            else -> UserMapper.toDomainUser(user)
+            else -> userMapper.toDomainUser(user)
         }
     }
 
@@ -43,11 +44,4 @@ class UserRemoteDatasourceImpl @Inject constructor(
             throw Exception("출석체크 Error: ${response.code()}, Message: ${response.message()}")
         }
     }
-//        return try {
-//            userService.countLateness()
-//            TimelyResult.Success(Unit)
-//        } catch (e: Exception) {
-//            TimelyResult.NetworkError(e)
-//        }
-//    }
 }

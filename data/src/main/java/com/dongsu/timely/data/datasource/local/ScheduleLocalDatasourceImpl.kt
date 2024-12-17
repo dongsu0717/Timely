@@ -7,10 +7,11 @@ import javax.inject.Inject
 
 class ScheduleLocalDatasourceImpl @Inject constructor(
     private val scheduleDAO: ScheduleDAO,
+    private val scheduleMapper: ScheduleMapper
 ) : ScheduleLocalDatasource {
     override suspend fun insertSchedule(schedule: Schedule) =
-        scheduleDAO.insertSchedule(ScheduleMapper.toEntity(schedule))
+        scheduleDAO.insertSchedule(scheduleMapper.toEntity(schedule))
 
     override suspend fun loadAllSchedule(): List<Schedule> =
-        scheduleDAO.loadAllSchedule().map { ScheduleMapper.toDomain(it) }
+        scheduleDAO.loadAllSchedule().map { scheduleMapper.toDomain(it) }
 }

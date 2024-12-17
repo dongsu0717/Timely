@@ -10,6 +10,8 @@ import javax.inject.Inject
 
 class GroupRemoteDatasourceImpl @Inject constructor(
     private val groupService: GroupService,
+    private val groupMapper: GroupMapper,
+    private val inviteCodeMapper: InviteCodeMapper
 ) : GroupRemoteDatasource {
     override suspend fun createGroup(groupName: String, groupColor: Int) {
         val response = groupService.createGroup(GroupRequest(groupName, groupColor))
@@ -19,13 +21,13 @@ class GroupRemoteDatasourceImpl @Inject constructor(
     }
 
     override suspend fun fetchMyGroupList(): List<Group> =
-        GroupMapper.toDomainGroupList((groupService.fetchMyGroupList()).body() ?: emptyList())
+        groupMapper.toDomainGroupList((groupService.fetchMyGroupList()).body() ?: emptyList())
 
     override suspend fun createInviteCode(groupId: Int): InviteCode =
         try {
             when (val response = groupService.createInviteCode(groupId).body()) {
                 null -> InviteCode.EMPTY
-                else -> InviteCodeMapper.toDomain(response)
+                else -> inviteCodeMapper.toDomain(response)
             }
         } catch (e: Exception) {
             throw e

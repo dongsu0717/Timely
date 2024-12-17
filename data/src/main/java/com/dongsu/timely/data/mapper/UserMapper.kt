@@ -3,7 +3,7 @@ package com.dongsu.timely.data.mapper
 import com.dongsu.timely.data.remote.dto.response.map.UserResponse
 import com.dongsu.timely.domain.model.map.User
 
-object UserMapper {
+class UserMapper {
     fun toDomainUser(userResponse: UserResponse): User {
         return User(
             userId = userResponse.userId,
