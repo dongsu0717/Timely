@@ -88,6 +88,9 @@ dependencies {
 
     //ted permission
     implementation(libs.tedpermission.normal)
+
+    //timber
+    implementation(libs.timber)
 }
 kapt {
     correctErrorTypes = true

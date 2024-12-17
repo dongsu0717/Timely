@@ -7,7 +7,7 @@ import com.dongsu.timely.domain.model.GroupSchedule
 import com.dongsu.timely.domain.model.GroupScheduleInfo
 import com.dongsu.timely.domain.model.TotalGroupScheduleInfo
 
-object GroupScheduleMapper {
+class GroupScheduleMapper {
     fun toDto(groupSchedule: GroupSchedule): GroupScheduleRequest {
         return GroupScheduleRequest(
             title = groupSchedule.title,

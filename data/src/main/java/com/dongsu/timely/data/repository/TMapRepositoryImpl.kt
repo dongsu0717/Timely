@@ -8,15 +8,16 @@ import com.dongsu.timely.domain.repository.TMapRepository
 import javax.inject.Inject
 
 class TMapRepositoryImpl @Inject constructor(
-    private val tmapService: TMapService,
-//    private val userLocationManager: UserLocationManager
+    private val tMapService: TMapService,
+    private val poiLocationMapper: PoiLocationMapper
+
 ) : TMapRepository {
 
     override suspend fun searchPlaces(keyword: String): TimelyResult<List<PoiItem>>
         = try {
-            val response = tmapService.searchPlaces(keyword = keyword)
+            val response = tMapService.searchPlaces(keyword = keyword)
             if (response.body() != null){
-                val poiItems = response.body()!!.searchPoiInfo.pois.poi.map { PoiLocationMapper.toDomain(it) }.toList()
+                val poiItems = response.body()!!.searchPoiInfo.pois.poi.map { poiLocationMapper.toDomain(it) }.toList()
                 TimelyResult.Success(poiItems)
             } else {
                 TimelyResult.Empty

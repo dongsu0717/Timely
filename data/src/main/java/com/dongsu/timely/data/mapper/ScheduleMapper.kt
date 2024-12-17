@@ -3,7 +3,7 @@ package com.dongsu.timely.data.mapper
 import com.dongsu.timely.data.local.room.entity.ScheduleInfo
 import com.dongsu.timely.domain.model.Schedule
 
-object ScheduleMapper{
+class ScheduleMapper{
     fun toEntity(schedule: Schedule): ScheduleInfo {
         return ScheduleInfo(
             title = schedule.title,

@@ -21,7 +21,11 @@ class GroupCreateViewModel @Inject constructor(
     fun createGroup(groupName: String, groupColor: Int) {
         viewModelScope.launch {
             _createGroupState.value = TimelyResult.Loading
-            _createGroupState.value = groupRepository.createGroup(groupName, groupColor)
+            groupRepository.createGroup(groupName, groupColor).onSuccess {
+                _createGroupState.value = TimelyResult.Success(Unit)
+            }.onFailure {
+                _createGroupState.value = TimelyResult.NetworkError(it)
+            }
         }
     }
 }
