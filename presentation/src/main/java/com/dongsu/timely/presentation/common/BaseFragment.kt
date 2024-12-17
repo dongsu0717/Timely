@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import timber.log.Timber
 
 typealias FragmentInflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
@@ -19,6 +20,8 @@ abstract class BaseFragment<VB : ViewBinding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.tag(this::class.java.simpleName).d("실행")
+        Timber.d("onCreate") //BaseFragment로 뜸
         Log.e(this::class.java.simpleName, "onCreate")
     }
 
