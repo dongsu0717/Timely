@@ -10,13 +10,15 @@ import javax.inject.Inject
 class GroupRepositoryImpl @Inject constructor(
     private val groupRemoteDatasource: GroupRemoteDatasource,
 ) : GroupRepository {
-    override suspend fun createGroup(groupName: String, groupColor: Int): TimelyResult<Unit> =
-        try {
-            groupRemoteDatasource.createGroup(groupName, groupColor)
-            TimelyResult.Success(Unit)
-        } catch (e: Exception) {
-            TimelyResult.NetworkError(e)
-        }
+    override suspend fun createGroup(groupName: String, groupColor: Int): Result<Unit> = runCatching {
+        groupRemoteDatasource.createGroup(groupName, groupColor)
+    }
+//        try {
+//            groupRemoteDatasource.createGroup(groupName, groupColor)
+//            TimelyResult.Success(Unit)
+//        } catch (e: Exception) {
+//            TimelyResult.NetworkError(e)
+//        }
 
     override suspend fun fetchMyGroupList(): TimelyResult<List<Group>> =
         try {

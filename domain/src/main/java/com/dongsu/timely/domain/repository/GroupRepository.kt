@@ -5,7 +5,7 @@ import com.dongsu.timely.domain.model.Group
 import com.dongsu.timely.domain.model.InviteCode
 
 interface GroupRepository {
-    suspend fun createGroup(groupName: String, groupColor: Int): TimelyResult<Unit>
+    suspend fun createGroup(groupName: String, groupColor: Int): Result<Unit>
     suspend fun fetchMyGroupList(): TimelyResult<List<Group>>
     suspend fun createInviteCode(groupId: Int): TimelyResult<InviteCode>
     suspend fun joinGroup(inviteCode: String)

@@ -17,7 +17,10 @@ class GroupScheduleRemoteDatasourceImpl @Inject constructor(
 ) : GroupScheduleRemoteDatasource {
 
     override suspend fun insertSchedule(groupId: Int, groupSchedule: GroupSchedule) {
-        groupScheduleService.insertSchedule(groupId, groupScheduleMapper.toDto(groupSchedule))
+        val response = groupScheduleService.insertSchedule(groupId, groupScheduleMapper.toDto(groupSchedule))
+        if (!response.isSuccessful) {
+            throw Exception("그룹 스케쥴 만들기 Error: ${response.code()}, Message: ${response.message()}")
+        }
     }
 
     override suspend fun fetchGroupScheduleList(groupId: Int): List<TotalGroupScheduleInfo> =
