@@ -10,7 +10,6 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.dongsu.timely.R
 import com.dongsu.timely.common.MARKET_URL
@@ -36,6 +35,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
 
@@ -47,7 +47,7 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val (scheduleTitle, appointmentPlace, destinationLatitude, destinationLongitude, alarmTime)
         = extractAlarmData(intent)
-        Log.e("약속 장소 위치", "latitude: $destinationLatitude, longitude: $destinationLongitude")
+        Timber.e("latitude: $destinationLatitude, longitude: $destinationLongitude")
         if (destinationLatitude != 0.0 || destinationLongitude != 0.0) { //일정 장소 있으면 거리,시간 계산
             CoroutineScope(Dispatchers.IO).launch {
                 createRouteNotification(
@@ -62,7 +62,7 @@ class AlarmReceiver : BroadcastReceiver() {
     }
 
     private fun createNotification(context: Context, scheduleTitle: String, alarmTime: Int) {
-        Log.e("기본알람","start")
+        Timber.e("start")
         val notificationManager = NotificationUtils.createNotificationManager(context)
         NotificationUtils.createNotificationChannel(
             notificationManager,
@@ -85,9 +85,9 @@ class AlarmReceiver : BroadcastReceiver() {
         scheduleTitle: String,
         appointmentPlace: String,
         destinationLatitude: Double,
-        destinationLongitude: Double
+        destinationLongitude: Double,
     ) {
-        Log.e("기본 루트 알람","start")
+        Timber.e("start")
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         val channel = NotificationChannel(
@@ -129,7 +129,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 userLocation = UserLocation(result.resultData.locationLatitude, result.resultData.locationLongitude)
             }
         } catch (e: Exception) {
-            Log.e("위치 정보", "가져오기 실패: ${e.message}")
+            Timber.e("가져오기 실패: " + e.message)
         }
         return userLocation
     }
@@ -138,7 +138,7 @@ class AlarmReceiver : BroadcastReceiver() {
         startLatitude: Double,
         startLongitude: Double,
         destinationLatitude: Double,
-        destinationLongitude: Double
+        destinationLongitude: Double,
     ): ScheduleDistanceTime {
         var distance: Long = 0
         var carTime: Long = 0
@@ -149,11 +149,10 @@ class AlarmReceiver : BroadcastReceiver() {
                     distance = it.body()!!.features.first().properties.totalDistance
                     carTime = it.body()!!.features.first().properties.totalTime
                 } else {
-                    Log.e("tamp 차정보 가져오기 실패",it.message())
-                    Log.e("tamp 차정보 가져오기 실패",it.errorBody().toString())
+                    Timber.e(it.errorBody().toString())
                 }
             } catch (e: Exception) {
-                Log.e("tmap 차정보 가져오기 에러", e.message.toString())
+                Timber.e(e.message.toString())
             }
         }
         tMapService.getWalkResult(startX = startLongitude, startY = startLatitude, endX = destinationLongitude, endY = destinationLatitude).let {
@@ -161,11 +160,10 @@ class AlarmReceiver : BroadcastReceiver() {
                 if (it.isSuccessful) {
                     walkTime = it.body()!!.features.first().properties.totalTime
                 } else {
-                    Log.e("tamp 걸어서정보 가져오기 실패",it.message())
-                    Log.e("tamp 걸어서정보 가져오기 실패",it.errorBody().toString())
+                    Timber.e(it.errorBody().toString())
                 }
             } catch (e: Exception) {
-                Log.e("tmap 걸어서 정보 가져오기 에러", e.message.toString())
+                Timber.e(e.message.toString())
             }
         }
         return ScheduleDistanceTime(distance, carTime, walkTime)
@@ -177,7 +175,7 @@ class AlarmReceiver : BroadcastReceiver() {
         destinationLatitude: Double,
         destinationLongitude: Double,
         startLatitude: Double,
-        startLongitude: Double
+        startLongitude: Double,
     ): PendingIntent {
         val isTMapInstalled = try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -192,7 +190,6 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val tMapIntent = if (isTMapInstalled) {
             Intent(Intent.ACTION_VIEW).apply {
-                Log.e("티맵","설치됨")
                 data = Uri.parse(
                     String.format(
                         TMAP_ROUTE_URL,
@@ -207,7 +204,6 @@ class AlarmReceiver : BroadcastReceiver() {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
         } else {
-            Log.e("티맵","설치안됨")
             Intent(Intent.ACTION_VIEW, Uri.parse(String.format(MARKET_URL, TMAP_PACKAGE_NAME)))
         }
         return PendingIntent.getActivity(
@@ -238,7 +234,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val appointmentPlace: String,
         val destinationLatitude: Double,
         val destinationLongitude: Double,
-        val alarmTime: Int
+        val alarmTime: Int,
     )
 
     private fun formatDistance(distanceInMeters: Long): String {

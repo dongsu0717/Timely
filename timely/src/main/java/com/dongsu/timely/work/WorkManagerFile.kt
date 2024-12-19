@@ -1,6 +1,5 @@
 package com.dongsu.timely.work
 
-import android.util.Log
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
@@ -15,13 +14,14 @@ import com.dongsu.timely.common.SCHEDULE_ID
 import com.dongsu.timely.common.SCHEDULE_START_TIME
 import com.dongsu.timely.common.SCHEDULE_TITLE
 import com.google.firebase.messaging.RemoteMessage
+import timber.log.Timber
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 fun setWorkManager(message: RemoteMessage){
-    Log.e("워크매니저 세팅","워크매니저세팅부분호출")
+    Timber.e("워크매니저세팅부분호출")
     val constraints = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.CONNECTED)
         .setRequiresBatteryNotLow(true)

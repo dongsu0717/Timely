@@ -1,8 +1,6 @@
 package com.dongsu.timely.presentation.ui.main.group.management
 
 import android.content.ActivityNotFoundException
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.dongsu.presentation.databinding.FragmentGroupManagementBinding
@@ -24,6 +22,7 @@ import com.kakao.sdk.template.model.Link
 import com.kakao.sdk.template.model.TextTemplate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import timber.log.Timber
 
 @AndroidEntryPoint
 class GroupManagementFragment: BaseTabFragment<FragmentGroupManagementBinding>(FragmentGroupManagementBinding::inflate) {
@@ -46,23 +45,23 @@ class GroupManagementFragment: BaseTabFragment<FragmentGroupManagementBinding>(F
             groupManagementViewModel.inviteCode.collectLatest { result ->
                 when (result) {
                     is TimelyResult.Loading -> {
-                        Log.e("초대 코드 가져오기", "로딩중")
+                        Timber.e("로딩중")
                         toastShort(requireContext(), LOADING)
                     }
 
                     is TimelyResult.Success -> {
-                        Log.e("초대 코드 가져오기", "성공")
+                        Timber.e("성공")
                         val groupId = result.resultData.groupId
                         val inviteCode = result.resultData.inviteCode
                         sendInviteMessageKaKaoTalk(groupId, inviteCode)
                     }
 
                     is TimelyResult.Empty -> {
-                        Log.e("초대 코드 가져오기", "비어있음")
+                        Timber.e("비어있음")
                     }
 
                     is TimelyResult.NetworkError -> {
-                        Log.e("초대 코드 가져오기", "에러. 실패임")
+                        Timber.e("에러. 실패임")
                         toastShort(requireContext(), GET_ERROR)
                     }
 
@@ -85,14 +84,14 @@ class GroupManagementFragment: BaseTabFragment<FragmentGroupManagementBinding>(F
                 inviteTextTemplate
             ) { sharingResult, error ->
                 if (error != null) {
-                    Log.e(TAG, "카카오톡 공유 실패", error)
+                    Timber.e(error, "카카오톡 공유 실패")
                 } else if (sharingResult != null) {
-                    Log.d(TAG, "카카오톡 공유 성공 ${sharingResult.intent}")
+                    Timber.d("카카오톡 공유 성공 " + sharingResult.intent)
                     startActivity(sharingResult.intent)
 
                     // 카카오톡 공유에 성공했지만 아래 경고 메시지가 존재할 경우 일부 컨텐츠가 정상 동작하지 않을 수 있습니다.
-                    Log.w(TAG, "Warning Msg: ${sharingResult.warningMsg}")
-                    Log.w(TAG, "Argument Msg: ${sharingResult.argumentMsg}")
+                    Timber.w("Warning Msg: " + sharingResult.warningMsg)
+                    Timber.w("Argument Msg: " + sharingResult.argumentMsg)
                 }
             }
         } else {

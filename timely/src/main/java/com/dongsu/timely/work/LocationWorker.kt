@@ -2,7 +2,6 @@ package com.dongsu.timely.work
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.dongsu.timely.common.CHANNEL_ID
@@ -12,19 +11,21 @@ import com.dongsu.timely.common.SCHEDULE_ID
 import com.dongsu.timely.common.SCHEDULE_START_TIME
 import com.dongsu.timely.common.SCHEDULE_TITLE
 import com.dongsu.timely.service.LocationService
+import timber.log.Timber
 
 class LocationWorker(
     context: Context,
-    private val params: WorkerParameters
+    private val params: WorkerParameters,
 ) : CoroutineWorker(context,params) {
 
     override suspend fun doWork(): Result {
-        Log.e("워크매니저로 넘어온 데이터",params.inputData.toString())
+        Timber.e(params.inputData.toString())
         return if(locationService()){
-            Log.e("워크매너저","성공")
+            Timber.e("성공")
             Result.success()
         } else {
-            Log.e("워크매너저","실패")
+            Timber
+                .e("실패")
             Result.failure()
         }
     }

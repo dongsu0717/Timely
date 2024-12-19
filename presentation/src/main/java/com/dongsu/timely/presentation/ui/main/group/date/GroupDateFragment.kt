@@ -1,6 +1,5 @@
 package com.dongsu.timely.presentation.ui.main.group.date
 
-import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,6 +16,7 @@ import com.dongsu.timely.presentation.ui.main.group.GroupPageFragmentDirections
 import com.dongsu.timely.presentation.viewmodel.group.GroupDateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import timber.log.Timber
 
 @AndroidEntryPoint
 class GroupDateFragment : BaseTabFragment<FragmentGroupDateBinding>(FragmentGroupDateBinding::inflate) {
@@ -25,7 +25,7 @@ class GroupDateFragment : BaseTabFragment<FragmentGroupDateBinding>(FragmentGrou
     private lateinit var groupScheduleListAdapter: GroupScheduleListAdapter
 
     override fun initView() {
-        Log.e("일정",arguments.toString())
+        Timber.e(arguments.toString())
         setLayoutManager()
         setAdapter()
         getGroupScheduleList()

@@ -1,9 +1,9 @@
 package com.dongsu.timely.fcm
 
-import android.util.Log
 import com.dongsu.timely.domain.repository.FCMRepository
 import com.google.android.gms.tasks.Task
 import com.google.firebase.messaging.FirebaseMessaging
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -15,12 +15,12 @@ class FCMRepositoryImpl @Inject constructor(
         return suspendCoroutine { continuation ->
             FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->
                 if (!task.isSuccessful) {
-                    Log.e("FCM토큰 발급 실패 ", task.toString(), task.exception)
+                    Timber.e(task.exception, task.toString())
                     continuation.resumeWithException(task.exception ?: Exception("Unknown error"))
                     return@addOnCompleteListener
                 }
                 val token = task.result
-                Log.e("FCM토큰 발급 성공 ", token)
+                Timber.e(token)
                 continuation.resume(token)
             }
         }

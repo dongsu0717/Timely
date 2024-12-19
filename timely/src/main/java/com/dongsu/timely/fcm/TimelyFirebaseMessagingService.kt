@@ -1,6 +1,5 @@
 package com.dongsu.timely.fcm
 
-import android.util.Log
 import com.dongsu.timely.R
 import com.dongsu.timely.common.CHANNEL_ID
 import com.dongsu.timely.common.FCM_APPOINTMENT_BODY
@@ -20,13 +19,14 @@ import com.dongsu.timely.presentation.ui.main.TimelyActivity
 import com.dongsu.timely.work.setWorkManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import timber.log.Timber
 import java.util.Locale
 
 class TimelyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        Log.e("서버에서 온 fcm", message.data.toString())
+        Timber.e(message.data.toString())
 
         val groupId = message.data[GROUP_ID]?.toInt()
         val groupName = message.data[GROUP_NAME].toString()
@@ -35,11 +35,11 @@ class TimelyFirebaseMessagingService : FirebaseMessagingService() {
         groupId?.let {
             when (channelId) {
                 FCM_CREATE_SCHEDULE_CHANNEL_ID -> {
-                    Log.e("FCM일정 만들어짐","FCM일정만들어짐")
+                    Timber.e("FCM일정만들어짐")
                     createSchedulePushMessage(groupId, groupName, scheduleTitle)
                 }
                 FCM_APPOINTMENT_CHANNEL_ID -> {
-                    Log.e("FCM일정 시간 됨","FCM일정 시간 됐음")
+                    Timber.e("FCM일정 시간 됐음")
 //                    setWorkManager(message)
                     appointmentAlarmPushMessage(groupName, scheduleTitle)
                 }

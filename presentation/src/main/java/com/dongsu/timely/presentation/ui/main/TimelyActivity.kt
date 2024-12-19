@@ -29,6 +29,7 @@ import com.dongsu.timely.presentation.viewmodel.TimelyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class TimelyActivity : AppCompatActivity() {
@@ -136,7 +137,7 @@ class TimelyActivity : AppCompatActivity() {
                         }
 
                         is TimelyResult.Success -> {
-                            Log.e("TimelyActivitiy토큰저장", "성공")
+                            Timber.e("성공")
                         }
 
                         is TimelyResult.Empty -> {
@@ -144,7 +145,7 @@ class TimelyActivity : AppCompatActivity() {
                         }
 
                         is TimelyResult.LocalError -> {
-                            Log.e("TimelyActivitiy토큰저장", "localError")
+                            Timber.e("localError")
 
                         }
 
@@ -161,21 +162,21 @@ class TimelyActivity : AppCompatActivity() {
             timelyViewModel.sendFCMTokenState.collectLatest { result ->
                 when (result) {
                     is TimelyResult.Loading -> {
-                        Log.e("TimelyActivity", "fcm보내기 : Loading")
+                        Timber.e("fcm보내기 : Loading")
 
                     }
 
                     is TimelyResult.Success -> {
-                        Log.e("TimelyActivity", "fcm보내기 : Success")
+                        Timber.e("fcm보내기 : Success")
                     }
 
                     is TimelyResult.Empty -> {
-                        Log.e("TimelyActivity", "fcm보내기 : Empty")
+                        Timber.e("fcm보내기 : Empty")
 
                     }
 
                     is TimelyResult.NetworkError -> {
-                        Log.e("TimelyActivity", "fcm보내기 : Error")
+                        Timber.e("fcm보내기 : Error")
 
                     }
 
@@ -191,27 +192,27 @@ class TimelyActivity : AppCompatActivity() {
             timelyViewModel.loginStatus.collectLatest { result ->
                 when (result) {
                     is TimelyResult.Loading -> {
-                        Log.e("TimelyActivity로그인확인", "로그인상태 로딩중임")
+                        Timber.e("로그인상태 로딩중임")
 
                     }
 
                     is TimelyResult.Success -> {
-                        Log.e("TimelyActivity로그인확인", "로그인상태 success임")
+                        Timber.e("로그인상태 success임")
                         isLoggedIn(result.resultData)
                     }
 
                     is TimelyResult.Empty -> {
-                        Log.e("TimelyActivity로그인확인", "로그인상태 empty임")
+                        Timber.e("로그인상태 empty임")
 
                     }
 
                     is TimelyResult.LocalError -> {
-                        Log.e("TimelyActivity로그인확인", "로그인상태 localError뜸")
+                        Timber.e("로그인상태 localError뜸")
 
                     }
 
                     else -> {
-                        Log.e("TimelyActivity로그인확인", "로그인상태 니가 왜떠")
+                        Timber.e("로그인상태 니가 왜떠")
                     }
                 }
             }
@@ -239,7 +240,7 @@ class TimelyActivity : AppCompatActivity() {
             val uri = intent.data
             if (uri != null) {
                 val inviteCode = uri.getQueryParameter(INVITE_CODE)
-                Log.e("카카오초대", uri.getQueryParameter(GROUP_ID).toString())
+                Timber.e(uri.getQueryParameter(GROUP_ID).toString())
                 checkIsLoggedIn { isLoggedIn ->
                     if (!isLoggedIn) {
                         showLoginDialog()
@@ -258,7 +259,7 @@ class TimelyActivity : AppCompatActivity() {
         val groupName = intent.getStringExtra(GROUP_NAME)
         val scheduleId = intent.getIntExtra(SCHEDULE_ID, -1)
 
-        Log.e("timly", groupId.toString())
+        Timber.e(groupId.toString())
         if (groupId != -1) {
             goGroupDetail(navController, groupId, groupName, scheduleId)
         }

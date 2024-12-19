@@ -1,12 +1,11 @@
 package com.dongsu.timely.presentation.ui.main.profile
 
-import android.content.ContentValues
-import android.util.Log
 import com.bumptech.glide.Glide
 import com.dongsu.presentation.databinding.FragmentProfileBinding
 import com.dongsu.timely.presentation.common.BaseFragment
 import com.kakao.sdk.user.UserApiClient
 import com.kakao.sdk.user.model.User
+import timber.log.Timber
 
 class ProfileFragment: BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::inflate) {
 
@@ -30,9 +29,9 @@ class ProfileFragment: BaseFragment<FragmentProfileBinding>(FragmentProfileBindi
     private fun setProfile() {
         UserApiClient.instance.me { user, error ->
             if (error != null) {
-                Log.e(ContentValues.TAG, "사용자 정보 요청 실패", error)
+                Timber.e(error, "사용자 정보 요청 실패")
             } else if (user != null) {
-                Log.i(ContentValues.TAG, "사용자 정보 요청 성공 $user")
+                Timber.i("사용자 정보 요청 성공 $user")
                 setNickname(user)
                 setProfileImage(user)
             }

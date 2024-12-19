@@ -357,7 +357,6 @@ class AddScheduleFragment : BaseFragment<FragmentAddScheduleBinding>(FragmentAdd
                     }
 
                     is TimelyResult.LocalError -> {
-                        Log.e("AddScheduleFragment", "스케줄 저장 error: ${result.exception}")
                         CommonUtils.toastShort(requireContext(), SAVE_ERROR)
                     }
 

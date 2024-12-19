@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import com.dongsu.timely.common.CHANNEL_ID
 import com.dongsu.timely.common.FOREGROUND_SERVICE_BODY
 import com.dongsu.timely.common.FOREGROUND_SERVICE_CHANNEL_ID
@@ -20,6 +19,7 @@ import com.dongsu.timely.common.SCHEDULE_TITLE
 import com.dongsu.timely.data.local.fusedlocation.LocationReceiver
 import com.dongsu.timely.presentation.ui.main.TimelyActivity
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -35,19 +35,18 @@ class LocationService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val (groupId, groupName, scheduleId, scheduleTitle, scheduleStartTime, channelId) = extractAlarmData(intent)
-        Log.e("서비스로 넘어온 데이터","groupId: $groupId, groupName: $groupName, scheduleId: $scheduleId, scheduleTitle: $scheduleTitle, scheduleStartTime: $scheduleStartTime, channelId: $channelId")
+        Timber.e("groupId: $groupId, groupName: $groupName, scheduleId: $scheduleId, scheduleTitle: $scheduleTitle, scheduleStartTime: $scheduleStartTime, channelId: $channelId")
 
         if(groupId != -1 && groupId != null && scheduleId != -1 && scheduleId != null){
             locationReceiver.startReceivingLocation(scheduleId.toInt())
             startForegroundService(groupId,groupName,scheduleId,scheduleTitle)
-        } else Log.e("서비스 실행x", "groupId: $groupId scheduleId: $scheduleId")
+        } else Timber.e("groupId: $groupId scheduleId: $scheduleId")
 
         //왜 밑에 작동을 안할까..?
         val currentTime = LocalDateTime.now()
         val scheduleTime = LocalDateTime.parse(scheduleStartTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
 
         if (scheduleTime.isBefore(currentTime) || scheduleTime.isEqual(currentTime)) {
-            Log.e("서비스 종료", "The scheduled time has passed. Stopping the service.")
             stopSelf()
             return START_NOT_STICKY
         }
@@ -110,6 +109,6 @@ class LocationService : Service() {
         val scheduleId: Int?,
         val scheduleTitle: String?,
         val scheduleStartTime: String?,
-        val channelId: String?
+        val channelId: String?,
     )
 }

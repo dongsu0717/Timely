@@ -2,7 +2,6 @@ package com.dongsu.timely.presentation.ui.main.group.add
 
 import android.Manifest
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -33,6 +32,7 @@ import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(FragmentGroupAddScheduleBinding::inflate) {
@@ -63,7 +63,7 @@ class GroupAddScheduleFragment: BaseFragment<FragmentGroupAddScheduleBinding>(Fr
     )
 
     override fun initView() {
-        Log.e("그룹스케줄추가", "$args")
+        Timber.e(args.toString())
         setupToolbar()
         setupArgs()
         getCurrentDataAndTime()

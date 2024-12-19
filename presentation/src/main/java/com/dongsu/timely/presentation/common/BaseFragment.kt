@@ -1,12 +1,12 @@
 package com.dongsu.timely.presentation.common
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import timber.log.Timber
 
 typealias FragmentInflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
@@ -19,7 +19,8 @@ abstract class BaseFragment<VB : ViewBinding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e(this::class.java.simpleName, "onCreate")
+        Timber.tag(this::class.java.simpleName).d("onCreate")
+        Timber.d("onCreate") //BaseFragment로 뜸
     }
 
     override fun onCreateView(
@@ -27,14 +28,12 @@ abstract class BaseFragment<VB : ViewBinding>(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.e(this::class.java.simpleName, "onCreateView")
         _binding = inflate.invoke(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e(this::class.java.simpleName, "onViewCreated")
         initView()
     }
 
@@ -42,32 +41,26 @@ abstract class BaseFragment<VB : ViewBinding>(
 
     override fun onStart() {
         super.onStart()
-        Log.e(this::class.java.simpleName, "onStart")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.e(this::class.java.simpleName, "onResume")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.e(this::class.java.simpleName, "onPause")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.e(this::class.java.simpleName, "onStop")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.e(this::class.java.simpleName, "onDestroyView")
         _binding = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.e(this::class.java.simpleName, "onDestroy")
     }
 }

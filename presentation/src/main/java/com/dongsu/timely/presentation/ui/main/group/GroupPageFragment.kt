@@ -1,6 +1,5 @@
 package com.dongsu.timely.presentation.ui.main.group
 
-import android.util.Log
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -13,6 +12,7 @@ import com.dongsu.timely.presentation.common.GROUP_SCHEDULE
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class GroupPageFragment : BaseFragment<FragmentGroupPageBinding>(FragmentGroupPageBinding::inflate) {
@@ -29,8 +29,8 @@ class GroupPageFragment : BaseFragment<FragmentGroupPageBinding>(FragmentGroupPa
         setupTabLayoutAndViewPager()
     }
     private fun checkArgs() {
-        Log.e("GroupPageFragment", "navArgs: ${args}")
-        Log.e("GroupPageFragment", "Argment: ${arguments}")
+        Timber.e("navArgs: $args")
+        Timber.e("Argument: $arguments")
     }
 
     private fun setupToolbar() {

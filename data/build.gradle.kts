@@ -58,9 +58,17 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    androidTestImplementation(libs.androidx.espresso.core)
+
+    //JUnit
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+
+    //MockK
+    testImplementation("io.mockk:mockk:1.13.5")
+
+    // Coroutines Test
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 
     //gms
     implementation(libs.play.services.location)

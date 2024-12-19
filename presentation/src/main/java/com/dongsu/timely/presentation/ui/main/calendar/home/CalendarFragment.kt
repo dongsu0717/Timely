@@ -1,6 +1,5 @@
 package com.dongsu.timely.presentation.ui.main.calendar.home
 
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -76,12 +75,8 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
 
     private fun setDayLayoutBind(){
         binding.calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
-            override fun create(view: View): DayViewContainer {
-                Log.e("CalendarFragment", "날짜 - create")
-                return DayViewContainer(view)
-            }
+            override fun create(view: View): DayViewContainer = DayViewContainer(view)
             override fun bind(container: DayViewContainer, data: CalendarDay) {
-                Log.e("CalendarFragment", "날짜 - bind")
                 setDayDate(container, data)
                 setDayText(container, data)
                 setDayTextColor(container, data)
@@ -193,17 +188,15 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
             calendarViewModel.scheduleList.collectLatest { result ->
                 when (result) {
                     is TimelyResult.Loading -> {
-                        Log.e("CalendarFragment", "리스트 가져오기 - Loading")
+
                     }
 
                     is TimelyResult.Success -> {
-                        Log.e("CalendarFragment", "리스트 가져오기 - Success")
                         scheduleList = result.resultData
                         setCalendar()
                     }
 
                     is TimelyResult.Empty -> {
-                        Log.e("CalendarFragment", "리스트 가져오기 - Empty")
                         toastShort(requireContext(), LOAD_SCHEDULE_EMPTY)
                     }
 
@@ -220,7 +213,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(FragmentCalendarB
         container: DayViewContainer,
         data: CalendarDay,
     ) {
-        Log.e("CalendarFragment", "loadSchedule작동")
         scheduleList.filter { data.date == LocalDate.parse(it.startDate) }
             .also { filteredList ->
                 if (filteredList.isNotEmpty()) {

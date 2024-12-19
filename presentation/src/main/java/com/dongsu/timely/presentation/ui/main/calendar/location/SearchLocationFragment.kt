@@ -31,6 +31,7 @@ import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.mapwidget.InfoWindowLayer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -128,7 +129,7 @@ class SearchLocationFragment :
             searchViewModel.locationsList.collectLatest { results ->
                 when (results) {
                     is TimelyResult.Success -> {
-                        Log.d("SearchLocationFragment", "result: ${results.resultData}")
+                        Timber.d("result: " + results.resultData)
                         setStartMapPoint(kakaoMap, results.resultData)
                         setPoiListOnMap(kakaoMap, results.resultData)
                         searchAdapter.submitList(results.resultData)

@@ -1,17 +1,17 @@
 package com.dongsu.timely.presentation.common
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.dongsu.timely.common.GROUP_ID
+import timber.log.Timber
 
 
 abstract class BaseTabFragment<VB : ViewBinding>(
-    private val inflate: FragmentInflate<VB>
+    private val inflate: FragmentInflate<VB>,
 ) : Fragment() {
 
     private var _binding: VB? = null
@@ -23,7 +23,7 @@ abstract class BaseTabFragment<VB : ViewBinding>(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = inflate.invoke(inflater, container, false)
         return binding.root
@@ -38,7 +38,7 @@ abstract class BaseTabFragment<VB : ViewBinding>(
 
     private fun extractGroupId() {
         _groupId = arguments?.getInt(GROUP_ID) ?: -1
-        Log.e(this::class.java.simpleName,"groupId : $groupId")
+        Timber.e("groupId : $groupId")
     }
     override fun onDestroyView() {
         super.onDestroyView()

@@ -1,7 +1,6 @@
 package com.dongsu.timely.presentation.ui.main.group.location
 
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.dongsu.presentation.R
@@ -55,6 +54,7 @@ import com.kakao.vectormap.shape.animation.CircleWave
 import com.kakao.vectormap.shape.animation.CircleWaves
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import timber.log.Timber
 
 @AndroidEntryPoint
 class GroupLocationFragment :
@@ -78,8 +78,8 @@ class GroupLocationFragment :
 
     private val readyCallback: KakaoMapReadyCallback = object : KakaoMapReadyCallback() {
         override fun onMapReady(kakaoMap: KakaoMap) {
-            Log.i("k3f", "startPosition: " + kakaoMap.cameraPosition!!.position.toString())
-            Log.i("k3f", "startZoomLevel: " + kakaoMap.zoomLevel)
+            Timber.i("startPosition: " + kakaoMap.cameraPosition!!.position.toString())
+            Timber.i("startZoomLevel: " + kakaoMap.zoomLevel)
 
             shapeManager = kakaoMap.shapeManager!!
             shapeLayer = shapeManager.layer
@@ -121,7 +121,7 @@ class GroupLocationFragment :
             groupLocationViewModel.groupScheduleToShowMap.collectLatest { result ->
                 when (result) {
                     is TimelyResult.Loading -> {
-                        Log.e("맵에 보여줄 스케줄", "로딩중")
+                        Timber.e("로딩중")
                     }
 
                     is TimelyResult.Success -> {
@@ -130,15 +130,15 @@ class GroupLocationFragment :
                     }
 
                     is TimelyResult.Empty -> {
-                        Log.e("맵에 보여줄 스케줄", "비어있음. empty라고")
+                        Timber.e("비어있음. empty라고")
                     }
 
                     is TimelyResult.NetworkError -> {
-                        Log.e("맵에 보여줄 스케줄", "에러뜸")
+                        Timber.e("에러뜸")
                     }
 
                     else -> {
-                        Log.e("맵에 보여줄 스케줄", "니가왜떠")
+                        Timber.e("니가왜떠")
                     }
                 }
             }
@@ -147,7 +147,7 @@ class GroupLocationFragment :
 
     private fun setScheduleIdToShowMap(scheduleId: Int) {
         scheduleIdToShowMap = scheduleId
-        Log.e("GroupLocationFragment", "맵에 보여줄 scheduleId - $scheduleIdToShowMap")
+        Timber.e("맵에 보여줄 scheduleId - " + scheduleIdToShowMap)
     }
 
     private fun setBeforeStartMap() {
@@ -169,20 +169,20 @@ class GroupLocationFragment :
             groupLocationViewModel.myUserId.collectLatest { result ->
                 when (result) {
                     is TimelyResult.Loading -> {
-                        Log.e("GroupLocationFragment", "내아이디 가져오기 - 로딩중")
+                        Timber.e("내아이디 가져오기 - 로딩중")
                     }
 
                     is TimelyResult.Success -> {
-                        Log.e("GroupLocationFragment", "내아이디 가져오기 - 성공")
+                        Timber.e("내아이디 가져오기 - 성공")
                         myId = result.resultData
                     }
 
                     is TimelyResult.Empty -> {
-                        Log.e("GroupLocationFragment", "내아이디 가져오기 - 비어있음")
+                        Timber.e("내아이디 가져오기 - 비어있음")
                     }
 
                     is TimelyResult.NetworkError -> {
-                        Log.e("GroupLocationFragment", "내아이디 가져오기 - 네트워크 오류")
+                        Timber.e("내아이디 가져오기 - 네트워크 오류")
                     }
 
                     else -> {}
@@ -213,7 +213,7 @@ class GroupLocationFragment :
 
                     is TimelyResult.NetworkError -> {
                         toastShort(requireContext(), GET_ERROR)
-                        Log.e("멤버들 가져오기", meetingInfo.exception.toString())
+                        Timber.e(meetingInfo.exception.toString())
                     }
 
                     else -> {
@@ -226,10 +226,10 @@ class GroupLocationFragment :
 
     private fun setGroupMeetingInfoOnMap(kakaoMap: KakaoMap, meetingInfo: GroupMeetingInfo) {
         val targetLocation = meetingInfo.targetLocation
-        Log.e("약속장소 가져오기", targetLocation.toString())
+        Timber.e(targetLocation.toString())
 
         val usersLocation = meetingInfo.userMeetingData
-        Log.e("멤버들 가져오기", usersLocation.toString())
+        Timber.e(usersLocation.toString())
 
         updateAppointPlaceOnMap(kakaoMap, targetLocation)
         updateMemberLocationsOnMap(kakaoMap, usersLocation)
@@ -246,7 +246,7 @@ class GroupLocationFragment :
 
     private fun checkIsArrive(usersLocation: List<UserMeeting>, targetLocation: TargetLocation) {
         val myLocation = getMyLocation(usersLocation)
-        Log.e("내위치 가져오기", myLocation.toString())
+        Timber.e(myLocation.toString())
 
         if (myLocation != null) {
             val distance = calculateDistance(
@@ -255,7 +255,7 @@ class GroupLocationFragment :
                 targetLocation.coordinate.latitude,
                 targetLocation.coordinate.longitude
             )
-            Log.d("목적지까지 남은 거리", "목적지까지 남은 거리 ${distance}m")
+            Timber.d("목적지까지 남은 거리 " + distance + "m")
 
             if (distance <= DISTANCE_TO_ARRIVE_POINT) {
                 arrivedAppointmentPlace()
@@ -315,7 +315,7 @@ class GroupLocationFragment :
 
     private fun showDialogIsLate(
         title: String,
-        message: String
+        message: String,
     ) = CommonDialogFragment(
         title,
         message
@@ -329,16 +329,16 @@ class GroupLocationFragment :
             groupLocationViewModel.isLateState.collectLatest { result ->
                 when (result) {
                     is TimelyResult.Loading -> {
-                        Log.e("GroupLocationFragment", "지각 업데이트 로딩중")
+                        Timber.e("지각 업데이트 로딩중")
                     }
                     is TimelyResult.Success -> {
-                        Log.e("GroupLocationFragment", "지각 업데이트 성공")
+                        Timber.e("지각 업데이트 성공")
                     }
                     is TimelyResult.Empty -> {
-                        Log.e("GroupLocationFragment", "지각 업데이트 비어있음")
+                        Timber.e("지각 업데이트 비어있음")
                     }
                     is TimelyResult.NetworkError -> {
-                        Log.e("GroupLocationFragment", "지각 업데이트 네트워크 오류")
+                        Timber.e("지각 업데이트 네트워크 오류")
                     }
                     else -> {}
                 }
